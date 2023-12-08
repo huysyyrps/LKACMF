@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/drawable-hdpi/ic_launcher_foreground.xml" value="0.238" />
+        <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/drawable/cloors.xml" value="0.2675" />
+        <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/drawable/shape_tab_bg.xml" value="0.2675" />
+        <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/drawable/tabitem.xml" value="0.2675" />
+        <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/drawable/verticle_textview.xml" value="0.2675" />
+        <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/drawable/verticle_textview1.xml" value="0.2675" />
+        <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/drawable/verticle_textview_select.xml" value="0.1835" />
+        <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/activity_main.xml" value="0.3536458333333333" />
+        <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/activity_qr.xml" value="0.18541666666666667" />
+        <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/dialog_empower.xml" value="0.18541666666666667" />
+        <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/dialog_item_header.xml" value="0.3380208333333333" />
+        <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/dialog_no_activation.xml" value="0.46789989118607184" />
+        <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/dialog_setting.xml" value="0.3536458333333333" />
+        <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/verlinlayout_item.xml" value="0.3536458333333333" />
+        <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.238" />
+        <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.225" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

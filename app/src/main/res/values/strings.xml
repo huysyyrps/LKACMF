@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">LKACMF</string>
+    <string name="btn_sure">确定</string>
+    <string name="btn_cancel">取消</string>
+    <string name="btn_scan">扫码</string>
+    <string name="no_rw_permission">: 没有读写权限</string>
+    <string name="seriaport_open_fail">: 串口打开失败</string>
+    <string name="qr_text">将二维码放入取景框内</string>
+    <string name="qr">二维码扫描</string>
+    <string name="em_power_title">请将本二维码拍照发送给鲁科管理员用于生成授权码，并扫描授权码完成授权</string>
+    <string name="main">主页</string>
+    <string name="analysts">数据分析</string>
+    <string name="user_info">说明书</string>
+
+
+    <string name="start">开始</string>
+    <string name="stop">停止</string>
+    <string name="punctation">标点</string>
+    <string name="direction">路径</string>
+    <string name="thinkness">图层</string>
+    <string name="select">探头</string>
+    <string name="material">材料</string>
+    <string name="screenshot">截图</string>
+    <string name="suspend">暂停</string>
+    <string name="refresh">刷新</string>
+    <string name="detection_mode">检测模式</string>
+    <string name="calibration">标定</string>
+    <string name="measure">测量</string>
+    <string name="forms">报表</string>
+    <string name="save">保存</string>
+    <string name="back_play">回放</string>
+    <string name="reset">复位</string>
+    <string name="report">报告</string>
+    <string name="screen">框选</string>
+    <string name="setting">设置</string>
+
+    <string name="probe_rate">探头激励频率</string>
+    <string name="rate1">1KHz</string>
+    <string name="rate2">2KHz</string>
+    <string name="rate5">5KHz</string>
+    <string name="probe_numb">探头激励值</string>
+    <string name="user_encoder">是否使用编码器</string>
+    <string name="user">使用</string>
+    <string name="no_user">不使用</string>
+    <string name="current_wave">当前波形</string>
+    <string name="sine_wave">正弦波</string>
+    <string name="triangular_wave">三角波</string>
+    <string name="square_wave">方波</string>
+</resources>
