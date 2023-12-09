@@ -1,6 +1,7 @@
 package com.example.lkacmf.util.dialog
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.graphics.Bitmap
 import android.os.Build
 import android.util.Log
@@ -12,12 +13,14 @@ import com.afollestad.materialdialogs.customview.customView
 import com.example.lkacmf.R
 import com.example.lkacmf.activity.MainActivity
 import com.example.lkacmf.util.BinaryChange
+import com.example.lkacmf.util.showToast
 import com.example.lkacmf.util.sp.BaseSharedPreferences
 import com.permissionx.guolindev.PermissionX
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_empower.*
 import kotlinx.android.synthetic.main.dialog_no_activation.*
 import kotlinx.android.synthetic.main.dialog_setting.*
+import kotlinx.android.synthetic.main.dialog_thinkness.*
 
 object DialogUtil {
     /**
@@ -45,7 +48,7 @@ object DialogUtil {
             dialog.dismiss()
         }
         dialog.btnNoActivationSure.setOnClickListener {
-            callBack.sureCallBack()
+            callBack.sureCallBack("")
         }
         return dialog
     }
@@ -70,7 +73,7 @@ object DialogUtil {
             dialog.dismiss()
         }
         dialog.btnEmPowerSure.setOnClickListener {
-            callBack.sureCallBack()
+            callBack.sureCallBack("")
         }
         return dialog
     }
@@ -145,7 +148,6 @@ object DialogUtil {
 
         })
 
-
         dialog.btnSettingCancel.setOnClickListener {
             dialog.dismiss()
         }
@@ -165,9 +167,38 @@ object DialogUtil {
                 2 -> BaseSharedPreferences.put("currentWave", "02")
             }
             BaseSharedPreferences.put("probeNumb",dialog.tvProbeNumb.text)
-            callBack.sureCallBack()
+            callBack.sureCallBack("")
             dialog.dismiss()
         }
         return dialog
+    }
+
+    /**
+     * 设置图层
+     */
+    fun setThinkness(activity: Activity, callBack: DialogSureCallBack) {
+        dialog = MaterialDialog(activity)
+            .cancelable(false)
+            .show {
+                customView(    //自定义弹窗
+                    viewRes = R.layout.dialog_thinkness,//自定义文件
+                    dialogWrapContent = true,    //让自定义宽度生效
+                    scrollable = true,            //让自定义宽高生效
+                    noVerticalPadding = true    //让自定义高度生效
+                )
+                cornerRadius(16f)
+            }
+        dialog.btnThinknessCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.btnThinknessSure.setOnClickListener {
+            var thinkness = dialog.etThinkness.text.toString()
+            if (thinkness.trim { it <= ' ' } == "") {
+                "图层厚度不能为空".showToast(activity)
+                return@setOnClickListener
+            }
+            callBack.sureCallBack(thinkness)
+            dialog.dismiss()
+        }
     }
 }

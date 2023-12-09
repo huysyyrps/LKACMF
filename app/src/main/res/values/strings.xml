@@ -46,4 +46,14 @@
     <string name="sine_wave">正弦波</string>
     <string name="triangular_wave">三角波</string>
     <string name="square_wave">方波</string>
+    <string name="auto">默认</string>
+    <string name="T">T字扫描</string>
+    <string name="L">焊缝L扫描</string>
+    <string name="R">焊缝R扫描</string>
+    <string name="C">焊缝扫描</string>
+    <string name="Z">Z字扫描</string>
+    <string name="material_plate">板材</string>
+    <string name="material_seam">焊缝</string>
+    <string name="material_corner">拐角</string>
+    <string name="write_thinkness">请输入图层厚度</string>
 </resources>

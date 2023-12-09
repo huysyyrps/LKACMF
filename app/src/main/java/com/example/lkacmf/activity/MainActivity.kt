@@ -11,11 +11,15 @@ import com.example.lkacmf.serialport.SerialPortConstant
 import com.example.lkacmf.serialport.SerialPortDataMake
 import com.example.lkacmf.util.ActivationCode
 import com.example.lkacmf.util.BinaryChange
-import com.example.lkacmf.util.LogUtil
+import com.example.lkacmf.util.PopupPositionCallBack
 import com.example.lkacmf.util.dialog.DialogSureCallBack
 import com.example.lkacmf.util.dialog.DialogUtil
+import com.example.lkacmf.util.linechart.CustomMarkerView
 import com.example.lkacmf.util.linechart.LineChartSetting
 import com.example.lkacmf.util.linechart.LineDataRead
+import com.example.lkacmf.util.popup.CustomBubbleAttachPopup
+import com.example.lkacmf.util.popup.MaterialListData
+import com.example.lkacmf.util.popup.PopupListData
 import com.example.lkacmf.util.showToast
 import com.example.lkacmf.util.sp.BaseSharedPreferences
 import kotlinx.android.synthetic.main.activity_main.*
@@ -35,11 +39,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         vtv_setting.setOnClickListener(this)
         btnStart.setOnClickListener(this)
         btnSuspend.setOnClickListener(this)
         btnStop.setOnClickListener(this)
         btnRefresh.setOnClickListener(this)
+        btnPunctation.setOnClickListener(this)
+        btnDirection.setOnClickListener(this)
+        btnThinkness.setOnClickListener(this)
+        btnMaterial.setOnClickListener(this)
+
         LineChartSetting.SettingLineChart(this, lineChartBX, true)
         LineChartSetting.SettingLineChart(this, lineChartBZ, true)
         LineChartSetting.SettingLineChart(this, lineChart, true)
@@ -72,7 +82,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                                     "未激活".showToast(this@MainActivity)
                                     runOnUiThread {
                                         DialogUtil.noActivitionDialog(this@MainActivity, object : DialogSureCallBack {
-                                            override fun sureCallBack() {
+                                            override fun sureCallBack(data: String) {
                                                 var activationCode = ActivationCode.makeCode(receivedData.substring(6, 30))
                                                 BaseSharedPreferences.put("activationCode",activationCode)
                                                 BaseSharedPreferences.put("deviceCode",receivedData.substring(6, 30))
@@ -174,7 +184,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.vtv_setting->{
                 DialogUtil.settingDialog(this, object:DialogSureCallBack{
                     @RequiresApi(Build.VERSION_CODES.O)
-                    override fun sureCallBack() {
+                    override fun sureCallBack(data: String) {
                         mSerialPortHelper.sendTxt(SerialPortDataMake.settingData())
                     }
                 })
@@ -187,7 +197,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 btnSuspend.isChecked = true
                 btnStart.visibility = View.GONE
                 btnSuspend.visibility = View.VISIBLE
-                timer.scheduleAtFixedRate(0, 1000) {
+                timer.scheduleAtFixedRate(0, 50) {
 //                    var s = "B101010200"
                     var x = BinaryChange.floatStringToHex(index.toFloat(),8)
                     var y = BinaryChange.floatStringToHex(Random.nextInt(20, 50).toFloat(),8)
@@ -211,6 +221,53 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 SerialPortDataMake.operateData("03")
                 Thread.sleep(500)
                 LineDataRead.readRefreshData(lineChartBX, lineChartBZ, lineChart)
+            }
+            R.id.btnPunctation->{
+            }
+            //路径
+            R.id.btnDirection -> {
+                com.lxj.xpopup.XPopup.Builder(this)
+                    .hasShadowBg(false)
+                    .isTouchThrough(true)
+                    .isDestroyOnDismiss(true) //对于只使用一次的弹窗，推荐设置这个
+                    .atView(btnDirection)
+                    .isCenterHorizontal(true)
+                    .hasShadowBg(false) // 去掉半透明背景
+                    .isClickThrough(true)
+                    .asCustom(CustomBubbleAttachPopup(this,"popup", object : PopupPositionCallBack {
+                        override fun backPosition(index: Int) {
+                            PopupListData.setPopupListData()[index].title.showToast(this@MainActivity)
+                        }
+
+                    }))
+                    .show()
+            }
+            //材料
+            R.id.btnMaterial -> {
+                com.lxj.xpopup.XPopup.Builder(this)
+                    .hasShadowBg(false)
+                    .isTouchThrough(true)
+                    .isDestroyOnDismiss(true) //对于只使用一次的弹窗，推荐设置这个
+                    .atView(btnMaterial)
+                    .isCenterHorizontal(true)
+                    .hasShadowBg(false) // 去掉半透明背景
+                    .isClickThrough(true)
+                    .asCustom(CustomBubbleAttachPopup(this,"material", object :PopupPositionCallBack{
+                        override fun backPosition(index: Int) {
+                            MaterialListData.setMaterialListData()[index].title.showToast(this@MainActivity)
+                        }
+
+                    }))
+                    .show()
+            }
+            //图层
+            R.id.btnThinkness -> {
+                DialogUtil.setThinkness(this,object: DialogSureCallBack {
+                    override fun sureCallBack(thinkness: String) {
+                        thinkness.showToast(this@MainActivity)
+                    }
+
+                })
             }
         }
     }

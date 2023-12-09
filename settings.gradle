@@ -40,3 +40,4 @@ rootProject.name = "LKACMF"
 include ':app'
 include ':serialportlib'
 include ':MPChartLib'
+include ':library'
