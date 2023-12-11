@@ -32,7 +32,7 @@ object DialogUtil {
     /**
      * 是否激活弹窗
      */
-    fun noActivitionDialog(activity: MainActivity, callBack: DialogSureCallBack): MaterialDialog {
+    fun noActivitionDialog(activity: Activity, callBack: DialogSureCallBack): MaterialDialog {
         dialog = MaterialDialog(activity)
             .cancelable(false)
             .show {
@@ -107,7 +107,7 @@ object DialogUtil {
     /**
      * 设备授权码
      */
-    fun settingDialog(activity: MainActivity, callBack: DialogSureCallBack): MaterialDialog {
+    fun settingDialog(activity: Activity, callBack: DialogSureCallBack): MaterialDialog {
         dialog = MaterialDialog(activity)
             .cancelable(false)
             .show {

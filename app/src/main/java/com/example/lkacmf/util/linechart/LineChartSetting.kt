@@ -1,10 +1,12 @@
 package com.example.lkacmf.util.linechart
 
+import android.app.Activity
 import android.graphics.Matrix
 import android.view.MotionEvent
 import com.example.lkacmf.MyApplication
 import com.example.lkacmf.R
 import com.example.lkacmf.activity.MainActivity
+import com.example.lkacmf.fragment.HomeFragment
 import com.example.lkacmf.util.LogUtil
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
@@ -14,6 +16,7 @@ import com.github.mikephil.charting.listener.OnChartGestureListener
 import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.ViewPortHandler
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_home.*
 
 object LineChartSetting {
     var oldScaleX = 0F
@@ -21,7 +24,7 @@ object LineChartSetting {
     var mMatrix = Matrix()
     val mSavedMatrix = Matrix()
     private val mTouchPointCenter = MPPointF.getInstance(0f, 0f)
-    fun SettingLineChart(activity: MainActivity, linechar: LineChart, showX: Boolean, ) {
+    fun SettingLineChart(activity: Activity, linechar: LineChart, showX: Boolean, ) {
         linechar.setDrawGridBackground(false)//是否显示表格颜色
         linechar.setDrawBorders(false)// 是否在折线图上添加边框
         linechar.setScaleEnabled(true)// 是否可以缩放
@@ -35,8 +38,8 @@ object LineChartSetting {
         linechar.isDoubleTapToZoomEnabled = false;
 
 //        linechar.isDoubleTapToZoomEnabled = false
-        linechar.viewPortHandler.setMaximumScaleX(30.0f)//限制X轴放大限制
-        linechar.viewPortHandler.setMaximumScaleY(3.0f)
+//        linechar.viewPortHandler.setMaximumScaleX(30.0f)//限制X轴放大限制
+//        linechar.viewPortHandler.setMaximumScaleY(3.0f)
         linechar.legend.isEnabled = false;// 不显示图例
 //        linechar.setVisibleXRangeMaximum(80.0f)
         linechar.extraTopOffset = 5.0f
@@ -83,12 +86,7 @@ object LineChartSetting {
                 LogUtil.e("TAG", "单击")
             }
 
-            override fun onChartFling(
-                me1: MotionEvent,
-                me2: MotionEvent,
-                velocityX: Float,
-                velocityY: Float
-            ) {
+            override fun onChartFling(me1: MotionEvent, me2: MotionEvent, velocityX: Float, velocityY: Float) {
                 // 甩动
                 LogUtil.e("TAG", "甩动")
             }
@@ -103,6 +101,7 @@ object LineChartSetting {
                                 val t = getTrans(mTouchPointCenter.x, mTouchPointCenter.y,activity.lineChartBZ)
                                 mMatrix.postScale(scaleX, 1F, t.x, t.y)
                                 activity.lineChartBZ.getViewPortHandler().refresh(mMatrix, activity.lineChartBZ, true)
+                                activity.lineChart.viewPortHandler.refresh(mMatrix, activity.lineChart, true)
                             }
                         }
                     }
@@ -113,9 +112,21 @@ object LineChartSetting {
                                 val t = getTrans(mTouchPointCenter.x, mTouchPointCenter.y,activity.lineChartBX)
                                 mMatrix.postScale(scaleX, 1F, t.x, t.y)
                                 activity.lineChartBX.viewPortHandler.refresh(mMatrix, activity.lineChartBX, true)
+                                activity.lineChart.viewPortHandler.refresh(mMatrix, activity.lineChart, true)
                             }
                         }
                     }
+                    R.id.lineChart -> {
+                    if (oldScaleX != scaleX || oldScaleY != scaleY) {
+                        if (scaleX != 1F || scaleY != 1F) {
+                            mMatrix.set(mSavedMatrix)
+                            val t = getTrans(mTouchPointCenter.x, mTouchPointCenter.y,activity.lineChart)
+                            mMatrix.postScale(scaleX, 1F, t.x, t.y)
+                            activity.lineChartBZ.getViewPortHandler().refresh(mMatrix, activity.lineChartBZ, true)
+                            activity.lineChartBX.viewPortHandler.refresh(mMatrix, activity.lineChartBX, true)
+                        }
+                    }
+                }
                 }
             }
 
@@ -127,12 +138,20 @@ object LineChartSetting {
                     R.id.lineChartBX -> {
                         mMatrix.set(mSavedMatrix)
                         mMatrix.postTranslate(dX, dY)
-                        activity.lineChartBZ.getViewPortHandler().refresh(mMatrix, activity.lineChartBZ, true)
+                        activity.lineChartBZ.viewPortHandler.refresh(mMatrix, activity.lineChartBZ, true)
+                        activity.lineChart.viewPortHandler.refresh(mMatrix, activity.lineChart, true)
                     }
                     R.id.lineChartBZ -> {
                         mMatrix.set(mSavedMatrix)
                         mMatrix.postTranslate(dX, dY)
-                        activity.lineChartBX.getViewPortHandler().refresh(mMatrix, activity.lineChartBX, true)
+                        activity.lineChartBX.viewPortHandler.refresh(mMatrix, activity.lineChartBX, true)
+                        activity.lineChart.viewPortHandler.refresh(mMatrix, activity.lineChart, true)
+                    }
+                    R.id.lineChart -> {
+                        mMatrix.set(mSavedMatrix)
+                        mMatrix.postTranslate(dX, dY)
+                        activity.lineChartBZ.viewPortHandler.refresh(mMatrix, activity.lineChartBZ, true)
+                        activity.lineChartBX.viewPortHandler.refresh(mMatrix, activity.lineChartBX, true)
                     }
                 }
             }

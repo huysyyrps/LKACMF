@@ -4,7 +4,6 @@ import android.app.Activity
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.lkacmf.R
-import com.example.lkacmf.util.BinaryChange
 import com.example.lkacmf.util.Constant
 import com.example.lkacmf.util.LogUtil
 import com.example.lkacmf.util.showToast
@@ -51,6 +50,15 @@ object SerialPortConstant {
 //        mSerialPortHelper.flowCon = FLOWCON.getFlowCon(FLOWCON.NONE)
         //endregion
     }
+
+    @JvmName("getMSerialPortHelper1")
+    fun getMSerialPortHelper(activity: Activity): SerialPortHelper {
+        if (mSerialPortHelper != null && mSerialPortHelper.isOpen)
+            return mSerialPortHelper
+        else
+            return getSerialPortHelper(activity)
+    }
+
     fun close() {
         if (mSerialPortHelper != null) {
             mSerialPortHelper.close()

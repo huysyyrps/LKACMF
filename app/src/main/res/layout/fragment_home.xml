@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="MissingDefaultResource">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="1dp"
+            android:orientation="horizontal">
+
+        <LinearLayout
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            <com.example.lkacmf.view.VerticleTextView
+                    android:id="@+id/vtv_connection_state"
+                    style="@style/VerticleTextView"
+                    android:background="@drawable/verticle_textview" />
+
+            <View style="@style/HLine" />
+
+            <com.example.lkacmf.view.VerticleTextView
+                    android:id="@+id/vtv_probe_state"
+                    style="@style/VerticleTextView"
+                    android:background="@drawable/verticle_textview" />
+
+            <View style="@style/HLine" />
+
+            <com.example.lkacmf.view.VerticleTextView
+                    android:id="@+id/vtv_probe"
+                    style="@style/VerticleTextView"
+                    android:background="@drawable/verticle_textview"
+                    android:focusable="true" />
+
+            <View style="@style/HLine" />
+
+            <com.example.lkacmf.view.VerticleTextView
+                    android:id="@+id/vtv_probe_type"
+                    style="@style/VerticleTextView"
+                    android:background="@drawable/verticle_textview" />
+
+            <View style="@style/HLine" />
+
+            <com.example.lkacmf.view.VerticleTextView
+                    android:id="@+id/vtv_probe_num"
+                    style="@style/VerticleTextView"
+                    android:background="@drawable/verticle_textview"
+                    android:text="25" />
+
+            <View style="@style/HLine" />
+
+            <com.example.lkacmf.view.VerticleTextView
+                    android:id="@+id/vtv_setting"
+                    style="@style/VerticleTextView"
+                    android:background="@drawable/verticle_textview"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="@string/setting" />
+
+        </LinearLayout>
+
+        <View style="@style/Vine" />
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginBottom="1dp"
+                    android:background="@color/theme_back_color1"
+                    android:orientation="horizontal">
+
+                <LinearLayout
+                        android:id="@+id/linMain"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:orientation="horizontal">
+
+                    <RadioGroup
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:orientation="horizontal">
+
+                        <com.example.lkacmf.view.BaseRadionButton
+                                android:id="@+id/btnStart"
+                                style="@style/BaseRadioButton"
+                                android:background="@drawable/verticle_textview_select"
+                                android:text="@string/start"
+                                app:drawableTop="@drawable/ic_start" />
+
+                        <com.example.lkacmf.view.BaseRadionButton
+                                android:id="@+id/btnSuspend"
+                                style="@style/BaseRadioButton"
+                                android:background="@drawable/verticle_textview_select"
+                                android:text="@string/suspend"
+                                android:visibility="gone"
+                                app:drawableTop="@drawable/ic_suspend" />
+
+                        <com.example.lkacmf.view.BaseRadionButton
+                                android:id="@+id/btnStop"
+                                style="@style/BaseRadioButton"
+                                android:background="@drawable/verticle_textview_select"
+                                android:text="@string/stop"
+                                app:drawableTop="@drawable/ic_stop" />
+
+                        <com.example.lkacmf.view.BaseRadionButton
+                                android:id="@+id/btnRefresh"
+                                style="@style/BaseRadioButton"
+                                android:background="@drawable/verticle_textview_select"
+                                android:text="@string/refresh"
+                                app:drawableTop="@drawable/ic_refus" />
+                    </RadioGroup>
+
+                    <com.example.lkacmf.view.BaseRadionButton
+                            android:id="@+id/btnPunctation"
+                            style="@style/BaseRadioButton"
+                            android:background="@drawable/verticle_textview"
+                            android:text="@string/punctation"
+                            app:drawableTop="@drawable/ic_punctation" />
+
+                    <com.example.lkacmf.view.BaseRadionButton
+                            android:id="@+id/btnDirection"
+                            style="@style/BaseRadioButton"
+                            android:background="@drawable/verticle_textview"
+                            android:text="@string/direction"
+                            app:drawableTop="@drawable/ic_direction" />
+
+                    <com.example.lkacmf.view.BaseRadionButton
+                            android:id="@+id/btnMaterial"
+                            style="@style/BaseRadioButton"
+                            android:background="@drawable/verticle_textview"
+                            android:text="@string/material"
+                            app:drawableTop="@drawable/ic_select" />
+
+                    <com.example.lkacmf.view.BaseRadionButton
+                            android:id="@+id/btnThinkness"
+                            style="@style/BaseRadioButton"
+                            android:background="@drawable/verticle_textview"
+                            android:text="@string/thinkness"
+                            app:drawableTop="@drawable/ic_thinkness" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="1dp"
+                    android:orientation="horizontal">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                    <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="2dp"
+                            android:layout_weight="6"
+                            android:orientation="vertical">
+
+                        <androidx.cardview.widget.CardView
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                app:cardCornerRadius="5dp">
+
+                            <FrameLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                <com.github.mikephil.charting.charts.LineChart
+                                        android:id="@+id/lineChartBX"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent" />
+
+                                <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="right"
+                                        android:layout_margin="5dp"
+                                        android:text="XBX"
+                                        android:textColor="@color/theme_color" />
+                            </FrameLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_marginTop="2dp"
+                                android:layout_weight="1"
+                                app:cardCornerRadius="5dp">
+
+                            <FrameLayout
+                                    android:id="@+id/linBZ"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                <com.github.mikephil.charting.charts.LineChart
+                                        android:id="@+id/lineChartBZ"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginBottom="2dp"
+                                        android:layout_weight="1" />
+
+                                <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="right"
+                                        android:layout_margin="5dp"
+                                        android:text="XZX"
+                                        android:textColor="@color/theme_color" />
+                            </FrameLayout>
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="2dp"
+                            android:layout_weight="4"
+                            android:orientation="vertical">
+
+                        <androidx.cardview.widget.CardView
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_marginBottom="2dp"
+                                android:layout_weight="6"
+                                app:cardCornerRadius="5dp">
+
+                            <FrameLayout
+                                    android:id="@+id/linDX"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                <com.github.mikephil.charting.charts.LineChart
+                                        android:id="@+id/lineChart"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="left"
+                                        android:layout_marginBottom="2dp"
+                                        android:layout_weight="6" />
+
+                                <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="right"
+                                        android:layout_margin="5dp"
+                                        android:text="蝶形图"
+                                        android:textColor="@color/theme_color" />
+                            </FrameLayout>
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="6"
+                                app:cardCornerRadius="5dp">
+
+                            <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                <TextView
+                                        style="@style/HeaderText"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="35dp"
+                                        android:background="@color/black"
+                                        android:gravity="center_vertical"
+                                        android:paddingLeft="15dp"
+                                        android:text="测量数据"
+                                        android:textColor="@color/theme_color" />
+
+                                <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="0dp"
+                                        android:layout_weight="4"
+                                        android:orientation="vertical">
+
+                                    <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="40dp"
+                                            android:layout_marginLeft="5dp"
+                                            android:layout_marginTop="20dp"
+                                            android:gravity="center_vertical"
+                                            android:text="深度系数：1"
+                                            android:textColor="@color/theme_color"
+                                            android:textSize="20dp" />
+
+                                    <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="40dp"
+                                            android:layout_marginLeft="5dp"
+                                            android:gravity="center_vertical"
+                                            android:text="长度：1266mm"
+                                            android:textColor="@color/theme_color"
+                                            android:textSize="20dp" />
+
+                                    <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="40dp"
+                                            android:layout_marginLeft="5dp"
+                                            android:gravity="center_vertical"
+                                            android:text="深度：666mm"
+                                            android:textColor="@color/theme_color"
+                                            android:textSize="20dp" />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>
