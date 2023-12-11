@@ -188,7 +188,6 @@
                                     app:drawableTop="@drawable/ic_refus"/>
                         </RadioGroup>
 
-
                         <com.example.lkacmf.view.BaseRadionButton
                                 android:id="@+id/btnPunctation"
                                 style="@style/BaseRadioButton"
@@ -225,46 +224,36 @@
                             android:layout_weight="3"
                             android:orientation="horizontal"
                             android:visibility="gone">
-
-                        <com.example.lkacmf.view.VerLinlayout
+                        <com.example.lkacmf.view.BaseRadionButton
                                 android:id="@+id/btnBackPlay"
-                                style="@style/VerLinlayout"
+                                style="@style/BaseRadioButton"
                                 android:background="@drawable/verticle_textview"
-                                android:clickable="true"
-                                app:botton_title="@string/back_play"
-                                app:drawer_image_botton="@drawable/ic_backplay" />
-
-                        <com.example.lkacmf.view.VerLinlayout
+                                android:text="@string/back_play"
+                                app:drawableTop="@drawable/ic_backplay" />
+                        <com.example.lkacmf.view.BaseRadionButton
                                 android:id="@+id/btnReset"
-                                style="@style/VerLinlayout"
+                                style="@style/BaseRadioButton"
                                 android:background="@drawable/verticle_textview"
-                                android:clickable="true"
-                                app:botton_title="@string/reset"
-                                app:drawer_image_botton="@drawable/ic_reset" />
-
-                        <com.example.lkacmf.view.VerLinlayout
+                                android:text="@string/reset"
+                                app:drawableTop="@drawable/ic_reset" />
+                        <com.example.lkacmf.view.BaseRadionButton
                                 android:id="@+id/btnReport"
-                                style="@style/VerLinlayout"
+                                style="@style/BaseRadioButton"
                                 android:background="@drawable/verticle_textview"
-                                android:clickable="true"
-                                app:botton_title="@string/report"
-                                app:drawer_image_botton="@drawable/ic_report" />
-
-                        <com.example.lkacmf.view.VerLinlayout
+                                android:text="@string/report"
+                                app:drawableTop="@drawable/ic_report" />
+                        <com.example.lkacmf.view.BaseRadionButton
                                 android:id="@+id/btnScreen"
-                                style="@style/VerLinlayout"
+                                style="@style/BaseRadioButton"
                                 android:background="@drawable/verticle_textview"
-                                android:clickable="true"
-                                app:botton_title="@string/screen"
-                                app:drawer_image_botton="@drawable/ic_screen" />
-
-                        <com.example.lkacmf.view.VerLinlayout
+                                android:text="@string/screen"
+                                app:drawableTop="@drawable/ic_screen" />
+                        <com.example.lkacmf.view.BaseRadionButton
                                 android:id="@+id/btnImage"
-                                style="@style/VerLinlayout"
+                                style="@style/BaseRadioButton"
                                 android:background="@drawable/verticle_textview"
-                                android:clickable="true"
-                                app:botton_title="@string/screenshot"
-                                app:drawer_image_botton="@drawable/ic_image" />
+                                android:text="@string/screenshot"
+                                app:drawableTop="@drawable/ic_image" />
                     </LinearLayout>
                 </LinearLayout>
 

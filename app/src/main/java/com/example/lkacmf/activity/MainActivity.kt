@@ -22,6 +22,7 @@ import com.example.lkacmf.util.popup.MaterialListData
 import com.example.lkacmf.util.popup.PopupListData
 import com.example.lkacmf.util.showToast
 import com.example.lkacmf.util.sp.BaseSharedPreferences
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import me.f1reking.serialportlib.SerialPortHelper
 import me.f1reking.serialportlib.listener.ISerialPortDataListener
@@ -39,6 +40,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        //tabLayout选择监听
+        tabLayoutSelect()
 
         vtv_setting.setOnClickListener(this)
         btnStart.setOnClickListener(this)
@@ -50,10 +53,39 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         btnThinkness.setOnClickListener(this)
         btnMaterial.setOnClickListener(this)
 
+        btnBackPlay.setOnClickListener(this)
+
         LineChartSetting.SettingLineChart(this, lineChartBX, true)
         LineChartSetting.SettingLineChart(this, lineChartBZ, true)
         LineChartSetting.SettingLineChart(this, lineChart, true)
         SerialPortHelperHandler()
+    }
+
+    private fun tabLayoutSelect() {
+        tbLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                when (tab.position) {
+                    0->{
+                        linMain.visibility = View.VISIBLE
+                        linAnalysts.visibility = View.GONE
+                        return
+                    }
+                    1->{
+                        linMain.visibility = View.GONE
+                        linAnalysts.visibility = View.VISIBLE
+                        return
+                    }
+                    2->{
+                        tbLayout.selectTab(tbLayout.getTabAt(0))
+                        return
+                    }
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
     }
 
     /**
@@ -268,6 +300,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     }
 
                 })
+            }
+            //回放
+            R.id.btnBackPlay->{
+                if (mSerialPortHelper.isOpen) {
+                    SerialPortDataMake.operateData("00")
+                }
+                LineDataRead.backPlay(lineChartBX, lineChartBZ,lineChart)
             }
         }
     }

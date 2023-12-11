@@ -567,7 +567,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 //                        .getPhaseY(), mXBounds.min, mXBounds.max);
                 float[] positions = trans.generateTransformedValuesLine(dataSet, mAnimator.getPhaseX(), mAnimator
                         .getPhaseY(), 0, mXBounds.range-1);
-                Log.e("TAG",mXBounds.min+"------"+mXBounds.range+"------"+mXBounds.max);
+//                Log.e("TAG",mXBounds.min+"------"+mXBounds.range+"------"+mXBounds.max);
                 ValueFormatter formatter = dataSet.getValueFormatter();
 
                 MPPointF iconsOffset = MPPointF.getInstance(dataSet.getIconsOffset());

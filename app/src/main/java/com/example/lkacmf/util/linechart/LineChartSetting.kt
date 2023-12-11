@@ -147,7 +147,7 @@ object LineChartSetting {
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.axisLineWidth = 0f//轴线宽度
         xAxis.isEnabled = showX//是否显示X轴
-        xAxis.granularity = 1F//设置 后 value是从0开始的，每次加1
+//        xAxis.granularity = 1F//设置 后 value是从0开始的，每次加1
         xAxis.setAvoidFirstLastClipping(true) //图表将避免第一个和最后一个标签条目被减掉在图表或屏幕的边缘
 
 
