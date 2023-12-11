@@ -81,9 +81,8 @@ public abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
          */
         public void set(BarLineScatterCandleBubbleDataProvider chart, IBarLineScatterCandleBubbleDataSet dataSet) {
             float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
-            //返回在图表上仍然可见的最低x-index
+
             float low = chart.getLowestVisibleX();
-            //返回在图表上仍然可见的最高x-index
             float high = chart.getHighestVisibleX();
 
             Entry entryFrom = dataSet.getEntryForXValue(low, Float.NaN, DataSet.Rounding.DOWN);
@@ -91,9 +90,9 @@ public abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
 
             min = entryFrom == null ? 0 : dataSet.getEntryIndex(entryFrom);
             max = entryTo == null ? 0 : dataSet.getEntryIndex(entryTo);
-//我的修改
 //            range = (int) ((max - min) * phaseX);
-            range = dataSet.getEntryCount();
+            //我的修改
+            range = (int) ((dataSet.getEntryCount()-1)* phaseX);
         }
     }
 }

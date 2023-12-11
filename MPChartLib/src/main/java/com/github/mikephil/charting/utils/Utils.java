@@ -770,6 +770,6 @@ public abstract class Utils {
     }
 
     public static int getSDKInt() {
-        return Build.VERSION.SDK_INT;
+        return android.os.Build.VERSION.SDK_INT;
     }
 }

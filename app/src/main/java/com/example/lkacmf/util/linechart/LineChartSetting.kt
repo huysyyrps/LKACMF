@@ -60,11 +60,11 @@ object LineChartSetting {
                 mSavedMatrix.set(mMatrix)
             }
 
-            override fun onChartGestureDoubleStart(event: MotionEvent) {
-                if (event.pointerCount >= 2) {
-                    midPoint(mTouchPointCenter, event)
-                }
-            }
+//            override fun onChartGestureDoubleStart(event: MotionEvent) {
+//                if (event.pointerCount >= 2) {
+//                    midPoint(mTouchPointCenter, event)
+//                }
+//            }
 
             override fun onChartGestureEnd(me: MotionEvent, lastPerformedGesture: ChartTouchListener.ChartGesture) {
                 // 抬起,取消

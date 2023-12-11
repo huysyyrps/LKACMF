@@ -119,58 +119,43 @@ object LineDataRead {
         if (DataManagement.returnBXList().isNotEmpty()) {
             //将数据添加到图表中
             lineChartAnaBX.clear()
-//            for (i in 0 until landBXList.size){
-//                notifyChartData(lineChartAnaBX, landBXList[i].x, landBXList[i].y)
-//                notifyChartData(lineChartAnaBZ, landBZList[i].x, landBZList[i].y)
-//                notifyChartData(lineChartAna, landList[i].x, landList[i].y)
-//            }
-//            var lineBXSet = LineDataSet(landBXList, "BX")
-//            lineBXSet.setDrawValues(false)
-//            lineBXSet.setDrawCircles(false)
-//            lineBXSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-//            lineBXSet.color = MyApplication.context.resources.getColor(R.color.theme_color)
-//            //将数据集添加到数据 ChartData 中
-//            val lineDataBX = LineData(lineBXSet)
-//            lineChartAnaBX.data = lineDataBX
-//            lineChartAnaBX.animateX(2000)
-//            lineChartAnaBX.notifyDataSetChanged()
-//            lineChartAnaBX.invalidate()
+            var lineBXSet = LineDataSet(landBXList, "BX")
+            lineBXSet.setDrawValues(false)
+            lineBXSet.setDrawCircles(false)
+            lineBXSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+            lineBXSet.color = MyApplication.context.resources.getColor(R.color.theme_color)
+            //将数据集添加到数据 ChartData 中
+            val lineDataBX = LineData(lineBXSet)
+            lineChartAnaBX.data = lineDataBX
+            lineChartAnaBX.animateX(2000)
+            lineChartAnaBX.notifyDataSetChanged()
+            lineChartAnaBX.invalidate()
 
+            lineChartAnaBZ.clear()
+            var lineBZSet = LineDataSet(landBZList, "BX")
+            lineBZSet.setDrawValues(false)
+            lineBZSet.setDrawCircles(false)
+            lineBZSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+            lineBZSet.color = MyApplication.context.resources.getColor(R.color.theme_color)
+            //将数据集添加到数据 ChartData 中
+            val lineDataBZ = LineData(lineBZSet)
+            lineChartAnaBZ.data = lineDataBZ
+            lineChartAnaBZ.notifyDataSetChanged()
+            lineChartAnaBZ.invalidate()
+            lineChartAnaBZ.animateX(2000)
 
-            val set1: LineDataSet
-            set1 = LineDataSet(landBXList, "DataSet 1")
-            val dataSets = ArrayList<ILineDataSet>()
-            dataSets.add(set1) // add the data sets
-            val data = LineData(dataSets)
-            lineChartAnaBX.setData(data)
-            lineChartAnaBX.animateXY(2000,2000)
-//
-//
-//            lineChartAnaBZ.clear()
-//            var lineBZSet = LineDataSet(landBZList, "BX")
-//            lineBZSet.setDrawValues(false)
-//            lineBZSet.setDrawCircles(false)
-//            lineBZSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-//            lineBZSet.color = MyApplication.context.resources.getColor(R.color.theme_color)
-//            //将数据集添加到数据 ChartData 中
-//            val lineDataBZ = LineData(lineBZSet)
-//            lineChartAnaBZ.data = lineDataBZ
-//            lineChartAnaBZ.notifyDataSetChanged()
-//            lineChartAnaBZ.invalidate()
-//            lineChartAnaBZ.animateX(2000)
-//
-//            lineChartAna.clear()
-//            var lineSet = LineDataSet(landList, "BX")
-//            lineSet.setDrawValues(false)
-//            lineSet.setDrawCircles(false)
-//            lineSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-//            lineSet.color = MyApplication.context.resources.getColor(R.color.theme_color)
-//            //将数据集添加到数据 ChartData 中
-//            val lineData = LineData(lineSet)
-//            lineChartAna.data = lineData
-//            lineChartAna.notifyDataSetChanged()
-//            lineChartAna.invalidate()
-//            lineChartAna.animateX(2000)
+            lineChartAna.clear()
+            var lineSet = LineDataSet(landList, "BX")
+            lineSet.setDrawValues(false)
+            lineSet.setDrawCircles(false)
+            lineSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+            lineSet.color = MyApplication.context.resources.getColor(R.color.theme_color)
+            //将数据集添加到数据 ChartData 中
+            val lineData = LineData(lineSet)
+            lineChartAna.data = lineData
+            lineChartAna.notifyDataSetChanged()
+            lineChartAna.invalidate()
+            lineChartAna.animateX(2000)
         }
     }
 

@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.LineChart;
@@ -208,6 +207,7 @@ public class LineChartRenderer extends LineRadarRenderer {
             // That's because we need 4 points for a cubic bezier (cubic=4), otherwise we get lines moving and doing weird stuff on the edges of the chart.
             // So in the starting `prev` and `cur`, go -2, -1
             // And in the `lastIndex`, add +1
+
 ////我的修改
 //            final int firstIndex = mXBounds.min + 1;
             final int firstIndex = 1;
@@ -223,10 +223,10 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             // let the spline start
             cubicPath.moveTo(cur.getX(), cur.getY() * phaseY);
+
 //我的修改
 //            for (int j = mXBounds.min + 1; j <= mXBounds.range + mXBounds.min; j++) {
             for (int j = 1; j <= mXBounds.range; j++) {
-
                 prevPrev = prev;
                 prev = cur;
                 cur = nextIndex == j ? next : dataSet.getEntryForIndex(j);
@@ -562,12 +562,12 @@ public class LineChartRenderer extends LineRadarRenderer {
                     valOffset = valOffset / 2;
 
                 mXBounds.set(mChart, dataSet);
+
 //我的修改
 //                float[] positions = trans.generateTransformedValuesLine(dataSet, mAnimator.getPhaseX(), mAnimator
 //                        .getPhaseY(), mXBounds.min, mXBounds.max);
                 float[] positions = trans.generateTransformedValuesLine(dataSet, mAnimator.getPhaseX(), mAnimator
                         .getPhaseY(), 0, mXBounds.range-1);
-//                Log.e("TAG",mXBounds.min+"------"+mXBounds.range+"------"+mXBounds.max);
                 ValueFormatter formatter = dataSet.getValueFormatter();
 
                 MPPointF iconsOffset = MPPointF.getInstance(dataSet.getIconsOffset());
@@ -584,7 +584,8 @@ public class LineChartRenderer extends LineRadarRenderer {
 
                     if (!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y))
                         continue;
-//我的修改
+
+                    //我的修改
 //                    Entry entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min);
                     Entry entry = dataSet.getEntryForIndex(j / 2);
 
@@ -759,7 +760,7 @@ public class LineChartRenderer extends LineRadarRenderer {
     }
 
     /**
-     * Releases the drawing bitmap. This should be called when {@link LineChart#()}.
+     * Releases the drawing bitmap. This should be called when {@link LineChart#onDetachedFromWindow()}.
      */
     public void releaseBitmap() {
         if (mBitmapCanvas != null) {
