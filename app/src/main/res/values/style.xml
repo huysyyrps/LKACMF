@@ -95,4 +95,12 @@
         <item name="android:paddingTop">3dp</item>
         <item name="android:drawablePadding">0dp</item>
     </style>
+
+    <declare-styleable name="DrawerLinlayout">
+        <attr name="drawer_title" format="string" />
+        <attr name="version" format="string" />
+        <attr name="drawer_margin" format="dimension" />
+        <attr name="drawer_image_left" format="reference" />
+        <attr name="drawer_image_right" format="reference" />
+    </declare-styleable>
 </resources>

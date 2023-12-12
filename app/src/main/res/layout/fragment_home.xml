@@ -26,14 +26,14 @@
             <View style="@style/HLine" />
 
             <com.example.lkacmf.view.VerticleTextView
-                    android:id="@+id/vtv_probe_state"
+                    android:id="@+id/vtvProbeState"
                     style="@style/VerticleTextView"
                     android:background="@drawable/verticle_textview" />
 
             <View style="@style/HLine" />
 
             <com.example.lkacmf.view.VerticleTextView
-                    android:id="@+id/vtv_probe"
+                    android:id="@+id/vtvProbe"
                     style="@style/VerticleTextView"
                     android:background="@drawable/verticle_textview"
                     android:focusable="true" />
@@ -41,14 +41,14 @@
             <View style="@style/HLine" />
 
             <com.example.lkacmf.view.VerticleTextView
-                    android:id="@+id/vtv_probe_type"
+                    android:id="@+id/vtvProbeType"
                     style="@style/VerticleTextView"
                     android:background="@drawable/verticle_textview" />
 
             <View style="@style/HLine" />
 
             <com.example.lkacmf.view.VerticleTextView
-                    android:id="@+id/vtv_probe_num"
+                    android:id="@+id/vtvProbeNum"
                     style="@style/VerticleTextView"
                     android:background="@drawable/verticle_textview"
                     android:text="25" />
@@ -56,7 +56,7 @@
             <View style="@style/HLine" />
 
             <com.example.lkacmf.view.VerticleTextView
-                    android:id="@+id/vtv_setting"
+                    android:id="@+id/vtvSetting"
                     style="@style/VerticleTextView"
                     android:background="@drawable/verticle_textview"
                     android:clickable="true"

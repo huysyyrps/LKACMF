@@ -56,4 +56,20 @@
     <string name="material_seam">焊缝</string>
     <string name="material_corner">拐角</string>
     <string name="write_thinkness">请输入图层厚度</string>
+
+    <string name="image_list">图片列表</string>
+    <string name="version_check">版本检测</string>
+    <string name="current_version">当前版本</string>
+    <string name="file_list">文件列表</string>
+    <string name="contact_comp">联系我们</string>
+    <string name="exit_project">退出程序</string>
+    <string name="last_version">已是最新版本</string>
+    <string name="no_data">暂无数据</string>
+    <string name="delect_sure">您确定要删除此项数据吗？</string>
+    <string name="phone_title">未检测到IC卡，请更换其他设备拨打 0537-2638599</string>
+    <string name="version_checking">版本检测中...</string>
+    <string name="handler_data">数据请求中</string>
+    <string name="version_data_error">版本信息请求失败</string>
+    <string name="have_new_version">发现新版本</string>
+    <string name="net_error">网络异常</string>
 </resources>

@@ -1,6 +1,5 @@
 package com.example.lkacmf.fragment
 
-import android.media.projection.MediaProjectionManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +9,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.lkacmf.R
+import com.example.lkacmf.databinding.FragmentHomeBinding
 import com.example.lkacmf.serialport.SerialPortConstant
 import com.example.lkacmf.serialport.SerialPortDataMake
 import com.example.lkacmf.util.ActivationCode
@@ -35,34 +35,33 @@ class HomeFragment : Fragment(), View.OnClickListener {
     var index:Int = 0
     val timer = Timer()
     var activationStaing = false
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
     private lateinit var mSerialPortHelper: SerialPortHelper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onStart() {
         super.onStart()
-        vtv_setting.setOnClickListener(this)
-        btnStart.setOnClickListener(this)
-        btnSuspend.setOnClickListener(this)
-        btnStop.setOnClickListener(this)
-        btnRefresh.setOnClickListener(this)
-        btnPunctation.setOnClickListener(this)
-        btnDirection.setOnClickListener(this)
-        btnThinkness.setOnClickListener(this)
-        btnMaterial.setOnClickListener(this)
+        binding.vtvSetting.setOnClickListener(this)
+        binding.btnStart.setOnClickListener(this)
+        binding.btnSuspend.setOnClickListener(this)
+        binding.btnStop.setOnClickListener(this)
+        binding.btnRefresh.setOnClickListener(this)
+        binding.btnPunctation.setOnClickListener(this)
+        binding.btnDirection.setOnClickListener(this)
+        binding.btnThinkness.setOnClickListener(this)
+        binding.btnMaterial.setOnClickListener(this)
 
         LineChartSetting.SettingLineChart(requireActivity(), lineChartBX, true)
-        LineChartSetting.SettingLineChart(requireActivity(), lineChartBZ, true)
+        LineChartSetting.SettingLineChart(requireActivity(), lineChartBZ, false)
         LineChartSetting.SettingLineChart(requireActivity(), lineChart, true)
         SerialPortHelperHandler()
     }
@@ -132,42 +131,42 @@ class HomeFragment : Fragment(), View.OnClickListener {
 //                            tvQuantity.text = BinaryChange.hexToInt(receivedData.subSequence(6, 8) as String).toString()
                             when(receivedData.subSequence(8, 10)){
                                 "00"-> {
-                                    btnStop.isChecked = true
+                                    binding.btnStop.isChecked = true
                                 }
                                 "01"-> {
-                                    btnSuspend.visibility = View.VISIBLE
-                                    btnStart.visibility = View.GONE
-                                    btnSuspend.isChecked = true
+                                    binding.btnSuspend.visibility = View.VISIBLE
+                                    binding.btnStart.visibility = View.GONE
+                                    binding.btnSuspend.isChecked = true
                                 }
                                 "02"-> {
-                                    btnSuspend.visibility = View.GONE
-                                    btnStart.visibility = View.VISIBLE
-                                    btnStart.isChecked = true
+                                    binding.btnSuspend.visibility = View.GONE
+                                    binding.btnStart.visibility = View.VISIBLE
+                                    binding.btnStart.isChecked = true
                                 }
                                 "03"-> {
-                                    btnRefresh.isChecked = true
+                                    binding.btnRefresh.isChecked = true
                                 }
                             }
                             when(receivedData.subSequence(10, 12)){
-                                "00"-> vtv_probe_state.text = "未连接"
-                                "01"-> vtv_probe_state.text = "已连接"
-                                "02"-> vtv_probe_state.text = "非法探头"
+                                "00"-> binding.vtvProbeState.text = "未连接"
+                                "01"-> binding.vtvProbeState.text = "已连接"
+                                "02"-> binding.vtvProbeState.text = "非法探头"
                             }
                             when(receivedData.subSequence(12, 14)){
-                                "01"-> vtv_probe.text = "常温探头"
-                                "02"-> vtv_probe.text = "高温探头"
-                                "03"-> vtv_probe.text = "水下探头"
-                                "04"-> vtv_probe.text = "旋转探头"
+                                "01"-> binding.vtvProbe.text = "常温探头"
+                                "02"-> binding.vtvProbe.text = "高温探头"
+                                "03"-> binding.vtvProbe.text = "水下探头"
+                                "04"-> binding.vtvProbe.text = "旋转探头"
                             }
                             when(receivedData.subSequence(14, 16)){
-                                "01"-> vtv_probe_type.text = "标准探头"
-                                "02"-> vtv_probe_type.text = "笔试探头"
-                                "03"-> vtv_probe_type.text = "X/Z多阵列探头"
-                                "04"-> vtv_probe_type.text = "Z多阵列探头"
-                                "05"-> vtv_probe_type.text = "X/Z柔性探头"
-                                "06"-> vtv_probe_type.text = "Z柔性探头"
+                                "01"-> binding.vtvProbeType.text = "标准探头"
+                                "02"-> binding.vtvProbeType.text = "笔试探头"
+                                "03"-> binding.vtvProbeType.text = "X/Z多阵列探头"
+                                "04"-> binding.vtvProbeType.text = "Z多阵列探头"
+                                "05"-> binding.vtvProbeType.text = "X/Z柔性探头"
+                                "06"-> binding.vtvProbeType.text = "Z柔性探头"
                             }
-                            vtv_probe_num.text = BinaryChange.hexToInt(receivedData.subSequence(16, 18) as String).toString()
+                            binding.vtvProbeNum.text = BinaryChange.hexToInt(receivedData.subSequence(16, 18) as String).toString()
                         }
                     }
                     //设置
@@ -192,7 +191,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.vtv_setting->{
+            R.id.vtvSetting->{
                 DialogUtil.settingDialog(requireActivity(), object:DialogSureCallBack{
                     @RequiresApi(Build.VERSION_CODES.O)
                     override fun sureCallBack(data: String) {
@@ -280,17 +279,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
                 })
             }
-            //回放
-            R.id.btnBackPlay->{
-                if (mSerialPortHelper.isOpen) {
-                    SerialPortDataMake.operateData("00")
-                }
-                LineDataRead.backPlay(lineChartBX, lineChartBZ,lineChart)
-            }
         }
     }
     override fun onDestroy() {
         super.onDestroy()
-        SerialPortConstant.close()
+        _binding = null
     }
 }

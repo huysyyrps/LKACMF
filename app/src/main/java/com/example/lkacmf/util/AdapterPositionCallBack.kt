@@ -1,4 +1,4 @@
-package com.example.lkacmf.util.popup
+package com.example.lkacmf.util
 
 interface AdapterPositionCallBack {
     fun backPosition(index:Int)

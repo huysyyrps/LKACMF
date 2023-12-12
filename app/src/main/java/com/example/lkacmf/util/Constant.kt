@@ -9,4 +9,10 @@ object Constant {
     const val DATASETTINGHEADER = "A1"
     const val SETTINGID = "02"
     const val OPERATEID = "00"
+
+    const val TIMEOUT = 3000L
+
+    const val SAVE_IMAGE_PATH = "LKACMFIMAGE"
+    const val SAVE_FORM_PATH = "LKACMFFORM"
+    const val COMPPHONE = "0537-2638599"//闸门
 }

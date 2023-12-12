@@ -6,25 +6,33 @@
         <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/drawable-hdpi/ic_launcher_foreground.xml" value="0.238" />
         <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/drawable/cloors.xml" value="0.2675" />
         <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/drawable/linelayout_backthemecolor_radion.xml" value="0.2105" />
+        <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/drawable/scanning.xml" value="0.261" />
         <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/drawable/shape_tab_bg.xml" value="0.2675" />
         <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/drawable/tabitem.xml" value="0.2675" />
         <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/drawable/verticle_textview.xml" value="0.2675" />
         <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/drawable/verticle_textview1.xml" value="0.2675" />
         <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/drawable/verticle_textview_select.xml" value="0.1835" />
+        <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/activity_image_list.xml" value="0.31875" />
         <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/activity_linechart.xml" value="0.28541666666666665" />
         <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/activity_main.xml" value="0.3536458333333333" />
         <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/activity_qr.xml" value="0.18541666666666667" />
+        <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/adapter_imagelist.xml" value="0.26510416666666664" />
         <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/custom_bubble_attach_popup.xml" value="0.203125" />
+        <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/dialog_delect_image.xml" value="0.31875" />
         <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/dialog_empower.xml" value="0.18541666666666667" />
         <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/dialog_item_header.xml" value="0.3380208333333333" />
         <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/dialog_no_activation.xml" value="0.46789989118607184" />
+        <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/dialog_phone.xml" value="0.31875" />
         <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/dialog_setting.xml" value="0.3536458333333333" />
         <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/dialog_thinkness.xml" value="0.203125" />
+        <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/drawer_item.xml" value="0.22864583333333333" />
         <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/fragment_analysts.xml" value="0.21979166666666666" />
         <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/fragment_home.xml" value="0.3151041666666667" />
         <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/line_marker.xml" value="0.25364583333333335" />
         <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/popup_item.xml" value="0.203125" />
+        <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/progress_dialog.xml" value="0.26510416666666664" />
         <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/verlinlayout_item.xml" value="0.3536458333333333" />
+        <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/layout/view_update_dialog_custom.xml" value="0.19895833333333332" />
         <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.238" />
         <entry key="..\:/LuKe-item/LKACMF/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.225" />
       </map>

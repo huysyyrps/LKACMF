@@ -1,6 +1,5 @@
 package com.example.lkacmf.util.popup
 
-import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lkacmf.R
- class PopupAdapter(var dataList: ArrayList<PopupItem>, private val adapterPositionCallBack:AdapterPositionCallBack): RecyclerView.Adapter<PopupAdapter.ViewHolder>() {
+import com.example.lkacmf.util.AdapterPositionCallBack
+
+class PopupAdapter(var dataList: ArrayList<PopupItem>, private val adapterPositionCallBack: AdapterPositionCallBack): RecyclerView.Adapter<PopupAdapter.ViewHolder>() {
     //在内部类里面获取到item里面的组件
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val popupItem: LinearLayout = view.findViewById(R.id.popupItem)
