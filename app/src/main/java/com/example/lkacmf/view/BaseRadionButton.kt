@@ -15,7 +15,7 @@ class BaseRadionButton : androidx.appcompat.widget.AppCompatRadioButton {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseRadioButton) //获取我们定义的属性
 
         drawable = typedArray.getDrawable(R.styleable.BaseRadioButton_drawableTop)
-        drawable?.setBounds(0, 3, 50, 53)
+        drawable?.setBounds(0, -3, 50, 47)
         setCompoundDrawables(null, drawable, null, null)
     }
 

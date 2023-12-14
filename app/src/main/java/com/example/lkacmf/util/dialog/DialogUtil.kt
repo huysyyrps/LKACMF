@@ -56,7 +56,7 @@ object DialogUtil {
     /**
      * 设备授权码
      */
-    fun empowerDialog(activity: MainActivity, qrCode: Bitmap, callBack: DialogSureCallBack): MaterialDialog {
+    fun empowerDialog(activity: Activity, code:String, callBack: DialogSureCallBack): MaterialDialog {
         dialog = MaterialDialog(activity)
             .cancelable(false)
             .show {
@@ -68,9 +68,10 @@ object DialogUtil {
                 )
                 cornerRadius(16f)
             }
-        dialog.ivQr.setImageBitmap(qrCode)
+        dialog.tvEmpowerCode.text = code
         dialog.btnEmPowerCancel.setOnClickListener {
             dialog.dismiss()
+            callBack.sureCallBack("")
         }
         dialog.btnEmPowerSure.setOnClickListener {
             callBack.sureCallBack("")
@@ -105,7 +106,7 @@ object DialogUtil {
     }
 
     /**
-     * 设备授权码
+     * 设备设置
      */
     fun settingDialog(activity: Activity, callBack: DialogSureCallBack): MaterialDialog {
         dialog = MaterialDialog(activity)
@@ -166,7 +167,7 @@ object DialogUtil {
                 1 -> BaseSharedPreferences.put("currentWave", "01")
                 2 -> BaseSharedPreferences.put("currentWave", "02")
             }
-            BaseSharedPreferences.put("probeNumb",dialog.tvProbeNumb.text)
+            BaseSharedPreferences.put("probeNumb",BinaryChange.tenToHex((dialog.tvProbeNumb.text as String).toInt()))
             callBack.sureCallBack("")
             dialog.dismiss()
         }

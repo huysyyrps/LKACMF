@@ -15,22 +15,18 @@ object ActivationCode {
             val hexA = deviceId.substring(0, 8)
             val hexB = deviceId.substring(8, 16)
             val hexC = deviceId.substring(16, 24)
-            LogUtil.e("TAG", "$hexA---$hexB---$hexC")
 
             val floatA = Float.intBitsToFloat(Integer.valueOf(hexA, 16))
             val floatB = Float.intBitsToFloat(Integer.valueOf(hexB, 16))
             val floatC = Float.intBitsToFloat(Integer.valueOf(hexC, 16))
-            LogUtil.e("TAG", "$floatA---$floatB---$floatC")
 
             val countA = (floatA + floatB) / floatC.toFloat()
             val countB = (floatA + floatC) / floatB.toFloat()
 //            val countC = (intB + intC) / intA.toFloat()
-            LogUtil.e("TAG", "$countA---$countB")
 
             val hexThickenA: String = StringToHex(countA)
             val hexThickenB: String = StringToHex(countB)
 //            val hexThickenC: String = StringToHex(countC)
-            LogUtil.e("TAG", "$hexThickenA---$hexThickenB")
             return hexThickenA + hexThickenB
         }
         return ""

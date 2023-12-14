@@ -11,9 +11,12 @@ import me.f1reking.serialportlib.SerialPortHelper
 import me.f1reking.serialportlib.listener.IOpenSerialPortListener
 import me.f1reking.serialportlib.listener.Status
 import java.io.File
+import java.util.*
+import kotlin.concurrent.scheduleAtFixedRate
 
 
 object SerialPortConstant {
+    val timer = Timer()
     private val mSerialPortHelper: SerialPortHelper by lazy { SerialPortHelper() }
     fun getSerialPortHelper(activity: Activity):SerialPortHelper{
         mSerialPortHelper.port = Constant.PORT
@@ -22,7 +25,11 @@ object SerialPortConstant {
             override fun onSuccess(device: File) {
                 activity.runOnUiThread {
                     LogUtil.e("SerialPortConstant",device.path + " :串口打开成功")
-                    mSerialPortHelper.sendTxt(SerialPortDataMake.haveActivationData())
+//                    mSerialPortHelper.sendTxt(SerialPortDataMake.haveActivationData())
+                    timer.scheduleAtFixedRate(0, 1000) {
+                        mSerialPortHelper.sendTxt(SerialPortDataMake.haveActivationData())
+//                mSerialPortHelper.sendTxt("a000000000000000a0")
+                    }
                 }
             }
             override fun onFail(device: File, status: Status?) {

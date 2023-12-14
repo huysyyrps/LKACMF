@@ -10,13 +10,12 @@ import com.example.lkacmf.serialport.DataManagement.landBXList
 import com.example.lkacmf.serialport.DataManagement.landBZList
 import com.example.lkacmf.serialport.DataManagement.landList
 import com.example.lkacmf.util.BinaryChange
-import com.example.lkacmf.util.LogUtil
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.LimitLine
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import kotlinx.android.synthetic.main.fragment_analysts.*
 
 object LineDataRead {
     var deviceCode = ""
@@ -38,7 +37,7 @@ object LineDataRead {
     /**
      * 测量信息
      */
-    fun readMeterData(readData: String, lineChartBX: LineChart, lineChartBZ: LineChart, lineChart: LineChart) {
+    fun readMeterData(readData: String, lineChartBX: LineChart, lineChartBZ: LineChart, lineChart: LineChart, punctationState: Boolean) {
         var xData = BinaryChange.hexTofloat(readData.substring(0, 8))
         var yBXData = BinaryChange.hexTofloat(readData.substring(8, 16))
         var yBZData = BinaryChange.hexTofloat(readData.substring(16, 24))
@@ -49,11 +48,20 @@ object LineDataRead {
         DataManagement.addBZEntry(xData, yBZData)
         DataManagement.addEntry(yBXData, yBZData)
 
-
+        if (punctationState){
+            val ll1 = LimitLine((landBXList[landBXList.size-1].x), "")
+            ll1.lineWidth = 1f
+            ll1.enableDashedLine(10f, 2f, 0f)
+//            ll1.labelPosition = LimitLine.LimitLabelPosition.RIGHT_TOP
+//            ll1.textSize = 10f
+            val bXXAxis: XAxis = lineChartBX.xAxis
+            bXXAxis.addLimitLine(ll1)
+            val bZXAxis: XAxis = lineChartBZ.xAxis
+            bZXAxis.addLimitLine(ll1)
+        }
         notifyChartData(lineChartBX, xData, yBXData)
         notifyChartData(lineChartBZ, xData, yBZData)
         notifyChartData(lineChart, yBXData, yBZData)
-        LogUtil.e("TAG", "${DataManagement.returnBXList().size}----${DataManagement.returnBZList().size}----${DataManagement.returnList().size}")
         oldXData = xData
     }
 
@@ -167,14 +175,14 @@ object LineDataRead {
         landBXList.clear()
         landBZList.clear()
         landList.clear()
-//        lineChartBX.notifyDataSetChanged()
-//        lineChartBX.invalidate()
-//        lineChartBZ.notifyDataSetChanged()
-//        lineChartBZ.invalidate()
-//        lineChart.notifyDataSetChanged()
-//        lineChart.invalidate()
         lineChartBX.clear()
         lineChartBZ.clear()
         lineChart.clear()
+        lineChartBX.notifyDataSetChanged()
+        lineChartBX.invalidate()
+        lineChartBZ.notifyDataSetChanged()
+        lineChartBZ.invalidate()
+        lineChart.notifyDataSetChanged()
+        lineChart.invalidate()
     }
 }

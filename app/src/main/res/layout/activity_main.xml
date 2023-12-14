@@ -40,23 +40,100 @@
                 <com.google.android.material.tabs.TabItem
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:text="@string/main"/>
+                        android:text="@string/main" />
+
                 <com.google.android.material.tabs.TabItem
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:text="@string/analysts"/>
+                        android:text="@string/analysts" />
+
                 <com.google.android.material.tabs.TabItem
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:text="@string/user_info"/>
+                        android:text="@string/user_info" />
             </com.google.android.material.tabs.TabLayout>
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="电量：" />
+
+                <TextView
+                        android:id="@+id/tvQuantity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="电量：" />
+            </LinearLayout>
         </LinearLayout>
 
-
-        <FrameLayout
-                android:id="@+id/frameLayout"
+        <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+            <LinearLayout
+                    android:layout_width="45dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                <com.example.lkacmf.view.VerticleTextView
+                        android:id="@+id/vtv_connection_state"
+                        style="@style/VerticleTextView"
+                        android:background="@drawable/verticle_textview" />
+
+                <View style="@style/HLine" />
+
+                <com.example.lkacmf.view.VerticleTextView
+                        android:id="@+id/vtvProbeState"
+                        style="@style/VerticleTextView"
+                        android:background="@drawable/verticle_textview" />
+
+                <View style="@style/HLine" />
+
+                <com.example.lkacmf.view.VerticleTextView
+                        android:id="@+id/vtvProbe"
+                        style="@style/VerticleTextView"
+                        android:background="@drawable/verticle_textview"
+                        android:focusable="true" />
+
+                <View style="@style/HLine" />
+
+                <com.example.lkacmf.view.VerticleTextView
+                        android:id="@+id/vtvProbeType"
+                        style="@style/VerticleTextView"
+                        android:background="@drawable/verticle_textview" />
+
+                <View style="@style/HLine" />
+
+                <com.example.lkacmf.view.VerticleTextView
+                        android:id="@+id/vtvProbeNum"
+                        style="@style/VerticleTextView"
+                        android:background="@drawable/verticle_textview"
+                        android:text="25" />
+
+                <View style="@style/HLine" />
+
+                <com.example.lkacmf.view.VerticleTextView
+                        android:id="@+id/vtvSetting"
+                        style="@style/VerticleTextView"
+                        android:background="@drawable/verticle_textview"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:text="@string/setting" />
+
+            </LinearLayout>
+            <View style="@style/Vine" />
+            <FrameLayout
+                    android:id="@+id/frameLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout

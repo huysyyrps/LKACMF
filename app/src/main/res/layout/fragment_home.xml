@@ -14,60 +14,6 @@
             android:orientation="horizontal">
 
         <LinearLayout
-                android:layout_width="45dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-            <com.example.lkacmf.view.VerticleTextView
-                    android:id="@+id/vtv_connection_state"
-                    style="@style/VerticleTextView"
-                    android:background="@drawable/verticle_textview" />
-
-            <View style="@style/HLine" />
-
-            <com.example.lkacmf.view.VerticleTextView
-                    android:id="@+id/vtvProbeState"
-                    style="@style/VerticleTextView"
-                    android:background="@drawable/verticle_textview" />
-
-            <View style="@style/HLine" />
-
-            <com.example.lkacmf.view.VerticleTextView
-                    android:id="@+id/vtvProbe"
-                    style="@style/VerticleTextView"
-                    android:background="@drawable/verticle_textview"
-                    android:focusable="true" />
-
-            <View style="@style/HLine" />
-
-            <com.example.lkacmf.view.VerticleTextView
-                    android:id="@+id/vtvProbeType"
-                    style="@style/VerticleTextView"
-                    android:background="@drawable/verticle_textview" />
-
-            <View style="@style/HLine" />
-
-            <com.example.lkacmf.view.VerticleTextView
-                    android:id="@+id/vtvProbeNum"
-                    style="@style/VerticleTextView"
-                    android:background="@drawable/verticle_textview"
-                    android:text="25" />
-
-            <View style="@style/HLine" />
-
-            <com.example.lkacmf.view.VerticleTextView
-                    android:id="@+id/vtvSetting"
-                    style="@style/VerticleTextView"
-                    android:background="@drawable/verticle_textview"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:text="@string/setting" />
-
-        </LinearLayout>
-
-        <View style="@style/Vine" />
-
-        <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -75,7 +21,7 @@
 
             <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="50dp"
                     android:layout_marginRight="2dp"
                     android:layout_marginBottom="1dp"
                     android:background="@color/theme_back_color1"
@@ -93,7 +39,12 @@
                             android:layout_height="match_parent"
                             android:layout_weight="3"
                             android:orientation="horizontal">
-
+                        <com.example.lkacmf.view.BaseRadionButton
+                                android:id="@+id/btnStop"
+                                style="@style/BaseRadioButton"
+                                android:background="@drawable/verticle_textview_select"
+                                android:text="@string/stop"
+                                app:drawableTop="@drawable/ic_stop" />
                         <com.example.lkacmf.view.BaseRadionButton
                                 android:id="@+id/btnStart"
                                 style="@style/BaseRadioButton"
@@ -108,13 +59,6 @@
                                 android:text="@string/suspend"
                                 android:visibility="gone"
                                 app:drawableTop="@drawable/ic_suspend" />
-
-                        <com.example.lkacmf.view.BaseRadionButton
-                                android:id="@+id/btnStop"
-                                style="@style/BaseRadioButton"
-                                android:background="@drawable/verticle_textview_select"
-                                android:text="@string/stop"
-                                app:drawableTop="@drawable/ic_stop" />
 
                         <com.example.lkacmf.view.BaseRadionButton
                                 android:id="@+id/btnRefresh"

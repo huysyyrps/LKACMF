@@ -30,6 +30,16 @@ object SerialPortDataMake {
     }
 
     /**
+     * 授权
+     */
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun empowerData(empowerCode:String):String{
+        var data = "${Constant.ACTIVATIONHEADER}${Constant.SETTINGID}${empowerCode}"
+        var checksum = BinaryChange.proofData(data)
+        return "$data$checksum"
+    }
+
+    /**
      * 设置
      */
     @RequiresApi(Build.VERSION_CODES.O)

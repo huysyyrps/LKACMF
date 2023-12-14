@@ -4,7 +4,7 @@ object BinaryChange {
     /**
      * 10进制转16进制
      */
-    fun tenToHex(data:Int) = Integer.toHexString(data)!!
+    fun tenToHex(data:Int) = addZeroForNum(Integer.toHexString(data),2)
 
     /**
      * 16进制转int
@@ -71,7 +71,7 @@ object BinaryChange {
     /**
      * 高位补零
      */
-    fun addZeroForNum(str: String, strLength: Int): String? {
+    fun addZeroForNum(str: String, strLength: Int): String {
         var str = str
         var strLen = str.length
         if (strLen < strLength) {

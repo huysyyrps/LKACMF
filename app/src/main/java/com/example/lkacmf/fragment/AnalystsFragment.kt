@@ -30,11 +30,13 @@ class AnalystsFragment : Fragment(), View.OnClickListener {
 
     override fun onStart() {
         super.onStart()
-        LineChartSetting.SettingLineChart(requireActivity(), lineChartAnaBX, true)
-        LineChartSetting.SettingLineChart(requireActivity(), lineChartAnaBZ, false)
-        LineChartSetting.SettingLineChart(requireActivity(), lineChartAna, true)
-        LineDataRead.backPlay(lineChartAnaBX, lineChartAnaBZ, lineChartAna)
+        LineChartSetting.SettingLineChart(requireActivity(), binding.lineChartAnaBX, showX = true, scale = true)
+        LineChartSetting.SettingLineChart(requireActivity(), binding.lineChartAnaBZ, showX = true, scale = true)
+        LineChartSetting.SettingLineChart(requireActivity(), binding.lineChartAna, showX = true, scale = true)
+        LineDataRead.backPlay(binding.lineChartAnaBX, binding.lineChartAnaBZ, binding.lineChartAna)
         binding.btnBackPlay.setOnClickListener(this)
+        binding.btnReset.setOnClickListener(this)
+//        binding.lineChartAnaBX.saveToGallery("mychart.jpg",85)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -43,7 +45,21 @@ class AnalystsFragment : Fragment(), View.OnClickListener {
             R.id.btnBackPlay -> {
                 var mSerialPortHelper = SerialPortConstant.getMSerialPortHelper(requireActivity())
                 SerialPortDataMake.operateData("00")
-                LineDataRead.backPlay(lineChartAnaBX, lineChartAnaBZ, lineChartAna)
+                LineDataRead.backPlay(binding.lineChartAnaBX, binding.lineChartAnaBZ, binding.lineChartAna)
+            }
+            R.id.btnReset->{
+                binding.lineChartAnaBX.fitScreen()
+                binding.lineChartAnaBX.invalidate()
+                binding.lineChartAnaBZ.fitScreen()
+                binding.lineChartAnaBZ.invalidate()
+                binding.lineChartAna.fitScreen()
+                binding.lineChartAna.invalidate()
+                LineChartSetting.mMatrix.let {
+                    it.reset()
+                }
+                LineChartSetting.mSavedMatrix.let {
+                    it.reset()
+                }
             }
         }
     }
