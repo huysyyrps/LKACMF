@@ -1,6 +1,8 @@
 package com.example.lkacmf.util
 
 object Constant {
+    const val TAG_ONE = 1
+    const val TAG_TWO = 2
     const val PORT = "/dev/ttyS8"
     const val ACTIVATIONHEADER = "A0"
     const val DATAHAVEACTIVATIONINFO = "00"

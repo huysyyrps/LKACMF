@@ -3,6 +3,8 @@ package com.example.lkacmf
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import android.content.Intent
+import com.example.lkacmf.util.mediaprojection.MediaService
 
 
 class MyApplication : Application() {
@@ -13,7 +15,7 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         context = applicationContext
-        //软件更新库
-//        UpdateAppUtils.init(context)
+        //截图service
+        startService(Intent(this, MediaService::class.java))
     }
 }

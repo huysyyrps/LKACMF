@@ -57,6 +57,10 @@ object LineChartSetting {
             override fun onChartGestureStart(event: MotionEvent, lastPerformedGesture: ChartTouchListener.ChartGesture) {
                 // 按下
                 LogUtil.e("TAG", "按下")
+                event.actionIndex
+                event.x
+                event.size
+                event.rawX
                 mSavedMatrix.set(mMatrix)
             }
 
@@ -154,6 +158,11 @@ object LineChartSetting {
                         activity.lineChartBX.viewPortHandler.refresh(mMatrix, activity.lineChartBX, true)
                     }
                 }
+            }
+
+            override fun onChartMove(me: MotionEvent?) {
+                LogUtil.e("TAG", "滑动")
+                LogUtil.e("TAG", "${me?.x}-----${me?.y}")
             }
         }
 

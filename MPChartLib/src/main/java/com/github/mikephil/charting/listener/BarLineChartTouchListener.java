@@ -181,75 +181,51 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                     if (mChart.isScaleXEnabled() || mChart.isScaleYEnabled())
                         performZoom(event);
 
-                } else if (mTouchMode == NONE
-                        && Math.abs(distance(event.getX(), mTouchStartPoint.x, event.getY(),
-                        mTouchStartPoint.y)) > mDragTriggerDist) {
+                } else if (mTouchMode == NONE && Math.abs(distance(event.getX(), mTouchStartPoint.x, event.getY(), mTouchStartPoint.y)) > mDragTriggerDist) {
 
                     if (mChart.isDragEnabled()) {
-
-                        boolean shouldPan = !mChart.isFullyZoomedOut() ||
-                                !mChart.hasNoDragOffset();
-
+                        boolean shouldPan = !mChart.isFullyZoomedOut() || !mChart.hasNoDragOffset();
                         if (shouldPan) {
-
                             float distanceX = Math.abs(event.getX() - mTouchStartPoint.x);
                             float distanceY = Math.abs(event.getY() - mTouchStartPoint.y);
-
                             // Disable dragging in a direction that's disallowed
-                            if ((mChart.isDragXEnabled() || distanceY >= distanceX) &&
-                                    (mChart.isDragYEnabled() || distanceY <= distanceX)) {
-
+                            if ((mChart.isDragXEnabled() || distanceY >= distanceX) && (mChart.isDragYEnabled() || distanceY <= distanceX)) {
                                 mLastGesture = ChartGesture.DRAG;
                                 mTouchMode = DRAG;
                             }
-
+                            moveAction(event);
                         } else {
-
-                            if (mChart.isHighlightPerDragEnabled()) {
-                                mLastGesture = ChartGesture.DRAG;
-
+                            if (mChart.isHighlightPerDragEnabled()) { mLastGesture = ChartGesture.DRAG;
                                 if (mChart.isHighlightPerDragEnabled())
                                     performHighlightDrag(event);
+                                moveAction(event);
                             }
                         }
-
                     }
-
                 }
                 break;
 
             case MotionEvent.ACTION_UP:
-
                 final VelocityTracker velocityTracker = mVelocityTracker;
                 final int pointerId = event.getPointerId(0);
                 velocityTracker.computeCurrentVelocity(1000, Utils.getMaximumFlingVelocity());
                 final float velocityY = velocityTracker.getYVelocity(pointerId);
                 final float velocityX = velocityTracker.getXVelocity(pointerId);
 
-                if (Math.abs(velocityX) > Utils.getMinimumFlingVelocity() ||
-                        Math.abs(velocityY) > Utils.getMinimumFlingVelocity()) {
-
+                if (Math.abs(velocityX) > Utils.getMinimumFlingVelocity() || Math.abs(velocityY) > Utils.getMinimumFlingVelocity()) {
                     if (mTouchMode == DRAG && mChart.isDragDecelerationEnabled()) {
-
                         stopDeceleration();
-
                         mDecelerationLastTime = AnimationUtils.currentAnimationTimeMillis();
-
                         mDecelerationCurrentPoint.x = event.getX();
                         mDecelerationCurrentPoint.y = event.getY();
-
                         mDecelerationVelocity.x = velocityX;
                         mDecelerationVelocity.y = velocityY;
-
                         Utils.postInvalidateOnAnimation(mChart); // This causes computeScroll to fire, recommended for this by
                         // Google
                     }
                 }
 
-                if (mTouchMode == X_ZOOM ||
-                        mTouchMode == Y_ZOOM ||
-                        mTouchMode == PINCH_ZOOM ||
-                        mTouchMode == POST_ZOOM) {
+                if (mTouchMode == X_ZOOM || mTouchMode == Y_ZOOM || mTouchMode == PINCH_ZOOM || mTouchMode == POST_ZOOM) {
 
                     // Range might have changed, which means that Y-axis labels
                     // could have changed in size, affecting Y-axis size.
@@ -271,12 +247,10 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                 break;
             case MotionEvent.ACTION_POINTER_UP:
                 Utils.velocityTrackerPointerUpCleanUpIfNecessary(event, mVelocityTracker);
-
                 mTouchMode = POST_ZOOM;
                 break;
 
             case MotionEvent.ACTION_CANCEL:
-
                 mTouchMode = NONE;
                 endAction(event);
                 break;

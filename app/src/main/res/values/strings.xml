@@ -72,4 +72,6 @@
     <string name="version_data_error">版本信息请求失败</string>
     <string name="have_new_version">发现新版本</string>
     <string name="net_error">网络异常</string>
+    <string name="save_success">保存成功</string>
+    <string name="save_fail">保存失败</string>
 </resources>

@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.SeekBar
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.example.lkacmf.R
@@ -83,7 +84,7 @@ object DialogUtil {
     权限申请
      */
     @RequiresApi(Build.VERSION_CODES.S)
-    fun requestPermission(activity: AppCompatActivity, requestList: ArrayList<String>): Boolean {
+    fun requestPermission(activity: FragmentActivity, requestList: ArrayList<String>): Boolean {
         var permissionTag = false
         if (requestList.isNotEmpty()) {
             PermissionX.init(activity)

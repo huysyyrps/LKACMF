@@ -23,6 +23,11 @@
             android:supportsRtl="true"
             android:theme="@style/NoAction"
             android:usesCleartextTraffic="true">
+        <service
+                android:name=".util.mediaprojection.MediaService"
+                android:enabled="true"
+                android:exported="true"
+                android:foregroundServiceType="mediaProjection" />
         <activity
                 android:name=".activity.ImageListActivity"
                 android:exported="false" />
