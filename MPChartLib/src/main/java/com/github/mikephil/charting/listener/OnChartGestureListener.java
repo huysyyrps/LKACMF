@@ -17,6 +17,7 @@ public interface OnChartGestureListener {
      */
     void onChartGestureStart(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture);
 
+    void onChartGestureDoubleStart(MotionEvent me);
     /**
      * Callbacks when a touch-gesture has ended on the chart (ACTION_UP, ACTION_CANCEL)
      *

@@ -5,12 +5,12 @@ import android.graphics.Matrix
 import android.view.MotionEvent
 import com.example.lkacmf.MyApplication
 import com.example.lkacmf.R
-import com.example.lkacmf.activity.MainActivity
-import com.example.lkacmf.fragment.HomeFragment
 import com.example.lkacmf.util.LogUtil
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.listener.ChartTouchListener
 import com.github.mikephil.charting.listener.OnChartGestureListener
 import com.github.mikephil.charting.utils.MPPointF
@@ -57,22 +57,22 @@ object LineChartSetting {
             override fun onChartGestureStart(event: MotionEvent, lastPerformedGesture: ChartTouchListener.ChartGesture) {
                 // 按下
                 LogUtil.e("TAG", "按下")
-                event.actionIndex
-                event.x
-                event.size
-                event.rawX
+                val h: Highlight = linechar.getHighlightByTouchPoint(event.x, event.y)
+                LogUtil.e("LineChartSetting","$h")
                 mSavedMatrix.set(mMatrix)
             }
 
-//            override fun onChartGestureDoubleStart(event: MotionEvent) {
-//                if (event.pointerCount >= 2) {
-//                    midPoint(mTouchPointCenter, event)
-//                }
-//            }
+            override fun onChartGestureDoubleStart(event: MotionEvent) {
+                if (event.pointerCount >= 2) {
+                    midPoint(mTouchPointCenter, event)
+                }
+            }
 
-            override fun onChartGestureEnd(me: MotionEvent, lastPerformedGesture: ChartTouchListener.ChartGesture) {
+            override fun onChartGestureEnd(event: MotionEvent, lastPerformedGesture: ChartTouchListener.ChartGesture) {
                 // 抬起,取消
                 LogUtil.e("TAG", "抬起")
+                val h: Highlight = linechar.getHighlightByTouchPoint(event.x, event.y)
+                LogUtil.e("LineChartEnd","$h")
             }
 
             override fun onChartLongPressed(me: MotionEvent) {

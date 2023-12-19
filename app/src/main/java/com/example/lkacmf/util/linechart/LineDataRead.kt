@@ -10,6 +10,7 @@ import com.example.lkacmf.serialport.DataManagement.landBXList
 import com.example.lkacmf.serialport.DataManagement.landBZList
 import com.example.lkacmf.serialport.DataManagement.landList
 import com.example.lkacmf.util.BinaryChange
+import com.example.lkacmf.util.LogUtil
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.XAxis
@@ -184,5 +185,52 @@ object LineDataRead {
         lineChartBZ.invalidate()
         lineChart.notifyDataSetChanged()
         lineChart.invalidate()
+    }
+
+    /**
+     * 框选
+     */
+    fun framePlay(startIndex:Int, endIndex:Int, lineChartAnaBX: LineChart, lineChartAnaBZ: LineChart, lineChartAna: LineChart) {
+        if (DataManagement.returnBXList().isNotEmpty()) {
+            //将数据添加到图表中
+            lineChartAnaBX.clear()
+            var lineBXSet = LineDataSet(if (startIndex<endIndex) landBXList.subList(startIndex,endIndex) else landBXList.subList(endIndex,startIndex), "BX")
+            lineBXSet.setDrawValues(false)
+            lineBXSet.setDrawCircles(false)
+            lineBXSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+            lineBXSet.color = MyApplication.context.resources.getColor(R.color.theme_color)
+            //将数据集添加到数据 ChartData 中
+            val lineDataBX = LineData(lineBXSet)
+            lineChartAnaBX.data = lineDataBX
+//            lineChartAnaBX.animateX(2000)
+            lineChartAnaBX.notifyDataSetChanged()
+            lineChartAnaBX.invalidate()
+
+//            lineChartAnaBZ.clear()
+//            var lineBZSet = LineDataSet(landBZList.subList(startIndex,endIndex), "BX")
+//            lineBZSet.setDrawValues(false)
+//            lineBZSet.setDrawCircles(false)
+//            lineBZSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+//            lineBZSet.color = MyApplication.context.resources.getColor(R.color.theme_color)
+//            //将数据集添加到数据 ChartData 中
+//            val lineDataBZ = LineData(lineBZSet)
+//            lineChartAnaBZ.data = lineDataBZ
+//            lineChartAnaBZ.notifyDataSetChanged()
+//            lineChartAnaBZ.invalidate()
+////            lineChartAnaBZ.animateX(2000)
+//
+//            lineChartAna.clear()
+//            var lineSet = LineDataSet(landList.subList(startIndex,endIndex), "BX")
+//            lineSet.setDrawValues(false)
+//            lineSet.setDrawCircles(false)
+//            lineSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+//            lineSet.color = MyApplication.context.resources.getColor(R.color.theme_color)
+//            //将数据集添加到数据 ChartData 中
+//            val lineData = LineData(lineSet)
+//            lineChartAna.data = lineData
+//            lineChartAna.notifyDataSetChanged()
+//            lineChartAna.invalidate()
+//            lineChartAna.animateX(2000)
+        }
     }
 }

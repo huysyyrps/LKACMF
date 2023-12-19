@@ -127,7 +127,6 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                 saveTouchStart(event);
 
                 break;
-
             case MotionEvent.ACTION_POINTER_DOWN:
 
                 if (event.getPointerCount() >= 2) {
@@ -160,6 +159,9 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
 
                     // determine the touch-pointer center
                     midPoint(mTouchPointCenter, event);
+                    OnChartGestureListener l = mChart.getOnChartGestureListener();
+                    if (l != null)
+                        l.onChartGestureDoubleStart(event);
                 }
                 break;
 
