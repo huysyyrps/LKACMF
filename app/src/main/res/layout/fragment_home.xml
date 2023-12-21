@@ -235,9 +235,8 @@
                                             android:layout_width="match_parent"
                                             android:layout_height="40dp"
                                             android:layout_marginLeft="5dp"
-                                            android:layout_marginTop="20dp"
                                             android:gravity="center_vertical"
-                                            android:text="深度系数：1"
+                                            android:text="缺陷长度：待分析"
                                             android:textColor="@color/theme_color"
                                             android:textSize="20dp" />
 
@@ -246,16 +245,7 @@
                                             android:layout_height="40dp"
                                             android:layout_marginLeft="5dp"
                                             android:gravity="center_vertical"
-                                            android:text="长度：1266mm"
-                                            android:textColor="@color/theme_color"
-                                            android:textSize="20dp" />
-
-                                    <TextView
-                                            android:layout_width="match_parent"
-                                            android:layout_height="40dp"
-                                            android:layout_marginLeft="5dp"
-                                            android:gravity="center_vertical"
-                                            android:text="深度：666mm"
+                                            android:text="缺陷深度：待分析"
                                             android:textColor="@color/theme_color"
                                             android:textSize="20dp" />
                                 </LinearLayout>

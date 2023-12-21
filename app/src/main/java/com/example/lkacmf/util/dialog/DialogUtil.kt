@@ -11,17 +11,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
+import com.example.lkacmf.MyApplication
 import com.example.lkacmf.R
 import com.example.lkacmf.activity.MainActivity
 import com.example.lkacmf.util.BinaryChange
+import com.example.lkacmf.util.DateUtil
+import com.example.lkacmf.util.pio.XwpfTUtil
 import com.example.lkacmf.util.showToast
 import com.example.lkacmf.util.sp.BaseSharedPreferences
 import com.permissionx.guolindev.PermissionX
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_empower.*
+import kotlinx.android.synthetic.main.dialog_form.*
 import kotlinx.android.synthetic.main.dialog_no_activation.*
 import kotlinx.android.synthetic.main.dialog_setting.*
 import kotlinx.android.synthetic.main.dialog_thinkness.*
+import java.util.HashMap
 
 object DialogUtil {
     /**
@@ -203,4 +208,73 @@ object DialogUtil {
             dialog.dismiss()
         }
     }
+
+    /**
+     * 生成报告
+     */
+    @RequiresApi(Build.VERSION_CODES.O)
+    @SuppressLint("MissingPermission")
+    fun writeFormDataDialog(activity: Activity, bitmapList:ArrayList<Bitmap>) {
+//        CoroutineScope(Dispatchers.Main)
+//            .launch {
+        dialog = MaterialDialog(activity)
+            .cancelable(false)
+            .show {
+                customView(    //自定义弹窗
+                    viewRes = R.layout.dialog_form,//自定义文件
+                    dialogWrapContent = true,    //让自定义宽度生效
+                    scrollable = true,            //让自定义宽高生效
+                    noVerticalPadding = true    //让自定义高度生效
+                )
+                cornerRadius(16f)
+            }
+        dialog.btnFormCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.btnFormSure.setOnClickListener {
+            var person = dialog.etPerson.text.toString()
+            var code = dialog.etCode.text.toString()
+            var depthFactor = dialog.etDepthFactor.text.toString()
+            if (person.trim { it <= ' ' } == "") {
+                "操作人员不能为空".showToast(activity)
+                return@setOnClickListener
+            }
+            if (code.trim { it <= ' ' } == "") {
+                "部件编号不能为空".showToast(activity)
+                return@setOnClickListener
+            }
+            if (depthFactor.trim { it <= ' ' } == "") {
+                "深度系数不能为空".showToast(activity)
+                return@setOnClickListener
+            }
+
+            var date = DateUtil.timeFormatChange()
+            //显示截图
+            val dataMap: MutableMap<String, Any> = HashMap()
+            dataMap["date"] = date
+            dataMap["person"] = person
+            dataMap["device"] = "ACMF-X2"
+            dataMap["probe"] = "ACMF"
+            dataMap["version"] = "V1.0.1"
+            dataMap["encoder"] = "null"
+            dataMap["level"] = "10"
+            dataMap["material"] = "探头文件"
+            dataMap["unitcode"] = "不见编号"
+            dataMap["direction"] = "Z"
+            dataMap["probenum"] = "1"
+            dataMap["proberate"] = "20%"
+            dataMap["depth"] = "1.2"
+
+            val templetDocPath = activity.assets.open("acmf.docx")
+            var saveFormState = XwpfTUtil.writeDocx(activity, templetDocPath, dataMap, bitmapList)
+            if (saveFormState) {
+                MyApplication.context.resources.getString(R.string.save_success).showToast(activity)
+                dialog.dismiss()
+            } else {
+                MyApplication.context.resources.getString(R.string.save_fail).showToast(activity)
+                dialog.dismiss()
+            }
+        }
+    }
+
 }

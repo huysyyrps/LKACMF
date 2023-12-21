@@ -8,6 +8,7 @@ object DataManagement {
     var landBXList: ArrayList<Entry> = ArrayList()
     var landBZList: ArrayList<Entry> = ArrayList()
     var landList: ArrayList<Entry> = ArrayList()
+    var punctationList: ArrayList<Int> = ArrayList()
     var frameRect: Rect = Rect(0, 0, 0, 0)
 
     fun addBXEntry(xData:Float, yBXData:Float){

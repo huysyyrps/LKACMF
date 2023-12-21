@@ -714,8 +714,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param duration
      */
     @TargetApi(11)
-    public void zoomAndCenterAnimated(float scaleX, float scaleY, float xValue, float yValue, AxisDependency axis,
-                                      long duration) {
+    public void zoomAndCenterAnimated(float scaleX, float scaleY, float xValue, float yValue, AxisDependency axis, long duration) {
 
         MPPointD origin = getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop(), axis);
 
@@ -1258,7 +1257,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * When disabled, the data and/or highlights will not be clipped to contentRect. Disabling this option can
      *   be useful, when the data lies fully within the content rect, but is drawn in such a way (such as thick lines)
      *   that there is unwanted clipping.
-     *
      * @return
      */
     public boolean isClipDataToContentEnabled() {

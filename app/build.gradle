@@ -87,4 +87,6 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
     // AndroidX版本更新弹窗
     implementation 'com.teprinciple:updateapputilsx:2.3.0'
+    //poi
+    implementation 'fr.opensagres.xdocreport:org.apache.poi.xwpf.converter.xhtml:1.0.5'
 }

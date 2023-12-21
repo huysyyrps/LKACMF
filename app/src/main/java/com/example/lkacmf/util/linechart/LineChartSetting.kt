@@ -162,7 +162,6 @@ object LineChartSetting {
 
             override fun onChartMove(me: MotionEvent?) {
                 LogUtil.e("TAG", "滑动")
-                LogUtil.e("TAG", "${me?.x}-----${me?.y}")
             }
         }
 

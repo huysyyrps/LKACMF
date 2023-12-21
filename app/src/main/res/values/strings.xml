@@ -32,6 +32,7 @@
     <string name="reset">复位</string>
     <string name="report">报告</string>
     <string name="screen">框选</string>
+    <string name="count">计算</string>
     <string name="setting">设置</string>
 
     <string name="probe_rate">探头激励频率</string>

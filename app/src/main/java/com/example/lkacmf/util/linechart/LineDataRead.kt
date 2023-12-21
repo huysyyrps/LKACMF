@@ -42,9 +42,6 @@ object LineDataRead {
         var xData = BinaryChange.hexTofloat(readData.substring(0, 8))
         var yBXData = BinaryChange.hexTofloat(readData.substring(8, 16))
         var yBZData = BinaryChange.hexTofloat(readData.substring(16, 24))
-//        landBXList.add(Entry(xData, yBXData))
-//        landBZList.add(Entry(xData, yBZData))
-//        landList.add(Entry(yBXData, yBZData))
         DataManagement.addBXEntry(xData, yBXData)
         DataManagement.addBZEntry(xData, yBZData)
         DataManagement.addEntry(yBXData, yBZData)
@@ -59,6 +56,7 @@ object LineDataRead {
             bXXAxis.addLimitLine(ll1)
             val bZXAxis: XAxis = lineChartBZ.xAxis
             bZXAxis.addLimitLine(ll1)
+            DataManagement.punctationList.add(landBXList.size-1)
         }
         notifyChartData(lineChartBX, xData, yBXData)
         notifyChartData(lineChartBZ, xData, yBZData)
@@ -206,31 +204,30 @@ object LineDataRead {
             lineChartAnaBX.notifyDataSetChanged()
             lineChartAnaBX.invalidate()
 
-//            lineChartAnaBZ.clear()
-//            var lineBZSet = LineDataSet(landBZList.subList(startIndex,endIndex), "BX")
-//            lineBZSet.setDrawValues(false)
-//            lineBZSet.setDrawCircles(false)
-//            lineBZSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-//            lineBZSet.color = MyApplication.context.resources.getColor(R.color.theme_color)
-//            //将数据集添加到数据 ChartData 中
-//            val lineDataBZ = LineData(lineBZSet)
-//            lineChartAnaBZ.data = lineDataBZ
-//            lineChartAnaBZ.notifyDataSetChanged()
-//            lineChartAnaBZ.invalidate()
-////            lineChartAnaBZ.animateX(2000)
-//
-//            lineChartAna.clear()
-//            var lineSet = LineDataSet(landList.subList(startIndex,endIndex), "BX")
-//            lineSet.setDrawValues(false)
-//            lineSet.setDrawCircles(false)
-//            lineSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-//            lineSet.color = MyApplication.context.resources.getColor(R.color.theme_color)
-//            //将数据集添加到数据 ChartData 中
-//            val lineData = LineData(lineSet)
-//            lineChartAna.data = lineData
-//            lineChartAna.notifyDataSetChanged()
-//            lineChartAna.invalidate()
-//            lineChartAna.animateX(2000)
+            lineChartAnaBZ.clear()
+            var lineBZSet = LineDataSet(landBZList.subList(startIndex,endIndex), "BX")
+            lineBZSet.setDrawValues(false)
+            lineBZSet.setDrawCircles(false)
+            lineBZSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+            lineBZSet.color = MyApplication.context.resources.getColor(R.color.theme_color)
+            //将数据集添加到数据 ChartData 中
+            val lineDataBZ = LineData(lineBZSet)
+            lineChartAnaBZ.data = lineDataBZ
+            lineChartAnaBZ.notifyDataSetChanged()
+            lineChartAnaBZ.invalidate()
+//            lineChartAnaBZ.animateX(2000)
+
+            lineChartAna.clear()
+            var lineSet = LineDataSet(landList.subList(startIndex,endIndex), "BX")
+            lineSet.setDrawValues(false)
+            lineSet.setDrawCircles(false)
+            lineSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+            lineSet.color = MyApplication.context.resources.getColor(R.color.theme_color)
+            //将数据集添加到数据 ChartData 中
+            val lineData = LineData(lineSet)
+            lineChartAna.data = lineData
+            lineChartAna.notifyDataSetChanged()
+            lineChartAna.invalidate()
         }
     }
 }

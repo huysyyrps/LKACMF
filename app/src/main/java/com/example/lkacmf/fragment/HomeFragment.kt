@@ -219,7 +219,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
     }
 
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onClick(v: View?) {
         when (v?.id) {
