@@ -40,9 +40,6 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.listener.ChartTouchListener
 import com.github.mikephil.charting.listener.OnChartGestureListener
-import kotlinx.android.synthetic.main.fragment_analysts.*
-import kotlinx.android.synthetic.main.hourlin_item.view.*
-import java.util.*
 import kotlin.math.pow
 
 //, View.OnTouchListener
@@ -181,6 +178,7 @@ class AnalystsFragment : Fragment(), View.OnClickListener {
                 requestList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 requestList.add(Manifest.permission.ACCESS_COARSE_LOCATION)
                 requestList.add(Manifest.permission.ACCESS_FINE_LOCATION)
+                requestList.add(Manifest.permission.MANAGE_EXTERNAL_STORAGE)
                 permissionTag = DialogUtil.requestPermission(activity = requireActivity(),requestList)
                 if (permissionTag){
                     if (mMediaProjection == null) {
@@ -198,48 +196,40 @@ class AnalystsFragment : Fragment(), View.OnClickListener {
                 }
             }
             R.id.btnReport -> {
-//                var viewBX = binding.lineChartAnaBX
-//                viewBX.setDrawingCacheEnabled(true)
-//                viewBX.buildDrawingCache()
-//                var bitmapBX = Bitmap.createBitmap(viewBX.getDrawingCache())
-////                var bitmapBX = binding.lineChartAnaBX.chartBitmap
-//                var viewBZ = binding.lineChartAnaBZ
-//                viewBZ.setDrawingCacheEnabled(true)
-//                viewBZ.buildDrawingCache()
-//                var bitmapBZ = Bitmap.createBitmap(viewBZ.getDrawingCache())
-////                var bitmapBZ = binding.lineChartAnaBZ.chartBitmap
-//                var bitmapwidth = bitmapBX.width
-//                var bitmapheight = bitmapBZ.height
-//                var startIndex = 0
-//                var endIndex = 0
+                bitmapList.clear()
+                if (punctationList.size==0){
+                    var viewBX = binding.framChartAnaBX
+                    viewBX.setDrawingCacheEnabled(true)
+                    viewBX.buildDrawingCache()
+                    var bitmapBX = Bitmap.createBitmap(viewBX.getDrawingCache())
+                    var viewBZ = binding.framChartAnaBZ
+                    viewBZ.setDrawingCacheEnabled(true)
+                    viewBZ.buildDrawingCache()
+                    var bitmapBZ = Bitmap.createBitmap(viewBZ.getDrawingCache())
+
+                    var view = binding.framChartAna
+                    view.setDrawingCacheEnabled(true)
+                    view.buildDrawingCache()
+                    var bitmap = Bitmap.createBitmap(view.getDrawingCache())
+                    bitmapList.add(bitmapBX)
+                    bitmapList.add(bitmapBZ)
+                    bitmapList.add(bitmap)
+                    DialogUtil.writeFormDataDialog(
+                        requireActivity(),
+                        bitmapList
+                    )
+                    return
+                }
                 for (i in 0 until punctationList.size){
                     if (i==0){
-//                        var ratio = punctationList[i]/ landBXList.size.toFloat()
-//                        endIndex = (bitmapwidth*ratio).toInt()
-//                        var croppedBitmapBX = Bitmap.createBitmap(bitmapBX, startIndex, 0, endIndex,bitmapheight)
-//                        var croppedBitmapBZ = Bitmap.createBitmap(bitmapBZ, startIndex, 0, endIndex,bitmapheight)
-//                        startIndex = endIndex
-//                        bitmapList.add(croppedBitmapBX)
-//                        bitmapList.add(croppedBitmapBZ)
                         setlineChartAnaTData(landBXList.subList(0,punctationList[i]),landBZList.subList(0,punctationList[i]),landList.subList(0,punctationList[i]))
                     }else{
-//                        var ratio = punctationList[i]/ landBXList.size.toFloat()
-//                        endIndex = (bitmapwidth*ratio).toInt()
-//                        var croppedBitmapBX = Bitmap.createBitmap(bitmapBX, startIndex, 0, endIndex-startIndex,bitmapheight)
-//                        var croppedBitmapBZ = Bitmap.createBitmap(bitmapBZ, startIndex, 0, endIndex-startIndex,bitmapheight)
-//                        startIndex = endIndex
-//                        bitmapList.add(croppedBitmapBX)
-//                        bitmapList.add(croppedBitmapBZ)
                         setlineChartAnaTData(landBXList.subList(punctationList[i-1],punctationList[i]),
                             landBZList.subList(punctationList[i-1],punctationList[i]),
                             landList.subList(punctationList[i-1],punctationList[i]))
                     }
                 }
                 if (endIndex<landBXList.size){
-//                    var croppedBitmapBX = Bitmap.createBitmap(bitmapBX, startIndex, 0, bitmapwidth-startIndex,bitmapheight)
-//                    var croppedBitmapBZ = Bitmap.createBitmap(bitmapBZ, startIndex, 0, bitmapwidth-startIndex,bitmapheight)
-//                    bitmapList.add(croppedBitmapBX)
-//                    bitmapList.add(croppedBitmapBZ)
                     setlineChartAnaTData(landBXList.subList(punctationList[punctationList.size-1],landBXList.size),
                         landBZList.subList(punctationList[punctationList.size-1],landBZList.size),
                         landList.subList(punctationList[punctationList.size-1],landList.size))

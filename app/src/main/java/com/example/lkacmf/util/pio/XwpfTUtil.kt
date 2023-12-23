@@ -2,8 +2,10 @@ package com.example.lkacmf.util.pio
 
 import android.app.Activity
 import android.graphics.Bitmap
+import android.os.Environment
 import com.example.lkacmf.activity.MainActivity
 import com.example.lkacmf.util.Constant
+import com.example.lkacmf.util.LogUtil
 import org.apache.poi.util.Units
 import org.apache.poi.xwpf.usermodel.*
 import java.io.*
@@ -49,45 +51,10 @@ object XwpfTUtil {
                 )
                 picInBX.close()
             }
-//            val baosBX = ByteArrayOutputStream()
-//            bitmapBX.compress(Bitmap.CompressFormat.PNG, 100, baosBX)
-//            val picInBX = ByteArrayInputStream(baosBX.toByteArray())
-//
-//            val baosBZ = ByteArrayOutputStream()
-//            bitmapBZ.compress(Bitmap.CompressFormat.PNG, 100, baosBZ)
-//            val picInBZ = ByteArrayInputStream(baosBZ.toByteArray())
-//
-//            val baosDX = ByteArrayOutputStream()
-//            bitmapDX.compress(Bitmap.CompressFormat.PNG, 100, baosDX)
-//            val picInDX = ByteArrayInputStream(baosDX.toByteArray())
-//
-//            run.addPicture(
-//                picInBX,
-//                XWPFDocument.PICTURE_TYPE_PNG,
-//                "插入图片",
-//                Units.toEMU(205.0),
-//                Units.toEMU(130.0)
-//            )
-//            run.addPicture(
-//                picInBZ,
-//                XWPFDocument.PICTURE_TYPE_PNG,
-//                "插入图片1",
-//                Units.toEMU(205.0),
-//                Units.toEMU(130.0)
-//            )
-//            run.addPicture(
-//                picInDX,
-//                XWPFDocument.PICTURE_TYPE_PNG,
-//                "插入图片1",
-//                Units.toEMU(205.0),
-//                Units.toEMU(160.0)
-//            )
-//            picInBX.close()
-//            picInBZ.close()
-//            picInDX.close()
-
-
-            val targetDocPath = activity.externalCacheDir.toString()+ "/"+Constant.SAVE_FORM_PATH+"/"
+//            val targetDocPath = activity.externalCacheDir.toString()+ "/"+Constant.SAVE_FORM_PATH+"/"
+            //Environment.getExternalStorageDirectory()
+            //Environment.getExternalStorageDirectory().absolutePath + "/"+Constant.SAVE_FORM_PATH+"/"
+            var targetDocPath = Environment.getExternalStorageDirectory().path + "/"+Constant.SAVE_FORM_PATH+"/"
             val file = File(targetDocPath)
             //如果不存在  就mkdirs()创建此文件夹
             if (!file.exists()) {
@@ -100,11 +67,14 @@ object XwpfTUtil {
             HDocx.write(os)
             os.close()
             templetDocInStream.close()
+            bitmapList.clear()
             return true
         } catch (e: IOException) {
+            LogUtil.e("TAG",e.toString())
             e.printStackTrace()
             return false
         } catch (e: java.lang.Exception) {
+            LogUtil.e("TAG",e.toString())
             e.printStackTrace()
             return false
         }
@@ -114,7 +84,7 @@ object XwpfTUtil {
      * 获取当前时间,用来给文件夹命名
      */
     private fun getNowDate(): String? {
-        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+        val format = SimpleDateFormat("yyyy-MM-dd HH.mm.ss", Locale.US)
         return format.format(Date()) + ".docx"
     }
 

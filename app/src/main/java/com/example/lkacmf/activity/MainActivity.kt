@@ -1,11 +1,10 @@
 package com.example.lkacmf.activity
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.DocumentsContract
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -23,17 +22,18 @@ import com.example.lkacmf.module.VersionInfoContract
 import com.example.lkacmf.presenter.VersionInfoPresenter
 import com.example.lkacmf.util.BaseActivity
 import com.example.lkacmf.util.BaseTelPhone
+import com.example.lkacmf.util.dialog.DialogUtil
 import com.example.lkacmf.util.showToast
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
 import constant.UiType
-import kotlinx.android.synthetic.main.activity_main.*
 import listener.OnInitUiListener
 import model.UiConfig
 import model.UpdateConfig
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import update.UpdateAppUtils
+
 
 class MainActivity : BaseActivity(), View.OnClickListener, VersionInfoContract.View  {
     private lateinit var binding: ActivityMainBinding
@@ -76,6 +76,14 @@ class MainActivity : BaseActivity(), View.OnClickListener, VersionInfoContract.V
         binding.linVersionCheck.setOnClickListener(this)
         binding.linContactComp.setOnClickListener(this)
         binding.btnFinish.setOnClickListener(this)
+
+        val requestList = ArrayList<String>()
+        requestList.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+        requestList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        requestList.add(Manifest.permission.ACCESS_COARSE_LOCATION)
+        requestList.add(Manifest.permission.ACCESS_FINE_LOCATION)
+        requestList.add(Manifest.permission.MANAGE_EXTERNAL_STORAGE)
+        DialogUtil.requestPermission(this,requestList)
     }
 
     private fun tabLayoutSelect() {
@@ -103,6 +111,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, VersionInfoContract.V
         })
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.imageView -> {
@@ -112,14 +121,42 @@ class MainActivity : BaseActivity(), View.OnClickListener, VersionInfoContract.V
                 ImageListActivity.actionStart(this)
             }
             R.id.linFileList -> {
-                val path = "%2fandroid%2fdata%2fcom.example.lkacmf%2fcache%2fLKACMFFORM%2f"
-                val uri =
-                    Uri.parse("content://com.android.externalstorage.documents/document/primary:$path")
+                ////LKACMFFORM%2f"
+//                val path = "%2fandroid%2fdata%2fcom.example.lkacmf%2fcache%2f"
+////                val path = "%2fstorage%2femulated%2f0%2fLKACMFFORM%2f"
+//                val uri =
+//                    Uri.parse("content://com.android.externalstorage.documents/document/primary:$path")
+////                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+////                intent.addCategory(Intent.CATEGORY_OPENABLE)
+//                val intent = Intent(Intent.ACTION_GET_CONTENT)
+//                intent.type = "*/*" //想要展示的文件类型
+//                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri)
+//                startActivity(intent)
+
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+                //设置读写权限
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                 intent.addCategory(Intent.CATEGORY_OPENABLE)
-                intent.type = "*/*" //想要展示的文件类型
-                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri)
+                //指定选择文本类型的文件
+                intent.type = "*/*"
                 startActivity(intent)
+                //指定多类型查询
+//                intent.putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("DOCX"))
+//                startActivityForResult(intent, 10402)
+
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
+//                    // 应用没有`MANAGE_EXTERNAL_STORAGE`权限，请求用户授予该权限
+//                    LogUtil.e("TAG","0")
+//                    val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+//                    val uri = Uri.fromParts("package", packageName, null)
+//                    intent.data = uri
+//                    startActivityForResult(intent, Constant.TAG_ONE)
+//
+//                } else {
+//                    LogUtil.e("TAG","1")
+//                    // 应用已具有`MANAGE_EXTERNAL_STORAGE`权限
+//                    // 继续下一步操作
+//                }
             }
             R.id.linVersionCheck -> {
                 versionInfo()
@@ -132,6 +169,21 @@ class MainActivity : BaseActivity(), View.OnClickListener, VersionInfoContract.V
             }
         }
     }
+
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (requestCode == Constant.TAG_ONE) {
+//            if (resultCode == Activity.RESULT_OK) {
+//                LogUtil.e("TAG","1")
+//                // 权限已授予
+//                // 执行需要访问所有文件的操作
+//            } else {
+//                LogUtil.e("TAG","2")
+//                // 权限被拒绝
+//                // 可以在此处向用户解释为什么需要该权限，并提供手动授权的方式
+//            }
+//        }
+//    }
 
     // 转换Fragment
     fun switchFragment(to: Fragment, tag: String?) {

@@ -44,7 +44,7 @@ object LineDataRead {
         var yBZData = BinaryChange.hexTofloat(readData.substring(16, 24))
         DataManagement.addBXEntry(xData, yBXData)
         DataManagement.addBZEntry(xData, yBZData)
-        DataManagement.addEntry(yBXData, yBZData)
+        DataManagement.addEntry(yBZData, yBXData)
 
         if (punctationState){
             val ll1 = LimitLine((landBXList[landBXList.size-1].x), "")
@@ -60,7 +60,8 @@ object LineDataRead {
         }
         notifyChartData(lineChartBX, xData, yBXData)
         notifyChartData(lineChartBZ, xData, yBZData)
-        notifyChartData(lineChart, yBXData, yBZData)
+        notifyChartData(lineChart, yBZData, yBXData)
+//        LogUtil.e("TAG","$xData---$yBZData---$yBXData")
         oldXData = xData
     }
 
@@ -205,7 +206,7 @@ object LineDataRead {
             lineChartAnaBX.invalidate()
 
             lineChartAnaBZ.clear()
-            var lineBZSet = LineDataSet(landBZList.subList(startIndex,endIndex), "BX")
+            var lineBZSet = LineDataSet(if (startIndex<endIndex) landBZList.subList(startIndex,endIndex) else landBZList.subList(endIndex,startIndex), "BX")
             lineBZSet.setDrawValues(false)
             lineBZSet.setDrawCircles(false)
             lineBZSet.mode = LineDataSet.Mode.CUBIC_BEZIER
@@ -218,7 +219,7 @@ object LineDataRead {
 //            lineChartAnaBZ.animateX(2000)
 
             lineChartAna.clear()
-            var lineSet = LineDataSet(landList.subList(startIndex,endIndex), "BX")
+            var lineSet = LineDataSet(if (startIndex<endIndex) landList.subList(startIndex,endIndex) else landList.subList(endIndex,startIndex), "BX")
             lineSet.setDrawValues(false)
             lineSet.setDrawCircles(false)
             lineSet.mode = LineDataSet.Mode.CUBIC_BEZIER

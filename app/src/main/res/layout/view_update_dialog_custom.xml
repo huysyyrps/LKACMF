@@ -39,9 +39,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/linHeader"
                     android:layout_centerHorizontal="true"
+                    android:gravity="center"
                     android:textColor="@color/text_title"
                     android:textSize="15sp"
-                    android:gravity="center"
                     tools:text="版本更新啦!" />
 
             <ScrollView
