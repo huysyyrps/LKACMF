@@ -69,10 +69,11 @@
     <string name="delect_sure">您确定要删除此项数据吗？</string>
     <string name="phone_title">未检测到IC卡，请更换其他设备拨打 0537-2638599</string>
     <string name="version_checking">版本检测中...</string>
-    <string name="handler_data">数据请求中</string>
+    <string name="handler_data">数据请求中...</string>
     <string name="version_data_error">版本信息请求失败</string>
     <string name="have_new_version">发现新版本</string>
     <string name="net_error">网络异常</string>
     <string name="save_success">保存成功</string>
     <string name="save_fail">保存失败</string>
+    <string name="date_error">授权码获取失败</string>
 </resources>

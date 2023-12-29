@@ -10,6 +10,9 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.lkacmf.R
 import com.example.lkacmf.databinding.FragmentHomeBinding
+import com.example.lkacmf.entity.AcmfCode
+import com.example.lkacmf.module.AcmfCodeContract
+import com.example.lkacmf.presenter.AcmfCodePresenter
 import com.example.lkacmf.serialport.SerialPortConstant
 import com.example.lkacmf.serialport.SerialPortDataMake
 import com.example.lkacmf.util.*
@@ -21,15 +24,18 @@ import com.example.lkacmf.util.popup.CustomBubbleAttachPopup
 import com.example.lkacmf.util.popup.MaterialListData
 import com.example.lkacmf.util.popup.PopupListData
 import com.example.lkacmf.util.sp.BaseSharedPreferences
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import me.f1reking.serialportlib.SerialPortHelper
 import me.f1reking.serialportlib.listener.ISerialPortDataListener
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
 import java.util.*
 import kotlin.random.Random
 
 
-class HomeFragment : Fragment(), View.OnClickListener {
+class HomeFragment : Fragment(), View.OnClickListener, AcmfCodeContract.View {
     var index:Int = 0
     val timer = Timer()
     var punctationState = false
@@ -38,6 +44,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private val binding get() = _binding!!
     var dialogState = false
     private lateinit var mSerialPortHelper: SerialPortHelper
+    lateinit var acmfCodePresenter:AcmfCodePresenter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -59,11 +66,23 @@ class HomeFragment : Fragment(), View.OnClickListener {
         binding.btnDirection.setOnClickListener(this)
         binding.btnThinkness.setOnClickListener(this)
         binding.btnMaterial.setOnClickListener(this)
+        acmfCodePresenter = AcmfCodePresenter(requireContext(), view = this)
 
         LineChartSetting.SettingLineChart(requireActivity(), lineChartBX, showX = true, scale = false)
         LineChartSetting.SettingLineChart(requireActivity(), lineChartBZ, showX = true, scale = false)
         LineChartSetting.SettingLineChart(requireActivity(), lineChart, showX = true, scale = false)
         SerialPortHelperHandler()
+
+        val params = HashMap<String, String>()
+        params["received_data"] = "1E003A000747323532303138"
+        params["activation_code"] = "2B3A4ECF6A626FAD"
+        params["use_date"] = ""
+        val gson = Gson()
+        val requestBody = RequestBody.create(
+            "application/json; charset=utf-8".toMediaTypeOrNull(),
+            gson.toJson(params)
+        )
+        acmfCodePresenter.getAcmfCode(requestBody)
     }
 
     /**
@@ -82,7 +101,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
                         //判断是否激活
                         if (receivedData.startsWith("B000")&&receivedData.length == 44&&!activationStaing){
                             if (BinaryChange.proofData(receivedData.substring(0, 42)) == receivedData.subSequence(42, 44)) {
-//                                timer.cancel()
                                 var state = receivedData.substring(4, 6)
                                 LogUtil.e("TAG", "$state")
                                 var activationCode = ActivationCode.makeCode(receivedData.substring(6, 30))
@@ -108,19 +126,20 @@ class HomeFragment : Fragment(), View.OnClickListener {
                                     "02"-> {
                                         if (!dialogState){
                                             "授权失效".showToast(requireActivity())
-                                            var date = "141901010C00"
-                                            val hexA = date.substring(0, 8)
-                                            val hexB = date.substring(4, 12)
-//                                            val floatA = Float.intBitsToFloat(Integer.valueOf(hexA, 16))
-//                                            val floatB = Float.intBitsToFloat(Integer.valueOf(hexB, 16))
-                                            val intA = Integer.valueOf(hexA, 16)
-                                            val intB = Integer.valueOf(hexB, 16)
-
-                                            val countA =  (intA.toFloat() - intB)/(intA + intB)
-                                            val hexThickenA: String = ActivationCode.StringToHex(countA)
-                                            var code = "${receivedData.substring(6, 30)}$activationCode${BinaryChange.tenToHex(20)}" +
-                                                    "${BinaryChange.tenToHex(25)}${BinaryChange.tenToHex(1)}${BinaryChange.tenToHex(1)}" +
-                                                    "${BinaryChange.tenToHex(12)}${BinaryChange.tenToHex(0)}$hexThickenA"
+//                                            var date = "141901010C00"
+//                                            val hexA = date.substring(0, 8)
+//                                            val hexB = date.substring(4, 12)
+////                                            val floatA = Float.intBitsToFloat(Integer.valueOf(hexA, 16))
+////                                            val floatB = Float.intBitsToFloat(Integer.valueOf(hexB, 16))
+//                                            val intA = Integer.valueOf(hexA, 16)
+//                                            val intB = Integer.valueOf(hexB, 16)
+//
+//                                            val countA =  (intA.toFloat() - intB)/(intA + intB)
+//                                            val hexThickenA: String = ActivationCode.StringToHex(countA)
+//                                            ${BinaryChange.tenToHex(20)}/" +
+//                                            "${BinaryChange.tenToHex(25)}${BinaryChange.tenToHex(1)}/${BinaryChange.tenToHex(1)}" +
+//                                                    "${BinaryChange.tenToHex(12)}${BinaryChange.tenToHex(0)}$hexThickenA
+                                            var code = "${receivedData.substring(6, 30)}/$activationCode"
                                             dialogState = true
                                             DialogUtil.empowerDialog(requireActivity(), code, object : DialogSureCallBack {
                                                 override fun sureCallBack(data: String) {
@@ -327,5 +346,13 @@ class HomeFragment : Fragment(), View.OnClickListener {
         super.onDestroy()
         _binding = null
 //        mSerialPortHelper.close()
+    }
+
+    override fun setAcmfCode(acmfCode: AcmfCode?) {
+        acmfCode?.activationCode?.showToast(requireContext())
+    }
+
+    override fun setAcmfCodeMessage(message: String?) {
+        message?.showToast(requireContext())
     }
 }

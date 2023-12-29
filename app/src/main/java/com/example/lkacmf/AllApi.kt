@@ -1,5 +1,6 @@
 package com.example.lkacmf
 
+import com.example.lkacmf.entity.AcmfCode
 import com.example.lkacmf.entity.VersionInfo
 import io.reactivex.Observable
 import okhttp3.RequestBody
@@ -18,4 +19,12 @@ interface AllApi {
     @POST(ApiAddress.VERSIONINFO)
     @Headers("Content-Type:application/json; charset=UTF-8")
     fun getVersionInfo(@Body body: RequestBody?): Observable<VersionInfo?>?
+
+
+    /**
+     * 获取授权码
+     */
+    @POST(ApiAddress.ACMFCODE)
+    @Headers("Content-Type:application/json; charset=UTF-8")
+    fun getAcmfCode(@Body body: RequestBody?): Observable<AcmfCode?>?
 }

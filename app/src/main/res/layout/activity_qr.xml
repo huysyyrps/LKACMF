@@ -28,9 +28,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
-                    android:layout_centerHorizontal="true"
-                    android:background="#FF000000"
-                    android:alpha="0.1" />
+                    android:alpha="0.1"
+                    android:background="#FF000000" />
 
 
             <ImageView
@@ -40,18 +39,19 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="180dp"
                     android:background="@drawable/cloors" />
+
             <TextView
+                    android:layout_width="220dp"
+                    android:layout_height="20dp"
                     android:layout_below="@id/scan_area"
-                    android:layout_marginTop="10dp"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
                     android:text="@string/qr_text"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:layout_height="20dp"
-                    android:layout_width="220dp" />
+                    android:textStyle="bold" />
         </RelativeLayout>
         <RelativeLayout
                 android:layout_width="match_parent"

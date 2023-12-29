@@ -170,21 +170,6 @@ class MainActivity : BaseActivity(), View.OnClickListener, VersionInfoContract.V
         }
     }
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == Constant.TAG_ONE) {
-//            if (resultCode == Activity.RESULT_OK) {
-//                LogUtil.e("TAG","1")
-//                // 权限已授予
-//                // 执行需要访问所有文件的操作
-//            } else {
-//                LogUtil.e("TAG","2")
-//                // 权限被拒绝
-//                // 可以在此处向用户解释为什么需要该权限，并提供手动授权的方式
-//            }
-//        }
-//    }
-
     // 转换Fragment
     fun switchFragment(to: Fragment, tag: String?) {
         if (mCurrentFragmen !== to) {
