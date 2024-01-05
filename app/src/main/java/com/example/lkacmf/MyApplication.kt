@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import com.example.lkacmf.serialport.SerialPortConstant
 import com.example.lkacmf.util.mediaprojection.MediaService
 
 
@@ -17,5 +18,7 @@ class MyApplication : Application() {
         context = applicationContext
         //截图service
         startService(Intent(this, MediaService::class.java))
+
+//        SerialPortConstant.getSerialPortHelper(context)
     }
 }

@@ -40,12 +40,20 @@ class CustomBubbleAttachPopup : BubbleAttachPopupView {
                     popupPositionCallBack.backPosition(index)
                     dismiss()
                 }
+
+                override fun backLongPosition(longIndex: Int) {
+                    TODO("Not yet implemented")
+                }
             })
         }else if (selectTag=="popup"){
             adapter = PopupAdapter(PopupListData.setPopupListData(),object : AdapterPositionCallBack {
                 override fun backPosition(index: Int) {
                     popupPositionCallBack.backPosition(index)
                     dismiss()
+                }
+
+                override fun backLongPosition(longIndex: Int) {
+                    TODO("Not yet implemented")
                 }
             })
         }

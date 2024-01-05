@@ -13,22 +13,21 @@
             android:id="@+id/ivQr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp" />
+            android:layout_margin="15dp" />
 
     <TextView
             android:id="@+id/tvEmpowerCode"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:textSize="14dp"/>
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:textSize="14dp"
+            android:text="请将二维码拍照发送鲁科管理员，待管理员生成授权码后点击下方请求按钮"
+            android:textColor="@color/red"/>
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_gravity="right"
-            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="0dp"
             android:orientation="horizontal">
@@ -48,7 +47,7 @@
                 style="@style/BaseButton"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:text="@string/btn_scan"
+                android:text="@string/btn_request"
                 app:bg_color="@color/theme_color"
                 app:bg_corner="5dp" />
     </LinearLayout>

@@ -2,7 +2,6 @@ package com.example.lkacmf.fragment
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,15 +23,11 @@ import com.example.lkacmf.util.popup.CustomBubbleAttachPopup
 import com.example.lkacmf.util.popup.MaterialListData
 import com.example.lkacmf.util.popup.PopupListData
 import com.example.lkacmf.util.sp.BaseSharedPreferences
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import me.f1reking.serialportlib.SerialPortHelper
 import me.f1reking.serialportlib.listener.ISerialPortDataListener
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody
 import java.util.*
-import kotlin.random.Random
 
 
 class HomeFragment : Fragment(), View.OnClickListener, AcmfCodeContract.View {
@@ -72,17 +67,6 @@ class HomeFragment : Fragment(), View.OnClickListener, AcmfCodeContract.View {
         LineChartSetting.SettingLineChart(requireActivity(), lineChartBZ, showX = true, scale = false)
         LineChartSetting.SettingLineChart(requireActivity(), lineChart, showX = true, scale = false)
         SerialPortHelperHandler()
-
-        val params = HashMap<String, String>()
-        params["received_data"] = "1E003A000747323532303138"
-        params["activation_code"] = "2B3A4ECF6A626FAD"
-        params["use_date"] = ""
-        val gson = Gson()
-        val requestBody = RequestBody.create(
-            "application/json; charset=utf-8".toMediaTypeOrNull(),
-            gson.toJson(params)
-        )
-        acmfCodePresenter.getAcmfCode(requestBody)
     }
 
     /**
@@ -91,89 +75,35 @@ class HomeFragment : Fragment(), View.OnClickListener, AcmfCodeContract.View {
      */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun SerialPortHelperHandler() {
-        mSerialPortHelper = SerialPortConstant.getSerialPortHelper(requireActivity())
-        if (mSerialPortHelper.isOpen){
+        mSerialPortHelper = SerialPortConstant.getMSerialPortHelper(requireActivity())
+        mSerialPortHelper.startReceivedThread()
+        if (mSerialPortHelper.isOpen) {
             mSerialPortHelper.setISerialPortDataListener(object : ISerialPortDataListener {
                 override fun onDataReceived(bytes: ByteArray?) {
                     requireActivity().runOnUiThread {
                         var receivedData = BinaryChange.byteToHexString(bytes!!)
-//                        LogUtil.e("TAG",receivedData)
-                        //判断是否激活
-                        if (receivedData.startsWith("B000")&&receivedData.length == 44&&!activationStaing){
-                            if (BinaryChange.proofData(receivedData.substring(0, 42)) == receivedData.subSequence(42, 44)) {
-                                var state = receivedData.substring(4, 6)
-                                LogUtil.e("TAG", "$state")
-                                var activationCode = ActivationCode.makeCode(receivedData.substring(6, 30))
-                                BaseSharedPreferences.put("activationCode", activationCode)
-                                BaseSharedPreferences.put("deviceCode", receivedData.substring(6, 30))
-                                when (state) {
-                                    "00" -> {
-                                        activationStaing = true
-                                        "未激活".showToast(requireContext())
-                                        requireActivity().runOnUiThread {
-                                            DialogUtil.noActivitionDialog(requireActivity(), object : DialogSureCallBack {
-                                                override fun sureCallBack(data: String) {
-                                                    mSerialPortHelper.sendTxt(SerialPortDataMake.activationData(activationCode))
-                                                    activationStaing = false
-                                                }
-
-                                                override fun cancelCallBack(data: String) {
-                                                }
-                                            })
-                                        }
-                                    }
-                                    "01"-> "非法设备".showToast(requireActivity())
-                                    "02"-> {
-                                        if (!dialogState){
-                                            "授权失效".showToast(requireActivity())
-//                                            var date = "141901010C00"
-//                                            val hexA = date.substring(0, 8)
-//                                            val hexB = date.substring(4, 12)
-////                                            val floatA = Float.intBitsToFloat(Integer.valueOf(hexA, 16))
-////                                            val floatB = Float.intBitsToFloat(Integer.valueOf(hexB, 16))
-//                                            val intA = Integer.valueOf(hexA, 16)
-//                                            val intB = Integer.valueOf(hexB, 16)
-//
-//                                            val countA =  (intA.toFloat() - intB)/(intA + intB)
-//                                            val hexThickenA: String = ActivationCode.StringToHex(countA)
-//                                            ${BinaryChange.tenToHex(20)}/" +
-//                                            "${BinaryChange.tenToHex(25)}${BinaryChange.tenToHex(1)}/${BinaryChange.tenToHex(1)}" +
-//                                                    "${BinaryChange.tenToHex(12)}${BinaryChange.tenToHex(0)}$hexThickenA
-                                            var code = "${receivedData.substring(6, 30)}/$activationCode"
-                                            dialogState = true
-                                            DialogUtil.empowerDialog(requireActivity(), code, object : DialogSureCallBack {
-                                                override fun sureCallBack(data: String) {
-//                                            测试完成增加校验
-                                                    LogUtil.e("TAG", code.substring(40,60))
-                                                    dialogState = false
-                                                    mSerialPortHelper.sendTxt(SerialPortDataMake.empowerData(code.substring(40, 60)))
-                                                }
-
-                                                override fun cancelCallBack(data: String) {
-                                                    dialogState = false
-                                                }
-                                            })
-                                        }
-                                    }
-                                    "03"-> {
-                                        "设备正常".showToast(requireActivity())
-                                        SerialPortConstant.timer.cancel()
-                                    }
-                                }
+                        LogUtil.e("HomeFragment",receivedData)
+                        //设置
+                        if (receivedData.startsWith("B102") && receivedData.length == 18) {
+                            if (BinaryChange.proofData(receivedData.substring(0, 12)) == receivedData.subSequence(12, 14)) {
+                                BaseSharedPreferences.put("userEncode", receivedData.subSequence(4, 6))
+                                BaseSharedPreferences.put("probeNumb", receivedData.subSequence(6, 8))
+                                BaseSharedPreferences.put("probeRate", receivedData.subSequence(8, 10))
+                                BaseSharedPreferences.put("currentWave", receivedData.subSequence(10, 12))
                             }
                         }
                         //参数
-                        if (receivedData.startsWith("B100")&&receivedData.length == 24){
+                        if (receivedData.startsWith("B100") && receivedData.length == 24) {
                             if (BinaryChange.proofData(receivedData.substring(0, 18)) == receivedData.subSequence(18, 20)) {
-                                when(receivedData.subSequence(4, 6)){
-                                    "00"-> requireActivity().vtv_connection_state.text = "未激活"
-                                    "01"-> requireActivity().vtv_connection_state.text = "非法设备"
-                                    "02"-> requireActivity().vtv_connection_state.text = "授权失败"
-                                    "03"-> requireActivity().vtv_connection_state.text = "连接正常"
+                                when (receivedData.subSequence(4, 6)) {
+                                    "00" -> requireActivity().vtv_connection_state.text = "未激活"
+                                    "01" -> requireActivity().vtv_connection_state.text = "非法设备"
+                                    "02" -> requireActivity().vtv_connection_state.text = "授权失败"
+                                    "03" -> requireActivity().vtv_connection_state.text = "连接正常"
                                 }
                                 requireActivity().tvQuantity.text = BinaryChange.hexToInt(receivedData.subSequence(6, 8) as String).toString()
-                                when(receivedData.subSequence(8, 10)){
-                                    "00"-> {
+                                when (receivedData.subSequence(8, 10)) {
+                                    "00" -> {
                                         binding.btnStop.isChecked = true
                                     }
                                     "01" -> {
@@ -212,20 +142,11 @@ class HomeFragment : Fragment(), View.OnClickListener, AcmfCodeContract.View {
                                 requireActivity().vtvProbeNum.text = BinaryChange.hexToInt(receivedData.subSequence(16, 18) as String).toString()
                             }
                         }
-                        //设置
-                        if (receivedData.startsWith("B102") && receivedData.length == 14) {
-                            if (BinaryChange.proofData(receivedData.substring(0, 12)) == receivedData.subSequence(12, 14)) {
-                                BaseSharedPreferences.put("userEncode", receivedData.subSequence(4, 6))
-                                BaseSharedPreferences.put("probeNumb", receivedData.subSequence(6, 8))
-                                BaseSharedPreferences.put("probeRate", receivedData.subSequence(8, 10))
-                                BaseSharedPreferences.put("currentWave", receivedData.subSequence(10, 12))
-                            }
-                        }
                         //数据
                         if (receivedData.startsWith("B101") && receivedData.length == 40) {
                             var data = receivedData.substring(10, 34)
                             Thread.sleep(5)
-                            LineDataRead.readMeterData(data, binding.lineChartBX, binding.lineChartBZ, binding.lineChart,punctationState)
+                            LineDataRead.readMeterData(data, binding.lineChartBX, binding.lineChartBZ, binding.lineChart, punctationState)
                             punctationState = false
                         }
                     }

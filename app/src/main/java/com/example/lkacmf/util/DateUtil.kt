@@ -99,4 +99,12 @@ import java.util.*
          return localFormater.format(gpsUTCDate!!.time)
      }
 
+     /**
+      * 获取当前时间,用来给文件夹命名
+      */
+     fun getNowDate(): String {
+         val format = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
+         return format.format(Date())
+     }
+
 }

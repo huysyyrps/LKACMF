@@ -374,7 +374,7 @@ public class SerialPortHelper {
     /**
      * 开启接收消息的线程
      */
-    private void startReceivedThread() {
+    public void startReceivedThread() {
         mSerialPortReceivedThread = new SerialPortReceivedThread(mFileInputStream) {
             @Override
             public void onDataReceived(byte[] bytes) {
@@ -389,7 +389,7 @@ public class SerialPortHelper {
     /**
      * 停止接收消息的线程
      */
-    private void stopReceivedThread() {
+    public void stopReceivedThread() {
         if (null != mSerialPortReceivedThread) {
             mSerialPortReceivedThread.release();
         }

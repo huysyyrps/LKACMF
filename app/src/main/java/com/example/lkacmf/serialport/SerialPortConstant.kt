@@ -2,13 +2,16 @@ package com.example.lkacmf.serialport
 
 import android.app.Activity
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.lkacmf.R
+import com.example.lkacmf.util.BinaryChange
 import com.example.lkacmf.util.Constant
 import com.example.lkacmf.util.LogUtil
 import com.example.lkacmf.util.showToast
 import me.f1reking.serialportlib.SerialPortHelper
 import me.f1reking.serialportlib.listener.IOpenSerialPortListener
+import me.f1reking.serialportlib.listener.ISerialPortDataListener
 import me.f1reking.serialportlib.listener.Status
 import java.io.File
 import java.util.*
@@ -25,10 +28,8 @@ object SerialPortConstant {
             override fun onSuccess(device: File) {
                 activity.runOnUiThread {
                     LogUtil.e("SerialPortConstant",device.path + " :串口打开成功")
-//                    mSerialPortHelper.sendTxt(SerialPortDataMake.haveActivationData())
                     timer.scheduleAtFixedRate(0, 1000) {
                         mSerialPortHelper.sendTxt(SerialPortDataMake.haveActivationData())
-//                mSerialPortHelper.sendTxt("a000000000000000a0")
                     }
                 }
             }
@@ -39,7 +40,7 @@ object SerialPortConstant {
                             "${device.path}${activity.resources.getString(R.string.no_rw_permission)}".showToast(activity)
                         Status.OPEN_FAIL ->
                             "${device.path}${activity.resources.getString(R.string.seriaport_open_fail)}".showToast(activity)
-                        else ->{
+                        else -> {
                             "${device.path}${activity.resources.getString(R.string.seriaport_open_fail)}".showToast(activity)
                         }
 
@@ -49,13 +50,25 @@ object SerialPortConstant {
         })
         mSerialPortHelper.open()
         return mSerialPortHelper
-        //region
-//        mSerialPortHelper.baudRate = 120
-//        mSerialPortHelper.stopBits = STOPB.getStopBit(STOPB.B2)
-//        mSerialPortHelper.dataBits = DATAB.getDataBit(DATAB.CS8)
-//        mSerialPortHelper.parity = PARITY.getParity(PARITY.NONE)
-//        mSerialPortHelper.flowCon = FLOWCON.getFlowCon(FLOWCON.NONE)
-        //endregion
+    }
+
+    fun backData() {
+        if (mSerialPortHelper.isOpen) {
+            mSerialPortHelper.setISerialPortDataListener(object : ISerialPortDataListener {
+                override fun onDataReceived(bytes: ByteArray?) {
+                    var receivedData = BinaryChange.byteToHexString(bytes!!)
+                    LogUtil.e("TAG", receivedData)
+                }
+
+                override fun onDataSend(bytes: ByteArray?) {
+                    Log.e("ConfigFragment", "onDataSend: " + bytes?.let { BinaryChange.byteToHexString(it) })
+                }
+            })
+        }
+    }
+
+    fun serialPortHelperIsOpen(): Boolean {
+        return mSerialPortHelper.isOpen
     }
 
     @JvmName("getMSerialPortHelper1")

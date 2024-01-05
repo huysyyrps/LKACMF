@@ -12,10 +12,10 @@ import com.afollestad.materialdialogs.customview.customView
 import com.example.lkacmf.R
 import com.example.lkacmf.adapter.ImageListAdapter
 import com.example.lkacmf.databinding.ActivityImageListBinding
+import com.example.lkacmf.util.AdapterPositionCallBack
 import com.example.lkacmf.util.BaseActivity
 import com.example.lkacmf.util.Constant
 import com.example.lkacmf.util.StatusBarUtils
-import com.example.lkacmf.util.AdapterPositionCallBack
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import kotlinx.android.synthetic.main.dialog_delect_image.*
@@ -144,7 +144,11 @@ class ImageListActivity : BaseActivity() {
                         var path = "${filePath}/${pathList[index]}"
                         setBitmap(path)
                     }
-                })
+
+                override fun backLongPosition(longIndex: Int) {
+                    TODO("Not yet implemented")
+                }
+            })
             binding.recyclerView.adapter = adapter
             var path = "${filePath}/${pathList[selectIndex]}"
             setBitmap(path)

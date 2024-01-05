@@ -3,6 +3,7 @@
     <string name="btn_sure">确定</string>
     <string name="btn_cancel">取消</string>
     <string name="btn_scan">扫码</string>
+    <string name="btn_request">请求</string>
     <string name="no_rw_permission">: 没有读写权限</string>
     <string name="seriaport_open_fail">: 串口打开失败</string>
     <string name="qr_text">将二维码放入取景框内</string>
@@ -24,7 +25,7 @@
     <string name="suspend">暂停</string>
     <string name="refresh">刷新</string>
     <string name="detection_mode">检测模式</string>
-    <string name="calibration">标定</string>
+    <string name="calibration">校准</string>
     <string name="measure">测量</string>
     <string name="forms">报表</string>
     <string name="save">保存</string>
@@ -59,6 +60,9 @@
     <string name="write_thinkness">请输入图层厚度</string>
 
     <string name="image_list">图片列表</string>
+    <string name="configuration">配置选项</string>
+    <string name="recommend">推荐选项</string>
+    <string name="add_configuration">暂无配置选项，请点击添加</string>
     <string name="version_check">版本检测</string>
     <string name="current_version">当前版本</string>
     <string name="file_list">文件列表</string>
@@ -76,4 +80,5 @@
     <string name="save_success">保存成功</string>
     <string name="save_fail">保存失败</string>
     <string name="date_error">授权码获取失败</string>
+    <string name="add">添加</string>
 </resources>

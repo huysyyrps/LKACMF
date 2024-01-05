@@ -1,5 +1,7 @@
 package com.example.lkacmf.util
 
+import java.util.*
+
 object BinaryChange {
     /**
      * 10进制转16进制
@@ -11,6 +13,12 @@ object BinaryChange {
      */
     fun hexToInt(data:String):Int{
         return Integer.valueOf(data, 16)
+    }
+    /**
+     * 字母转大写
+     */
+    fun hexToCap(data:String):String{
+        return data.uppercase(Locale.getDefault())
     }
     /**
      * 校验
