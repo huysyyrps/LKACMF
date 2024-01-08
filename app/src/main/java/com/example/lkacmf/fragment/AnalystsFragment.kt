@@ -165,7 +165,7 @@ class AnalystsFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnBackPlay -> {
-                var mSerialPortHelper = SerialPortConstant.getMSerialPortHelper(requireActivity())
+//                var mSerialPortHelper = SerialPortConstant.getMSerialPortHelper(requireActivity())
                 SerialPortDataMake.operateData("00")
                 LineDataRead.backPlay(binding.lineChartAnaBX, binding.lineChartAnaBZ, binding.lineChartAna)
             }

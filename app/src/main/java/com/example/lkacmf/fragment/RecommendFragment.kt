@@ -8,10 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import com.example.lkacmf.R
+import com.example.lkacmf.activity.ConfigurationActivity
 import com.example.lkacmf.databinding.FragmentRecommendBinding
+import com.example.lkacmf.util.file.BaseFileUtil
 import com.example.lkacmf.util.sp.BaseSharedPreferences
+import java.io.File
 
-class RecommendFragment : Fragment() {
+class RecommendFragment : Fragment(), View.OnClickListener {
     private var _binding: FragmentRecommendBinding? = null
     private val binding get() = _binding!!
 
@@ -28,7 +32,7 @@ class RecommendFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStart() {
         super.onStart()
-
+        binding.btnRecommend.setOnClickListener(this)
         var workpieceFrom = BaseSharedPreferences.get("nsWorkpieceFrom", "")
         var workpieceQuality = BaseSharedPreferences.get("nsWorkpieceQuality", "")
         var thickness = BaseSharedPreferences.get("ncThickness", "")
@@ -36,7 +40,7 @@ class RecommendFragment : Fragment() {
 
         var probeHeat = ""
         var probeFrom = ""
-        probeHeat = if (heat.toFloat() < 100) {
+        probeHeat = if (heat.isNotEmpty()&&heat.toFloat() < 100) {
             "常温"
         } else {
             "高温"
@@ -59,15 +63,26 @@ class RecommendFragment : Fragment() {
             binding.tvProbeRate.text = "5KHz"
         }
 
-        val thicknessNum = thickness.toFloat()
-        if (thicknessNum>0&&thicknessNum<2){
-            binding.tvProbeNumb.text = "12V"
-        }else if (thicknessNum>2&&thicknessNum<4){
-            binding.tvProbeNumb.text = "14V"
-        }else if (thicknessNum>4&&thicknessNum<6){
-            binding.tvProbeNumb.text = "16V"
-        }else if (thicknessNum>6&&thicknessNum<8){
-            binding.tvProbeNumb.text = "18V"
+
+        if (thickness.isNotEmpty()){
+            val thicknessNum = thickness.toFloat()
+            if (thicknessNum>0&&thicknessNum<2){
+                binding.tvProbeNumb.text = "12V"
+            }else if (thicknessNum>2&&thicknessNum<4){
+                binding.tvProbeNumb.text = "14V"
+            }else if (thicknessNum>4&&thicknessNum<6){
+                binding.tvProbeNumb.text = "16V"
+            }else if (thicknessNum>6&&thicknessNum<8){
+                binding.tvProbeNumb.text = "18V"
+            }
+        }
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.btnRecommend->{
+                (activity as ConfigurationActivity).setViewPageItem(2)
+            }
         }
     }
 

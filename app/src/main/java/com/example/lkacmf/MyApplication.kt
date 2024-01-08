@@ -18,7 +18,6 @@ class MyApplication : Application() {
         context = applicationContext
         //截图service
         startService(Intent(this, MediaService::class.java))
-
-//        SerialPortConstant.getSerialPortHelper(context)
+//        SerialPortConstant.getSerialPortHelper()
     }
 }

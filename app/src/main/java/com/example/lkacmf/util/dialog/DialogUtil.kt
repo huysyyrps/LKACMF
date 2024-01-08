@@ -13,6 +13,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.example.lkacmf.MyApplication
 import com.example.lkacmf.R
+import com.example.lkacmf.activity.ConfigurationActivity
 import com.example.lkacmf.util.BinaryChange
 import com.example.lkacmf.util.DateUtil
 import com.example.lkacmf.util.pio.XwpfTUtil
@@ -71,7 +72,7 @@ object DialogUtil {
     /**
      * 设备授权码
      */
-    fun empowerDialog(activity: Activity, code:String, callBack: DialogSureCallBack): MaterialDialog {
+    fun empowerDialog(activity: ConfigurationActivity, code:String, callBack: DialogSureCallBack): MaterialDialog {
         dialog = MaterialDialog(activity)
             .cancelable(false)
             .show {

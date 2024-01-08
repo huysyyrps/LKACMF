@@ -11,9 +11,11 @@
 
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:layout_marginTop="41dp"
             android:orientation="horizontal">
+
 
 
         <LinearLayout
@@ -27,32 +29,28 @@
             <com.example.lkacmf.view.BaseTextView
                     style="@style/BaseTextView"
                     app:header_title="探头选择 " />
-            <com.example.lkacmf.util.nicespinner.NiceSpinner
+            <TextView
                     android:id="@+id/tvProbeSelect"
-                    style="@style/NiceSpinner"
-                    android:layout_margin="16dp"
-                    app:textTint="@color/white"
-                    app:arrowTint="@color/white"/>
+                    style="@style/EditText"
+                    android:layout_width="match_parent" />
 
             <com.example.lkacmf.view.BaseTextView
                     style="@style/BaseTextView"
                     app:header_title="探头频率" />
-            <com.example.lkacmf.util.nicespinner.NiceSpinner
+
+            <TextView
                     android:id="@+id/tvProbeRate"
-                    style="@style/NiceSpinner"
-                    android:layout_margin="16dp"
-                    app:textTint="@color/white"
-                    app:arrowTint="@color/white"/>
+                    style="@style/EditText"
+                    android:layout_width="match_parent" />
 
             <com.example.lkacmf.view.BaseTextView
                     style="@style/BaseTextView"
                     app:header_title="探头激励" />
-            <com.example.lkacmf.util.nicespinner.NiceSpinner
+
+            <TextView
                     android:id="@+id/tvProbeNumb"
-                    style="@style/NiceSpinner"
-                    android:layout_margin="16dp"
-                    app:textTint="@color/white"
-                    app:arrowTint="@color/white"/>
+                    style="@style/EditText"
+                    android:layout_width="match_parent" />
         </LinearLayout>
 
         <LinearLayout
@@ -63,7 +61,19 @@
                 android:layout_margin="30dp"
                 android:orientation="vertical">
 
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/test1" />
+
         </LinearLayout>
     </LinearLayout>
+
+    <com.example.lkacmf.view.BaseButton
+            android:id="@+id/btnRecommend"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            app:bg_corner="10dp"
+            android:text="校准"/>
 
 </LinearLayout>

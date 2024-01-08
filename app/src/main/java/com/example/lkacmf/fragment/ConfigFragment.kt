@@ -42,13 +42,12 @@ class ConfigFragment : Fragment(), View.OnClickListener, AcmfCodeContract.View {
     private var _binding: FragmentConfigBinding? = null
     private val binding get() = _binding!!
     lateinit var acmfCodePresenter: AcmfCodePresenter
-    private lateinit var mSerialPortHelper: SerialPortHelper
     lateinit var activity:Activity
     private var pathList = ArrayList<String>()
     var dialog: MaterialDialog? = null
     var selectIndex = 0
     private lateinit var adapter: ConfigListAdapter
-    lateinit var filePath : File
+    val filePath : File = Constant.FILEPATH
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,85 +62,14 @@ class ConfigFragment : Fragment(), View.OnClickListener, AcmfCodeContract.View {
     override fun onStart() {
         super.onStart()
         activity = requireActivity()
-        filePath = File(activity.externalCacheDir.toString() + "/" + Constant.SAVE_CONFIGURATION_PATH + "/")
         acmfCodePresenter = AcmfCodePresenter(requireContext(), view = this)
-        mSerialPortHelper = SerialPortConstant.getSerialPortHelper(activity)
         binding.btnSelect.setOnClickListener(this)
-
-        if (mSerialPortHelper.isOpen) {
-            mSerialPortHelper.setISerialPortDataListener(object : ISerialPortDataListener {
-                override fun onDataReceived(bytes: ByteArray?) {
-                    activity.runOnUiThread {
-                        var receivedData = BinaryChange.byteToHexString(bytes!!)
-                        LogUtil.e("TAG",receivedData)
-                        //判断是否激活
-                        if (receivedData.startsWith("B000") && receivedData.length == 48 && !activationStaing) {
-                            if (BinaryChange.proofData(receivedData.substring(0, 42)) == receivedData.subSequence(42, 44)) {
-                                var state = receivedData.substring(4, 6)
-                                var activationCode = ActivationCode.makeCode(receivedData.substring(6, 30))
-                                BaseSharedPreferences.put("activationCode", BinaryChange.hexToCap(activationCode))
-                                BaseSharedPreferences.put("deviceCode", BinaryChange.hexToCap(receivedData.substring(6, 30)))
-                                when (state) {
-                                    "00" -> {
-                                        activationStaing = true
-                                        "未激活".showToast(requireContext())
-                                        DialogUtil.noActivitionDialog(activity, object : DialogSureCallBack {
-                                            override fun sureCallBack(data: String) {
-                                                mSerialPortHelper.sendTxt(SerialPortDataMake.activationData(activationCode))
-                                                activationStaing = false
-                                            }
-
-                                            override fun cancelCallBack(data: String) {
-                                            }
-                                        })
-                                    }
-                                    "01" -> "非法设备".showToast(activity)
-                                    "02" -> {
-                                        if (!activationStaing) {
-                                            activationStaing = true
-                                            "授权失效".showToast(activity)
-                                            var code = "${receivedData.substring(6, 30)}/$activationCode"
-                                            DialogUtil.empowerDialog(activity, code, object : DialogSureCallBack {
-                                                override fun sureCallBack(data: String) {
-                                                    val params = HashMap<String, String>()
-                                                    params["received_data"] = receivedData.substring(6, 30)
-                                                    params["activation_code"] = activationCode
-                                                    params["use_date"] = ""
-                                                    val gson = Gson()
-                                                    val requestBody = RequestBody.create(
-                                                        "application/json; charset=utf-8".toMediaTypeOrNull(),
-                                                        gson.toJson(params)
-                                                    )
-                                                    acmfCodePresenter.getAcmfCode(requestBody)
-                                                }
-                                                override fun cancelCallBack(data: String) {
-                                                    activity.finish()
-                                                }
-                                            })
-                                        }
-                                    }
-                                    "03" -> {
-                                        "设备正常".showToast(activity)
-                                        SerialPortConstant.timer.cancel()
-                                        getConfigurationList()
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                override fun onDataSend(bytes: ByteArray?) {
-                    Log.e("ConfigFragment", "onDataSend: " + bytes?.let { BinaryChange.byteToHexString(it) })
-                }
-            })
-        }
     }
 
     /**
      * 获取配置列表
      */
-    private fun getConfigurationList() {
+    fun getConfigurationList() {
         /**将文件夹下所有文件名存入数组*/
         if (filePath.list() == null) {
             binding.linData.visibility = View.GONE
@@ -259,9 +187,9 @@ class ConfigFragment : Fragment(), View.OnClickListener, AcmfCodeContract.View {
             val countA = (intA.toFloat() - intB) / (intA + intB)
             val thicken: String = Integer.toHexString(Float.floatToIntBits(countA))
             val hexThicken = BinaryChange.addZeroForNum(thicken, 8)
-            if (hexThicken == acmfCode.activationCode.substring(52, 60)) {
-                mSerialPortHelper.sendTxt(SerialPortDataMake.empowerData(acmfCode.activationCode.substring(40, 60)))
-            }
+//            if (hexThicken == acmfCode.activationCode.substring(52, 60)) {
+//                mSerialPortHelper.sendTxt(SerialPortDataMake.empowerData(acmfCode.activationCode.substring(40, 60)))
+//            }
         }
     }
 
@@ -272,7 +200,6 @@ class ConfigFragment : Fragment(), View.OnClickListener, AcmfCodeContract.View {
 
     override fun onDestroy() {
         super.onDestroy()
-        mSerialPortHelper.nativeClose()
         _binding = null
     }
 }

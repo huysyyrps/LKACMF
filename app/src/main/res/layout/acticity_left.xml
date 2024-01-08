@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+    <LinearLayout
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <com.example.lkacmf.view.VerticleTextView
+                android:id="@+id/vtvConnectionState"
+                style="@style/VerticleTextView"
+                android:background="@drawable/verticle_textview" />
+
+        <View style="@style/HLine" />
+
+        <com.example.lkacmf.view.VerticleTextView
+                android:id="@+id/vtvProbeState"
+                style="@style/VerticleTextView"
+                android:background="@drawable/verticle_textview" />
+
+        <View style="@style/HLine" />
+
+        <com.example.lkacmf.view.VerticleTextView
+                android:id="@+id/vtvProbe"
+                style="@style/VerticleTextView"
+                android:background="@drawable/verticle_textview"
+                android:focusable="true" />
+
+        <View style="@style/HLine" />
+
+        <com.example.lkacmf.view.VerticleTextView
+                android:id="@+id/vtvProbeType"
+                style="@style/VerticleTextView"
+                android:background="@drawable/verticle_textview" />
+
+        <View style="@style/HLine" />
+
+        <com.example.lkacmf.view.VerticleTextView
+                android:id="@+id/vtvProbeNum"
+                style="@style/VerticleTextView"
+                android:background="@drawable/verticle_textview"
+                android:text="25" />
+
+        <View style="@style/HLine" />
+
+        <com.example.lkacmf.view.VerticleTextView
+                android:id="@+id/vtvSetting"
+                style="@style/VerticleTextView"
+                android:background="@drawable/verticle_textview"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="@string/setting" />
+
+    </LinearLayout>
+    <View style="@style/Vine" />
+</LinearLayout>
