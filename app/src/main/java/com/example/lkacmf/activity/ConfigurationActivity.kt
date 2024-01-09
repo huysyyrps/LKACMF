@@ -1,8 +1,8 @@
 package com.example.lkacmf.activity
 
-import android.app.Activity
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -28,16 +28,20 @@ import com.example.lkacmf.util.dialog.DialogUtil
 import com.example.lkacmf.util.file.BaseFileUtil
 import com.example.lkacmf.util.sp.BaseSharedPreferences
 import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import me.f1reking.serialportlib.listener.ISerialPortDataListener
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import java.lang.Float
 import java.util.*
+import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
-import kotlin.collections.HashMap
-import kotlin.concurrent.scheduleAtFixedRate
 import kotlin.getValue
 import kotlin.lazy
+import kotlin.let
 
 class ConfigurationActivity : AppCompatActivity(), View.OnClickListener, AcmfCodeContract.View {
     val timer = Timer()
@@ -57,8 +61,29 @@ class ConfigurationActivity : AppCompatActivity(), View.OnClickListener, AcmfCod
         acmfCodePresenter = AcmfCodePresenter(this, view = this)
         binding.btnAddConfig.setOnClickListener(this)
 
-        SerialPortConstant.getSerialPortHelper()
-        SerialPortConstant.serialPortDataListener<ConfigurationActivity>(this)
+        var mSerialPortHelper = SerialPortConstant.getSerialPortHelper()
+        mSerialPortHelper.setISerialPortDataListener(object : ISerialPortDataListener {
+            override fun onDataReceived(bytes: ByteArray?) {
+                var receivedData = BinaryChange.byteToHexString(bytes!!)
+                LogUtil.e("TAGACTIVITY", receivedData)
+                CoroutineScope(Dispatchers.Main).launch {
+                    //设备状态
+                    if (receivedData.length == 48) {
+                        SerialPortConstant.timer.cancel()
+                        getBackData(receivedData)
+                    }
+                    //设置
+                    if (receivedData.length == 18) {
+                        getBackData(receivedData)
+                    }
+                }
+            }
+
+            override fun onDataSend(bytes: ByteArray?) {
+                Log.e("TAG", "onDataSend: " + bytes?.let { BinaryChange.byteToHexString(it) })
+            }
+        })
+//        SerialPortConstant.serialPortDataListener<ConfigurationActivity>(this)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

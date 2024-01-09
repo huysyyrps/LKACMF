@@ -184,7 +184,8 @@ object LineDataRead {
             val lineDataBX = LineData(lineBXSet)
             lineChartBX.data = lineDataBX
 //            lineChartAnaBX.animateX(2000)
-            lineChartBX.setScaleMinima(1F,1F)
+//            lineChartBX.setScaleMinima(1F,1F)
+            lineChartBX.fitScreen()
             lineChartBX.notifyDataSetChanged()
             lineChartBX.invalidate()
 
@@ -197,7 +198,8 @@ object LineDataRead {
             //将数据集添加到数据 ChartData 中
             val lineDataBZ = LineData(lineBZSet)
             lineChartBZ.data = lineDataBZ
-            lineChartBX.setScaleMinima(1F,1F)
+//            lineChartBX.setScaleMinima(1F,1F)
+            lineChartBZ.fitScreen()
             lineChartBZ.notifyDataSetChanged()
             lineChartBZ.invalidate()
 //            lineChartAnaBZ.animateX(2000)
@@ -211,7 +213,8 @@ object LineDataRead {
             //将数据集添加到数据 ChartData 中
             val lineData = LineData(lineSet)
             lineChart.data = lineData
-            lineChartBX.setScaleMinima(1F,1F)
+//            lineChartBX.setScaleMinima(1F,1F)
+            lineChart.fitScreen()
             lineChart.notifyDataSetChanged()
             lineChart.invalidate()
 //            lineChartAna.animateX(2000)

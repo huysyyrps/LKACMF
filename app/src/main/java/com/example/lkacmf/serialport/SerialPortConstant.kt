@@ -58,41 +58,41 @@ object SerialPortConstant {
         }
     }
 
-    fun <T> serialPortDataListener(activity: T) {
-        mSerialPortHelper.setISerialPortDataListener(object : ISerialPortDataListener {
-            override fun onDataReceived(bytes: ByteArray?) {
-                var receivedData = BinaryChange.byteToHexString(bytes!!)
-                LogUtil.e("TAG", receivedData)
-                CoroutineScope(Dispatchers.Main).launch {
-                    //设备状态
-                    if (receivedData.startsWith("B000") && receivedData.length == 48) {
-                            timer.cancel()
-                        (activity as ConfigurationActivity).getBackData(receivedData)
-                    }
-                    //设置
-                    if (receivedData.startsWith("B102") && receivedData.length == 18) {
-                        if (BinaryChange.proofData(receivedData.substring(0, 12)) == receivedData.subSequence(12, 14)) {
-                            (activity as ConfigurationActivity).getBackData(receivedData)
-                        }
-                    }
-                    //参数
-                    if (receivedData.startsWith("B100") && receivedData.length == 24) {
-                        if (BinaryChange.proofData(receivedData.substring(0, 18)) == receivedData.subSequence(18, 20)) {
-                            (activity as CalibrationFragment).getBackData(receivedData)
-                        }
-                    }
-                    //数据
-                    if (receivedData.startsWith("B101") && receivedData.length == 40) {
-                        (activity as CalibrationFragment).getBackData(receivedData)
-                    }
-                }
-            }
-
-            override fun onDataSend(bytes: ByteArray?) {
-                Log.e("TAG", "onDataSend: " + bytes?.let { BinaryChange.byteToHexString(it) })
-            }
-        })
-    }
+//    fun <T> serialPortDataListener(activity: T) {
+//        mSerialPortHelper.setISerialPortDataListener(object : ISerialPortDataListener {
+//            override fun onDataReceived(bytes: ByteArray?) {
+//                var receivedData = BinaryChange.byteToHexString(bytes!!)
+//                LogUtil.e("TAG", receivedData)
+//                CoroutineScope(Dispatchers.Main).launch {
+//                    //设备状态
+//                    if (receivedData.startsWith("B000") && receivedData.length == 48) {
+//                            timer.cancel()
+//                        (activity as ConfigurationActivity).getBackData(receivedData)
+//                    }
+//                    //设置
+//                    if (receivedData.startsWith("B102") && receivedData.length == 18) {
+//                        if (BinaryChange.proofData(receivedData.substring(0, 12)) == receivedData.subSequence(12, 14)) {
+//                            (activity as ConfigurationActivity).getBackData(receivedData)
+//                        }
+//                    }
+//                    //参数
+//                    if (receivedData.startsWith("B100") && receivedData.length == 24) {
+//                        if (BinaryChange.proofData(receivedData.substring(0, 18)) == receivedData.subSequence(18, 20)) {
+//                            (activity as CalibrationFragment).getBackData(receivedData)
+//                        }
+//                    }
+//                    //数据
+//                    if (receivedData.startsWith("B101") && receivedData.length == 40) {
+//                        (activity as CalibrationFragment).getBackData(receivedData)
+//                    }
+//                }
+//            }
+//
+//            override fun onDataSend(bytes: ByteArray?) {
+//                Log.e("TAG", "onDataSend: " + bytes?.let { BinaryChange.byteToHexString(it) })
+//            }
+//        })
+//    }
 
 //    fun sendData(data: String) {
 //        if (mSerialPortHelper.isOpen) {

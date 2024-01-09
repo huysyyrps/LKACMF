@@ -3,10 +3,10 @@ package com.example.lkacmf.fragment
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.lkacmf.R
@@ -23,6 +23,10 @@ import com.example.lkacmf.util.linechart.LineChartListener.startIndex
 import com.example.lkacmf.util.linechart.LineChartSetting
 import com.example.lkacmf.util.linechart.LineDataRead
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import me.f1reking.serialportlib.listener.ISerialPortDataListener
 import kotlin.math.pow
 
 class CalibrationFragment : Fragment(), View.OnClickListener {
@@ -56,6 +60,29 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
         binding.btnReset.setOnClickListener(this)
         binding.btnStopCalibration.setOnClickListener(this)
 
+
+        var mSerialPortHelper = SerialPortConstant.getSerialPortHelper()
+        mSerialPortHelper.setISerialPortDataListener(object : ISerialPortDataListener {
+            override fun onDataReceived(bytes: ByteArray?) {
+                var receivedData = BinaryChange.byteToHexString(bytes!!)
+                LogUtil.e("TAGFRAGMENT", receivedData)
+                CoroutineScope(Dispatchers.Main).launch {
+                    //参数
+                    if (receivedData.length == 24) {
+                        getBackData(receivedData)
+                    }
+                    //数据
+                    if (receivedData.length == 40) {
+                        getBackData(receivedData)
+                    }
+                }
+            }
+
+            override fun onDataSend(bytes: ByteArray?) {
+                Log.e("TAG", "onDataSend: " + bytes?.let { BinaryChange.byteToHexString(it) })
+            }
+        })
+
         binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
             if (checkedId==R.id.btnScreen||checkedId==R.id.btnCount||checkedId==R.id.btnReset){
                 screenState = true
@@ -68,9 +95,9 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
         LineChartSetting.SettingLineChart(requireActivity(), binding.lineChartBX, showX = true, scale = true)
         LineChartSetting.SettingLineChart(requireActivity(), binding.lineChartBZ, showX = true, scale = true)
         LineChartSetting.SettingLineChart(requireActivity(), binding.lineChart, showX = true, scale = true)
-        LineChartListener.lineChartSetListener(binding.lineChartBX,binding.lineChartBX,binding.lineChartBZ,binding.lineChart,this)
-        LineChartListener.lineChartSetListener(binding.lineChartBZ,binding.lineChartBX,binding.lineChartBZ,binding.lineChart,this)
-        LineChartListener.lineChartSetListener(binding.lineChart,binding.lineChartBX,binding.lineChartBZ,binding.lineChart,this)
+        LineChartListener.lineChartSetListener(binding.lineChartBX, binding.lineChartBX, binding.lineChartBZ, binding.lineChart, this)
+        LineChartListener.lineChartSetListener(binding.lineChartBZ, binding.lineChartBX, binding.lineChartBZ, binding.lineChart, this)
+        LineChartListener.lineChartSetListener(binding.lineChart, binding.lineChartBX, binding.lineChartBZ, binding.lineChart, this)
 
     }
 
@@ -78,9 +105,7 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnStartCalibration -> {
-                binding.btnStart.visibility = View.GONE
                 binding.linCalibration.visibility = View.VISIBLE
-                SerialPortConstant.serialPortDataListener<CalibrationFragment>(this)
                 SerialPortConstant.getSerialPortHelper().sendTxt(SerialPortDataMake.operateData("00"))
             }
             R.id.btnStart->{
@@ -176,9 +201,10 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getBackData(receivedData: String) {
-        if (!screenState){
-            //参数
-            if (receivedData.startsWith("B100")) {
+//        if (!screenState){
+        //参数
+        if (receivedData.startsWith("B100")) {
+            if (BinaryChange.proofData(receivedData.substring(0, 18)) == receivedData.subSequence(18, 20)) {
                 binding.btnStartCalibration.visibility = View.GONE
                 binding.linCalibration.visibility = View.VISIBLE
                 when (receivedData.subSequence(4, 6)) {
@@ -187,26 +213,28 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
                     "02" -> binding.ivLeft.vtvConnectionState.text = "授权失败"
                     "03" -> binding.ivLeft.vtvConnectionState.text = "连接正常"
                 }
-//            binding.tvQuantity.text = BinaryChange.hexToInt(receivedData.subSequence(6, 8) as String).toString()
-                when (receivedData.subSequence(8, 10)) {
-                    "00" -> {
-                        binding.btnSuspend.visibility = View.GONE
-                        binding.btnStart.visibility = View.VISIBLE
-                    }
-                    "01" -> {
-                        binding.btnSuspend.visibility = View.VISIBLE
-                        binding.btnStart.visibility = View.GONE
-                        binding.btnSuspend.isChecked = true
-                    }
-                    "02" -> {
-                        binding.btnSuspend.visibility = View.GONE
-                        binding.btnStart.visibility = View.VISIBLE
-                        binding.btnStart.isChecked = true
-                    }
-                    "03" -> {
-                        binding.btnRefresh.isChecked = true
+                if (!screenState){
+                    when (receivedData.subSequence(8, 10)) {
+                        "00" -> {
+                            binding.btnSuspend.visibility = View.GONE
+                            binding.btnStart.visibility = View.VISIBLE
+                        }
+                        "01" -> {
+                            binding.btnSuspend.visibility = View.VISIBLE
+                            binding.btnStart.visibility = View.GONE
+                            binding.btnSuspend.isChecked = true
+                        }
+                        "02" -> {
+                            binding.btnSuspend.visibility = View.GONE
+                            binding.btnStart.visibility = View.VISIBLE
+                            binding.btnStart.isChecked = true
+                        }
+                        "03" -> {
+                            binding.btnRefresh.isChecked = true
+                        }
                     }
                 }
+
                 when (receivedData.subSequence(10, 12)) {
                     "00" -> binding.ivLeft.vtvProbeState.text = "未连接"
                     "01" -> binding.ivLeft.vtvProbeState.text = "已连接"
@@ -229,12 +257,13 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
                 binding.ivLeft.vtvProbeNum.text = BinaryChange.hexToInt(receivedData.subSequence(16, 18) as String).toString()
                 SerialPortConstant.getSerialPortHelper().sendTxt(SerialPortDataMake.operateData(receivedData.subSequence(8, 10).toString()))
             }
+        }
             //数据
-            if (receivedData.startsWith("B101") && receivedData.length == 40) {
+        if (receivedData.startsWith("B101") && receivedData.length == 40) {
                 var data = receivedData.substring(10, 34)
                 Thread.sleep(5)
                 LineDataRead.readMeterData(data, binding.lineChartBX, binding.lineChartBZ, binding.lineChart, false)
             }
-        }
+//        }
     }
 }
