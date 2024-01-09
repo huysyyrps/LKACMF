@@ -80,6 +80,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      */
     private boolean mDragXEnabled = true;
     private boolean mDragYEnabled = true;
+    public boolean mCanScale = true;
 
     private boolean mScaleXEnabled = true;
     private boolean mScaleYEnabled = true;
@@ -1102,6 +1103,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         this.mDragYEnabled = enabled;
     }
 
+    public void setCanScale(boolean canScale){
+        this.mCanScale = canScale;
+    }
+
     /**
      * Returns true if dragging is enabled for the chart, false if not.
      *
@@ -1109,6 +1114,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      */
     public boolean isDragEnabled() {
         return mDragXEnabled || mDragYEnabled;
+    }
+    public boolean isCanScale() {
+        return mCanScale;
     }
 
     /**

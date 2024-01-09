@@ -62,9 +62,11 @@ object SerialPortConstant {
         mSerialPortHelper.setISerialPortDataListener(object : ISerialPortDataListener {
             override fun onDataReceived(bytes: ByteArray?) {
                 var receivedData = BinaryChange.byteToHexString(bytes!!)
+                LogUtil.e("TAG", receivedData)
                 CoroutineScope(Dispatchers.Main).launch {
                     //设备状态
                     if (receivedData.startsWith("B000") && receivedData.length == 48) {
+                            timer.cancel()
                         (activity as ConfigurationActivity).getBackData(receivedData)
                     }
                     //设置
@@ -87,7 +89,7 @@ object SerialPortConstant {
             }
 
             override fun onDataSend(bytes: ByteArray?) {
-                Log.e("ConfigFragment", "onDataSend: " + bytes?.let { BinaryChange.byteToHexString(it) })
+                Log.e("TAG", "onDataSend: " + bytes?.let { BinaryChange.byteToHexString(it) })
             }
         })
     }

@@ -53,13 +53,17 @@ class ConfigurationActivity : AppCompatActivity(), View.OnClickListener, AcmfCod
         binding = ActivityConfigurationBinding.inflate(layoutInflater)
         val view: View = binding.root
         setContentView(view)
+        initViewPage()
         acmfCodePresenter = AcmfCodePresenter(this, view = this)
         binding.btnAddConfig.setOnClickListener(this)
 
-        initViewPage()
-
         SerialPortConstant.getSerialPortHelper()
         SerialPortConstant.serialPortDataListener<ConfigurationActivity>(this)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onResume() {
+        super.onResume()
     }
 
     private fun initViewPage() {
@@ -130,6 +134,7 @@ class ConfigurationActivity : AppCompatActivity(), View.OnClickListener, AcmfCod
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getBackData(receivedData: String) {
+        LogUtil.e("TAG",receivedData)
         if (receivedData.startsWith("B000") && !activationStaing) {
             SerialPortConstant.timer.cancel()
             if (BinaryChange.proofData(receivedData.substring(0, 42)) == receivedData.subSequence(42, 44)) {

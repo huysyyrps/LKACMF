@@ -69,7 +69,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="电量：" />
+                        android:text="80" />
             </LinearLayout>
         </LinearLayout>
 
@@ -85,6 +85,7 @@
                 <com.example.lkacmf.view.VerticleTextView
                         android:id="@+id/vtv_connection_state"
                         style="@style/VerticleTextView"
+                        android:text="通讯已连接"
                         android:background="@drawable/verticle_textview" />
 
                 <View style="@style/HLine" />
@@ -92,6 +93,7 @@
                 <com.example.lkacmf.view.VerticleTextView
                         android:id="@+id/vtvProbeState"
                         style="@style/VerticleTextView"
+                        android:text="探头链接正常"
                         android:background="@drawable/verticle_textview" />
 
                 <View style="@style/HLine" />
@@ -99,6 +101,7 @@
                 <com.example.lkacmf.view.VerticleTextView
                         android:id="@+id/vtvProbe"
                         style="@style/VerticleTextView"
+                        android:text="标准探头"
                         android:background="@drawable/verticle_textview"
                         android:focusable="true" />
 
@@ -107,6 +110,7 @@
                 <com.example.lkacmf.view.VerticleTextView
                         android:id="@+id/vtvProbeType"
                         style="@style/VerticleTextView"
+                        android:text="常温探头"
                         android:background="@drawable/verticle_textview" />
 
                 <View style="@style/HLine" />

@@ -49,121 +49,123 @@ object LineChartSetting {
         linechar.minOffset = 0.0f
         //硬件加速
         linechar.setHardwareAccelerationEnabled(true);
+        //region
         // 当前统计图表中最多在x轴坐标线上显示的总量
 //        linechar.setVisibleXRangeMaximum(300f);
 //        linechar.moveViewToX(300f);
-        linechar.onChartGestureListener = object : OnChartGestureListener {
-            // 手势监听器
-            override fun onChartGestureStart(event: MotionEvent, lastPerformedGesture: ChartTouchListener.ChartGesture) {
-                // 按下
-                LogUtil.e("TAG", "按下")
-                val h: Highlight = linechar.getHighlightByTouchPoint(event.x, event.y)
-                LogUtil.e("LineChartSetting","$h")
-                mSavedMatrix.set(mMatrix)
-            }
-
-            override fun onChartGestureDoubleStart(event: MotionEvent) {
-                if (event.pointerCount >= 2) {
-                    midPoint(mTouchPointCenter, event)
-                }
-            }
-
-            override fun onChartGestureEnd(event: MotionEvent, lastPerformedGesture: ChartTouchListener.ChartGesture) {
-                // 抬起,取消
-                LogUtil.e("TAG", "抬起")
-                val h: Highlight = linechar.getHighlightByTouchPoint(event.x, event.y)
-                LogUtil.e("LineChartEnd","$h")
-            }
-
-            override fun onChartLongPressed(me: MotionEvent) {
-                // 长按
-                LogUtil.e("TAG", "长按")
-            }
-
-            override fun onChartDoubleTapped(me: MotionEvent) {
-                // 双击
-                LogUtil.e("TAG", "双击")
-            }
-
-            override fun onChartSingleTapped(me: MotionEvent) {
-                // 单击
-                LogUtil.e("TAG", "单击")
-            }
-
-            override fun onChartFling(me1: MotionEvent, me2: MotionEvent, velocityX: Float, velocityY: Float) {
-                // 甩动
-                LogUtil.e("TAG", "甩动")
-            }
-
-            override fun onChartScale(event: MotionEvent, scaleX: Float, scaleY: Float) {
-                // 缩放
-                when (linechar.id) {
-                    R.id.lineChartBX -> {
-                        if (oldScaleX != scaleX || oldScaleY != scaleY) {
-                            if (scaleX != 1F || scaleY != 1F) {
-                                mMatrix.set(mSavedMatrix)
-                                val t = getTrans(mTouchPointCenter.x, mTouchPointCenter.y,activity.lineChartBZ)
-                                mMatrix.postScale(scaleX, 1F, t.x, t.y)
-                                activity.lineChartBZ.viewPortHandler.refresh(mMatrix, activity.lineChartBZ, true)
-                                activity.lineChart.viewPortHandler.refresh(mMatrix, activity.lineChart, true)
-                            }
-                        }
-                    }
-                    R.id.lineChartBZ -> {
-                        if (oldScaleX != scaleX || oldScaleY != scaleY) {
-                            if (scaleX != 1F || scaleY != 1F) {
-                                mMatrix.set(mSavedMatrix)
-                                val t = getTrans(mTouchPointCenter.x, mTouchPointCenter.y,activity.lineChartBX)
-                                mMatrix.postScale(scaleX, 1F, t.x, t.y)
-                                activity.lineChartBX.viewPortHandler.refresh(mMatrix, activity.lineChartBX, true)
-                                activity.lineChart.viewPortHandler.refresh(mMatrix, activity.lineChart, true)
-                            }
-                        }
-                    }
-                    R.id.lineChart -> {
-                    if (oldScaleX != scaleX || oldScaleY != scaleY) {
-                        if (scaleX != 1F || scaleY != 1F) {
-                            mMatrix.set(mSavedMatrix)
-                            val t = getTrans(mTouchPointCenter.x, mTouchPointCenter.y,activity.lineChart)
-                            mMatrix.postScale(scaleX, 1F, t.x, t.y)
-                            activity.lineChartBZ.getViewPortHandler().refresh(mMatrix, activity.lineChartBZ, true)
-                            activity.lineChartBX.viewPortHandler.refresh(mMatrix, activity.lineChartBX, true)
-                        }
-                    }
-                }
-                }
-            }
-
-            override fun onChartTranslate(me: MotionEvent, dX: Float, dY: Float) {
-                // 移动
-                LogUtil.e("TAG", "移动")
-                LogUtil.e("TAG", "$dX  $dY")
-                when (linechar.id) {
-                    R.id.lineChartBX -> {
-                        mMatrix.set(mSavedMatrix)
-                        mMatrix.postTranslate(dX, dY)
-                        activity.lineChartBZ.viewPortHandler.refresh(mMatrix, activity.lineChartBZ, true)
-                        activity.lineChart.viewPortHandler.refresh(mMatrix, activity.lineChart, true)
-                    }
-                    R.id.lineChartBZ -> {
-                        mMatrix.set(mSavedMatrix)
-                        mMatrix.postTranslate(dX, dY)
-                        activity.lineChartBX.viewPortHandler.refresh(mMatrix, activity.lineChartBX, true)
-                        activity.lineChart.viewPortHandler.refresh(mMatrix, activity.lineChart, true)
-                    }
-                    R.id.lineChart -> {
-                        mMatrix.set(mSavedMatrix)
-                        mMatrix.postTranslate(dX, dY)
-                        activity.lineChartBZ.viewPortHandler.refresh(mMatrix, activity.lineChartBZ, true)
-                        activity.lineChartBX.viewPortHandler.refresh(mMatrix, activity.lineChartBX, true)
-                    }
-                }
-            }
-
-            override fun onChartMove(me: MotionEvent?) {
-                LogUtil.e("TAG", "滑动")
-            }
-        }
+//        linechar.onChartGestureListener = object : OnChartGestureListener {
+//            // 手势监听器
+//            override fun onChartGestureStart(event: MotionEvent, lastPerformedGesture: ChartTouchListener.ChartGesture) {
+//                // 按下
+//                LogUtil.e("TAG", "按下")
+//                val h: Highlight = linechar.getHighlightByTouchPoint(event.x, event.y)
+//                LogUtil.e("LineChartSetting","$h")
+//                mSavedMatrix.set(mMatrix)
+//            }
+//
+//            override fun onChartGestureDoubleStart(event: MotionEvent) {
+//                if (event.pointerCount >= 2) {
+//                    midPoint(mTouchPointCenter, event)
+//                }
+//            }
+//
+//            override fun onChartGestureEnd(event: MotionEvent, lastPerformedGesture: ChartTouchListener.ChartGesture) {
+//                // 抬起,取消
+//                LogUtil.e("TAG", "抬起")
+//                val h: Highlight = linechar.getHighlightByTouchPoint(event.x, event.y)
+//                LogUtil.e("LineChartEnd","$h")
+//            }
+//
+//            override fun onChartLongPressed(me: MotionEvent) {
+//                // 长按
+//                LogUtil.e("TAG", "长按")
+//            }
+//
+//            override fun onChartDoubleTapped(me: MotionEvent) {
+//                // 双击
+//                LogUtil.e("TAG", "双击")
+//            }
+//
+//            override fun onChartSingleTapped(me: MotionEvent) {
+//                // 单击
+//                LogUtil.e("TAG", "单击")
+//            }
+//
+//            override fun onChartFling(me1: MotionEvent, me2: MotionEvent, velocityX: Float, velocityY: Float) {
+//                // 甩动
+//                LogUtil.e("TAG", "甩动")
+//            }
+//
+//            override fun onChartScale(event: MotionEvent, scaleX: Float, scaleY: Float) {
+//                // 缩放
+//                when (linechar.id) {
+//                    R.id.lineChartBX -> {
+//                        if (oldScaleX != scaleX || oldScaleY != scaleY) {
+//                            if (scaleX != 1F || scaleY != 1F) {
+//                                mMatrix.set(mSavedMatrix)
+//                                val t = getTrans(mTouchPointCenter.x, mTouchPointCenter.y,activity.lineChartBZ)
+//                                mMatrix.postScale(scaleX, 1F, t.x, t.y)
+//                                activity.lineChartBZ.viewPortHandler.refresh(mMatrix, activity.lineChartBZ, true)
+//                                activity.lineChart.viewPortHandler.refresh(mMatrix, activity.lineChart, true)
+//                            }
+//                        }
+//                    }
+//                    R.id.lineChartBZ -> {
+//                        if (oldScaleX != scaleX || oldScaleY != scaleY) {
+//                            if (scaleX != 1F || scaleY != 1F) {
+//                                mMatrix.set(mSavedMatrix)
+//                                val t = getTrans(mTouchPointCenter.x, mTouchPointCenter.y,activity.lineChartBX)
+//                                mMatrix.postScale(scaleX, 1F, t.x, t.y)
+//                                activity.lineChartBX.viewPortHandler.refresh(mMatrix, activity.lineChartBX, true)
+//                                activity.lineChart.viewPortHandler.refresh(mMatrix, activity.lineChart, true)
+//                            }
+//                        }
+//                    }
+//                    R.id.lineChart -> {
+//                    if (oldScaleX != scaleX || oldScaleY != scaleY) {
+//                        if (scaleX != 1F || scaleY != 1F) {
+//                            mMatrix.set(mSavedMatrix)
+//                            val t = getTrans(mTouchPointCenter.x, mTouchPointCenter.y,activity.lineChart)
+//                            mMatrix.postScale(scaleX, 1F, t.x, t.y)
+//                            activity.lineChartBZ.getViewPortHandler().refresh(mMatrix, activity.lineChartBZ, true)
+//                            activity.lineChartBX.viewPortHandler.refresh(mMatrix, activity.lineChartBX, true)
+//                        }
+//                    }
+//                }
+//                }
+//            }
+//
+//            override fun onChartTranslate(me: MotionEvent, dX: Float, dY: Float) {
+//                // 移动
+//                LogUtil.e("TAG", "移动")
+//                LogUtil.e("TAG", "$dX  $dY")
+//                when (linechar.id) {
+//                    R.id.lineChartBX -> {
+//                        mMatrix.set(mSavedMatrix)
+//                        mMatrix.postTranslate(dX, dY)
+//                        activity.lineChartBZ.viewPortHandler.refresh(mMatrix, activity.lineChartBZ, true)
+//                        activity.lineChart.viewPortHandler.refresh(mMatrix, activity.lineChart, true)
+//                    }
+//                    R.id.lineChartBZ -> {
+//                        mMatrix.set(mSavedMatrix)
+//                        mMatrix.postTranslate(dX, dY)
+//                        activity.lineChartBX.viewPortHandler.refresh(mMatrix, activity.lineChartBX, true)
+//                        activity.lineChart.viewPortHandler.refresh(mMatrix, activity.lineChart, true)
+//                    }
+//                    R.id.lineChart -> {
+//                        mMatrix.set(mSavedMatrix)
+//                        mMatrix.postTranslate(dX, dY)
+//                        activity.lineChartBZ.viewPortHandler.refresh(mMatrix, activity.lineChartBZ, true)
+//                        activity.lineChartBX.viewPortHandler.refresh(mMatrix, activity.lineChartBX, true)
+//                    }
+//                }
+//            }
+//
+//            override fun onChartMove(me: MotionEvent?) {
+//                LogUtil.e("TAG", "滑动")
+//            }
+//        }
+        //endregion
 
 
         //X轴

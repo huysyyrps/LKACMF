@@ -168,6 +168,57 @@ object LineDataRead {
     }
 
     /**
+     * 复位
+     * lineChartBX
+     */
+    fun reset(lineChartBX: LineChart, lineChartBZ: LineChart, lineChart: LineChart) {
+        if (DataManagement.returnBXList().isNotEmpty()) {
+            //将数据添加到图表中
+            lineChartBX.clear()
+            var lineBXSet = LineDataSet(landBXList, "BX")
+            lineBXSet.setDrawValues(false)
+            lineBXSet.setDrawCircles(false)
+            lineBXSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+            lineBXSet.color = MyApplication.context.resources.getColor(R.color.theme_color)
+            //将数据集添加到数据 ChartData 中
+            val lineDataBX = LineData(lineBXSet)
+            lineChartBX.data = lineDataBX
+//            lineChartAnaBX.animateX(2000)
+            lineChartBX.setScaleMinima(1F,1F)
+            lineChartBX.notifyDataSetChanged()
+            lineChartBX.invalidate()
+
+            lineChartBZ.clear()
+            var lineBZSet = LineDataSet(landBZList, "BX")
+            lineBZSet.setDrawValues(false)
+            lineBZSet.setDrawCircles(false)
+            lineBZSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+            lineBZSet.color = MyApplication.context.resources.getColor(R.color.theme_color)
+            //将数据集添加到数据 ChartData 中
+            val lineDataBZ = LineData(lineBZSet)
+            lineChartBZ.data = lineDataBZ
+            lineChartBX.setScaleMinima(1F,1F)
+            lineChartBZ.notifyDataSetChanged()
+            lineChartBZ.invalidate()
+//            lineChartAnaBZ.animateX(2000)
+
+            lineChart.clear()
+            var lineSet = LineDataSet(landList, "BX")
+            lineSet.setDrawValues(false)
+            lineSet.setDrawCircles(false)
+            lineSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+            lineSet.color = MyApplication.context.resources.getColor(R.color.theme_color)
+            //将数据集添加到数据 ChartData 中
+            val lineData = LineData(lineSet)
+            lineChart.data = lineData
+            lineChartBX.setScaleMinima(1F,1F)
+            lineChart.notifyDataSetChanged()
+            lineChart.invalidate()
+//            lineChartAna.animateX(2000)
+        }
+    }
+
+    /**
      * Refresh刷新
      */
     fun readRefreshData(lineChartBX: LineChart, lineChartBZ: LineChart, lineChart: LineChart) {

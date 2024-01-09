@@ -75,7 +75,7 @@ class HomeFragment : Fragment(), View.OnClickListener, AcmfCodeContract.View {
      */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun SerialPortHelperHandler() {
-//        mSerialPortHelper = SerialPortConstant.getMSerialPortHelper(requireActivity())
+        mSerialPortHelper = SerialPortConstant.getSerialPortHelper()
         mSerialPortHelper.startReceivedThread()
         if (mSerialPortHelper.isOpen) {
             mSerialPortHelper.setISerialPortDataListener(object : ISerialPortDataListener {

@@ -188,12 +188,14 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                     if (mChart.isDragEnabled()) {
                         boolean shouldPan = !mChart.isFullyZoomedOut() || !mChart.hasNoDragOffset();
                         if (shouldPan) {
-                            float distanceX = Math.abs(event.getX() - mTouchStartPoint.x);
-                            float distanceY = Math.abs(event.getY() - mTouchStartPoint.y);
-                            // Disable dragging in a direction that's disallowed
-                            if ((mChart.isDragXEnabled() || distanceY >= distanceX) && (mChart.isDragYEnabled() || distanceY <= distanceX)) {
-                                mLastGesture = ChartGesture.DRAG;
-                                mTouchMode = DRAG;
+                            if (mChart.isCanScale()){
+                                float distanceX = Math.abs(event.getX() - mTouchStartPoint.x);
+                                float distanceY = Math.abs(event.getY() - mTouchStartPoint.y);
+                                // Disable dragging in a direction that's disallowed
+                                if ((mChart.isDragXEnabled() || distanceY >= distanceX) && (mChart.isDragYEnabled() || distanceY <= distanceX)) {
+                                    mLastGesture = ChartGesture.DRAG;
+                                    mTouchMode = DRAG;
+                                }
                             }
                             moveAction(event);
                         } else {
