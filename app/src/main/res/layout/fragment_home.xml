@@ -59,35 +59,57 @@
                                 android:background="@drawable/verticle_textview_select"
                                 android:text="@string/refresh"
                                 app:drawableTop="@drawable/ic_refus" />
-                    </RadioGroup>
 
-                    <com.example.lkacmf.view.BaseRadionButton
+                        <com.example.lkacmf.view.BaseRadionButton
+                                android:id="@+id/btnBackPlay"
+                                style="@style/BaseRadioButton"
+                                android:background="@drawable/verticle_textview"
+                                android:text="@string/back_play"
+                                app:drawableTop="@drawable/ic_backplay" />
+
+                        <com.example.lkacmf.view.BaseRadionButton
+                                android:id="@+id/btnReset"
+                                style="@style/BaseRadioButton"
+                                android:background="@drawable/verticle_textview_select"
+                                android:text="@string/reset"
+                                app:drawableTop="@drawable/ic_reset" />
+
+                        <com.example.lkacmf.view.BaseRadionButton
+                                android:id="@+id/btnGate"
+                                style="@style/BaseRadioButton"
+                                android:background="@drawable/verticle_textview"
+                                android:text="@string/gate"
+                                app:drawableTop="@drawable/ic_backplay" />
+
+
+                        <com.example.lkacmf.view.BaseRadionButton
                             android:id="@+id/btnPunctation"
                             style="@style/BaseRadioButton"
-                            android:background="@drawable/verticle_textview"
+                            android:background="@drawable/verticle_textview_select"
                             android:text="@string/punctation"
                             app:drawableTop="@drawable/ic_punctation" />
 
                     <com.example.lkacmf.view.BaseRadionButton
                             android:id="@+id/btnDirection"
                             style="@style/BaseRadioButton"
-                            android:background="@drawable/verticle_textview"
+                            android:background="@drawable/verticle_textview_select"
                             android:text="@string/direction"
                             app:drawableTop="@drawable/ic_direction" />
 
                     <com.example.lkacmf.view.BaseRadionButton
                             android:id="@+id/btnMaterial"
                             style="@style/BaseRadioButton"
-                            android:background="@drawable/verticle_textview"
+                            android:background="@drawable/verticle_textview_select"
                             android:text="@string/material"
                             app:drawableTop="@drawable/ic_select" />
 
-                    <com.example.lkacmf.view.BaseRadionButton
-                            android:id="@+id/btnThinkness"
-                            style="@style/BaseRadioButton"
-                            android:background="@drawable/verticle_textview"
-                            android:text="@string/thinkness"
-                            app:drawableTop="@drawable/ic_thinkness" />
+                        <com.example.lkacmf.view.BaseRadionButton
+                                android:id="@+id/btnThinkness"
+                                style="@style/BaseRadioButton"
+                                android:background="@drawable/verticle_textview_select"
+                                android:text="@string/thinkness"
+                                app:drawableTop="@drawable/ic_thinkness" />
+                    </RadioGroup>
 
             </LinearLayout>
 
@@ -119,7 +141,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent">
 
-                                <com.github.mikephil.charting.charts.LineChart
+                                <com.example.lkacmf.view.BaseLineChart
                                         android:id="@+id/lineChartBX"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent" />
@@ -148,7 +170,7 @@
                                     android:layout_height="match_parent"
                                     android:orientation="vertical">
 
-                                <com.github.mikephil.charting.charts.LineChart
+                                <com.example.lkacmf.view.BaseLineChart
                                         android:id="@+id/lineChartBZ"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
@@ -186,7 +208,7 @@
                                     android:layout_height="match_parent"
                                     android:orientation="vertical">
 
-                                <com.github.mikephil.charting.charts.LineChart
+                                <com.example.lkacmf.view.BaseLineChart
                                         android:id="@+id/lineChart"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"

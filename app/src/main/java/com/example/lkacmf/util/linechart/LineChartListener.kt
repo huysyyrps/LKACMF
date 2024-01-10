@@ -25,13 +25,8 @@ object LineChartListener {
     val mSavedMatrix = Matrix()
     private val mTouchPointCenter = MPPointF.getInstance(0f, 0f)
     private var rect: Rect = DataManagement.frameRect
-    fun lineChartSetListener(
-        view: BaseLineChart,
-        lineChartBX: BaseLineChart,
-        lineChartBZ: BaseLineChart,
-        lineChart: BaseLineChart,
-        fragment: CalibrationFragment
-    ) {
+    fun lineChartSetListener(view: BaseLineChart, lineChartBX: BaseLineChart, lineChartBZ: BaseLineChart
+                                 , lineChart: BaseLineChart, fragment: CalibrationFragment) {
         view.onChartGestureListener = object : OnChartGestureListener {
             override fun onChartGestureStart(event: MotionEvent, lastPerformedGesture: ChartTouchListener.ChartGesture) {
                 if (event.pointerCount == 1) {

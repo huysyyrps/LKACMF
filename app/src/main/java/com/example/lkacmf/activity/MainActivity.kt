@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -20,14 +21,19 @@ import com.example.lkacmf.fragment.HomeFragment
 import com.example.lkacmf.fragment.UserInfoFragment
 import com.example.lkacmf.module.VersionInfoContract
 import com.example.lkacmf.presenter.VersionInfoPresenter
-import com.example.lkacmf.util.BaseActivity
-import com.example.lkacmf.util.BaseTelPhone
+import com.example.lkacmf.serialport.SerialPortConstant
+import com.example.lkacmf.serialport.SerialPortDataMake
+import com.example.lkacmf.util.*
 import com.example.lkacmf.util.dialog.DialogUtil
-import com.example.lkacmf.util.showToast
+import com.example.lkacmf.util.linechart.LineDataRead
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
 import constant.UiType
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import listener.OnInitUiListener
+import me.f1reking.serialportlib.listener.ISerialPortDataListener
 import model.UiConfig
 import model.UpdateConfig
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -36,7 +42,7 @@ import update.UpdateAppUtils
 
 
 class MainActivity : BaseActivity(), View.OnClickListener, VersionInfoContract.View  {
-    private lateinit var binding: ActivityMainBinding
+    public lateinit var binding: ActivityMainBinding
     private var version: String = "1.0.0"
     private lateinit var versionInfoPresenter: VersionInfoPresenter
     private lateinit var mFm: FragmentManager

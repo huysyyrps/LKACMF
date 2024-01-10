@@ -22,6 +22,7 @@ import com.example.lkacmf.util.linechart.LineChartListener.endIndex
 import com.example.lkacmf.util.linechart.LineChartListener.startIndex
 import com.example.lkacmf.util.linechart.LineChartSetting
 import com.example.lkacmf.util.linechart.LineDataRead
+import com.example.lkacmf.util.showToast
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -142,6 +143,10 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
 
             }
             R.id.btnCount->{
+                if (startIndex==0|| endIndex==0){
+                    "请框选区域".showToast(requireContext())
+                    return
+                }
                 LogUtil.e("TAG","$startIndex ---$endIndex")
                 var countList = if (startIndex< endIndex){
                     DataManagement.landBXList.subList(startIndex, endIndex)

@@ -5,6 +5,9 @@ import com.example.lkacmf.util.linechart.LineDataRead
 import com.github.mikephil.charting.data.Entry
 
 object DataManagement {
+    //判断折线图是否可以被框选
+    var screenState = false
+
     var landBXList: ArrayList<Entry> = ArrayList()
     var landBZList: ArrayList<Entry> = ArrayList()
     var landList: ArrayList<Entry> = ArrayList()

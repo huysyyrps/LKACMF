@@ -77,61 +77,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
-            <LinearLayout
-                    android:layout_width="45dp"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                <com.example.lkacmf.view.VerticleTextView
-                        android:id="@+id/vtv_connection_state"
-                        style="@style/VerticleTextView"
-                        android:text="通讯已连接"
-                        android:background="@drawable/verticle_textview" />
-
-                <View style="@style/HLine" />
-
-                <com.example.lkacmf.view.VerticleTextView
-                        android:id="@+id/vtvProbeState"
-                        style="@style/VerticleTextView"
-                        android:text="探头链接正常"
-                        android:background="@drawable/verticle_textview" />
-
-                <View style="@style/HLine" />
-
-                <com.example.lkacmf.view.VerticleTextView
-                        android:id="@+id/vtvProbe"
-                        style="@style/VerticleTextView"
-                        android:text="标准探头"
-                        android:background="@drawable/verticle_textview"
-                        android:focusable="true" />
-
-                <View style="@style/HLine" />
-
-                <com.example.lkacmf.view.VerticleTextView
-                        android:id="@+id/vtvProbeType"
-                        style="@style/VerticleTextView"
-                        android:text="常温探头"
-                        android:background="@drawable/verticle_textview" />
-
-                <View style="@style/HLine" />
-
-                <com.example.lkacmf.view.VerticleTextView
-                        android:id="@+id/vtvProbeNum"
-                        style="@style/VerticleTextView"
-                        android:background="@drawable/verticle_textview"
-                        android:text="25" />
-
-                <View style="@style/HLine" />
-
-                <com.example.lkacmf.view.VerticleTextView
-                        android:id="@+id/vtvSetting"
-                        style="@style/VerticleTextView"
-                        android:background="@drawable/verticle_textview"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:text="@string/setting" />
-
-            </LinearLayout>
+           <include
+                   android:id="@+id/mainLeft"
+                   layout="@layout/acticity_left"/>
             <View style="@style/Vine" />
             <FrameLayout
                     android:id="@+id/frameLayout"

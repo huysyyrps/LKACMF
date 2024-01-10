@@ -40,45 +40,9 @@ class BaseLineChart : LineChart {
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-//        canvasWidth = width!!
-//        canvasHeight = height!!
         if((DataManagement.frameRect.left!=0&&DataManagement.frameRect.top!=0)&&
             (DataManagement.frameRect.right!=0&&DataManagement.frameRect.bottom!=0)){
             canvas?.drawRect(DataManagement.frameRect, paint);
         }
     }
-
-//    @SuppressLint("ClickableViewAccessibility")
-//    override fun onTouchEvent(event: MotionEvent?): Boolean {
-//        when (event?.action) {
-//            MotionEvent.ACTION_DOWN -> {
-//                downX = event?.x
-//                downY = event?.y
-//                rect.left = event?.x.toInt()
-//                rect.top = event?.y.toInt()
-//                //返回当前数据下标
-//                val highlight = this.getHighlightByTouchPoint(event.x, event.y)
-//                val set = mData.getDataSetByIndex(highlight.dataSetIndex)
-//                val e: Entry = mData.getEntryForHighlight(highlight)
-//                val entryIndex = set.getEntryIndex(e)
-//                LogUtil.e("LineChartSetting","$entryIndex")
-//            }
-//            MotionEvent.ACTION_MOVE -> {
-//                rect.right = event?.x.toInt()
-//                rect.bottom = event?.y.toInt()
-//                invalidate()
-//            }
-//            MotionEvent.ACTION_UP -> {
-//                //返回当前数据下标
-//                val highlight = this.getHighlightByTouchPoint(event.x, event.y)
-//                val set = mData.getDataSetByIndex(highlight.dataSetIndex)
-//                val e: Entry = mData.getEntryForHighlight(highlight)
-//                val entryIndex = set.getEntryIndex(e)
-//                LogUtil.e("LineChartEnd","$entryIndex")
-//                rect.setEmpty()
-//                invalidate()
-//            }
-//        }
-//        return false
-//    }
 }
