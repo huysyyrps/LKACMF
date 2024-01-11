@@ -5,7 +5,7 @@ import android.app.Activity
 import android.graphics.Bitmap
 import android.os.Build
 import android.util.Log
-import android.view.View
+import android.widget.EditText
 import android.widget.SeekBar
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
@@ -21,7 +21,6 @@ import com.example.lkacmf.util.qr.QrCodeUtil
 import com.example.lkacmf.util.showToast
 import com.example.lkacmf.util.sp.BaseSharedPreferences
 import com.permissionx.guolindev.PermissionX
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_configuration.*
 import kotlinx.android.synthetic.main.dialog_configuration_name.*
 import kotlinx.android.synthetic.main.dialog_delect_image.*
@@ -33,7 +32,6 @@ import kotlinx.android.synthetic.main.dialog_form.etDepthFactor
 import kotlinx.android.synthetic.main.dialog_no_activation.*
 import kotlinx.android.synthetic.main.dialog_setting.*
 import kotlinx.android.synthetic.main.dialog_thinkness.*
-import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -123,50 +121,46 @@ object DialogUtil {
         val workpieceQualitySet: List<String> = LinkedList(listOf("碳钢", "不锈钢", "铝", "钛"))
         dialog.nsWorkpieceQuality.attachDataSource(workpieceQualitySet)
         dialog.nsWorkpieceQuality.setBackgroundResource(R.drawable.nice_spinner)
-        dialog.btnConfigSave.setOnClickListener {
+        dialog.btnConfigCancel.setOnClickListener {
             dialog.dismiss()
         }
-
         dialog.btnConfigSave.setOnClickListener {
-            dialog.dismiss()
-            var thickness = dialog.etThickness.text.toString()
-            var width = dialog.etWidth.text.toString()
-            var heat = dialog.etHeat.text.toString()
-            if (thickness.trim { it <= ' ' } == "") {
-                "焊缝厚度不能为空".showToast(activity)
-                return@setOnClickListener
+            if (configSetting(dialog, activity).isNotEmpty()){
+                dialog.dismiss()
+                callBack.cancelCallBack(configSetting(dialog, activity))
             }
-            if (width.trim { it <= ' ' } == "") {
-                "焊缝宽度不能为空".showToast(activity)
-                return@setOnClickListener
-            }
-            if (heat.trim { it <= ' ' } == "") {
-                "工件温度不能为空".showToast(activity)
-                return@setOnClickListener
-            }
-            var configuration =  "${dialog.nsWorkpieceType.text}/${dialog.nsWorkpieceFrom.text}/${dialog.nsWorkpieceQuality.text}/$thickness/$width/$heat"
-            callBack.cancelCallBack(configuration)
         }
         dialog.btnConfigSure.setOnClickListener {
-            var thickness = dialog.etThickness.text.toString()
-            var width = dialog.etWidth.text.toString()
-            var heat = dialog.etHeat.text.toString()
-            if (thickness.trim { it <= ' ' } == "") {
-                "焊缝厚度不能为空".showToast(activity)
-                return@setOnClickListener
+            if (configSetting(dialog, activity).isNotEmpty()){
+                callBack.sureCallBack(configSetting(dialog, activity))
+                dialog.dismiss()
             }
-            if (width.trim { it <= ' ' } == "") {
-                "焊缝宽度不能为空".showToast(activity)
-                return@setOnClickListener
-            }
-            if (heat.trim { it <= ' ' } == "") {
-                "工件温度不能为空".showToast(activity)
-                return@setOnClickListener
-            }
-            var configuration =  "${dialog.nsWorkpieceType.text}/${dialog.nsWorkpieceFrom.text}/${dialog.nsWorkpieceQuality.text}/$thickness/$width/$heat"
-            callBack.sureCallBack(configuration)
         }
         return dialog
+    }
+
+    fun configSetting(dialog: MaterialDialog, activity: Activity): String {
+        val thickness = dialog.etThickness.text.toString()
+        val width = dialog.etWidth.text.toString()
+        val heat = dialog.etHeat.text.toString()
+        val layerThinkness = dialog.etLayerThinkness.text.toString()
+        if (thickness.trim { it <= ' ' } == "") {
+            "焊缝厚度不能为空".showToast(activity)
+            return ""
+        }
+        if (width.trim { it <= ' ' } == "") {
+            "焊缝宽度不能为空".showToast(activity)
+            return ""
+        }
+        if (heat.trim { it <= ' ' } == "") {
+            "工件温度不能为空".showToast(activity)
+            return ""
+        }
+        if (layerThinkness.trim { it <= ' ' } == "") {
+            "图层厚度不能为空".showToast(activity)
+            return ""
+        }
+        return "${dialog.nsWorkpieceType.text}/${dialog.nsWorkpieceFrom.text}/${dialog.nsWorkpieceQuality.text}/$thickness/$width/$heat/$layerThinkness"
     }
 
     /**

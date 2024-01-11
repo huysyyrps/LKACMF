@@ -40,5 +40,6 @@ object BaseFileUtil {
         BaseSharedPreferences.put("ncThickness",dataList[3])
         BaseSharedPreferences.put("ncWidth",dataList[4])
         BaseSharedPreferences.put("ncHeat",dataList[5])
+        BaseSharedPreferences.put("ncLayerThinkness",dataList[6])
     }
 }

@@ -15,6 +15,9 @@ import com.example.lkacmf.util.file.BaseFileUtil
 import com.example.lkacmf.util.sp.BaseSharedPreferences
 import java.io.File
 
+/**
+ * 推荐配置
+ */
 class RecommendFragment : Fragment(), View.OnClickListener {
     private var _binding: FragmentRecommendBinding? = null
     private val binding get() = _binding!!

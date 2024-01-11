@@ -65,7 +65,7 @@ class ConfigurationActivity : AppCompatActivity(), View.OnClickListener, AcmfCod
         mSerialPortHelper.setISerialPortDataListener(object : ISerialPortDataListener {
             override fun onDataReceived(bytes: ByteArray?) {
                 var receivedData = BinaryChange.byteToHexString(bytes!!)
-                LogUtil.e("TAGACTIVITY", receivedData)
+                LogUtil.e("TAGActivity", receivedData)
                 CoroutineScope(Dispatchers.Main).launch {
                     //设备状态
                     if (receivedData.length == 48) {
@@ -80,7 +80,7 @@ class ConfigurationActivity : AppCompatActivity(), View.OnClickListener, AcmfCod
             }
 
             override fun onDataSend(bytes: ByteArray?) {
-                Log.e("TAG", "onDataSend: " + bytes?.let { BinaryChange.byteToHexString(it) })
+                Log.e("TAGActivity", "onDataSend: " + bytes?.let { BinaryChange.byteToHexString(it) })
             }
         })
 //        SerialPortConstant.serialPortDataListener<ConfigurationActivity>(this)
@@ -91,6 +91,7 @@ class ConfigurationActivity : AppCompatActivity(), View.OnClickListener, AcmfCod
         super.onResume()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun initViewPage() {
         childFragments.add(ConfigFragment())
         childFragments.add(RecommendFragment())
@@ -159,7 +160,6 @@ class ConfigurationActivity : AppCompatActivity(), View.OnClickListener, AcmfCod
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getBackData(receivedData: String) {
-        LogUtil.e("TAG",receivedData)
         if (receivedData.startsWith("B000") && !activationStaing) {
             SerialPortConstant.timer.cancel()
             if (BinaryChange.proofData(receivedData.substring(0, 42)) == receivedData.subSequence(42, 44)) {
@@ -252,8 +252,6 @@ class ConfigurationActivity : AppCompatActivity(), View.OnClickListener, AcmfCod
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun setAcmfCode(acmfCode: AcmfCode?) {
-        LogUtil.e("TAG",BaseSharedPreferences.get("deviceCode", ""))
-        LogUtil.e("TAG",BaseSharedPreferences.get("activationCode", ""))
         if (acmfCode?.activationCode?.length == 60 &&
             acmfCode.activationCode.substring(0, 24) == BaseSharedPreferences.get("deviceCode", "") &&
             acmfCode.activationCode.substring(24, 40) == BaseSharedPreferences.get("activationCode", "")

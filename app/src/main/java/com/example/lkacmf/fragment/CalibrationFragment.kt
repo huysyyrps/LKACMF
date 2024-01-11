@@ -30,13 +30,18 @@ import kotlinx.coroutines.launch
 import me.f1reking.serialportlib.listener.ISerialPortDataListener
 import kotlin.math.pow
 
+/**
+ * 校准
+ */
+@RequiresApi(Build.VERSION_CODES.O)
 class CalibrationFragment : Fragment(), View.OnClickListener {
     var _binding: FragmentCalibrationBinding? = null
     val binding get() = _binding!!
     //判断折线图是否可以被框选
     var screenState = false
     //点击开始按钮之前停止按钮是否被选中
-    var upStartDtate = false
+    var upStartDtate = "stop"
+    val mSerialPortHelper = SerialPortConstant.getSerialPortHelper()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +56,6 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStart() {
         super.onStart()
-        binding.btnStartCalibration.setOnClickListener(this)
         binding.btnStart.setOnClickListener(this)
         binding.btnSuspend.setOnClickListener(this)
         binding.btnStop.setOnClickListener(this)
@@ -61,12 +65,11 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
         binding.btnReset.setOnClickListener(this)
         binding.btnStopCalibration.setOnClickListener(this)
 
-
-        var mSerialPortHelper = SerialPortConstant.getSerialPortHelper()
+        mSerialPortHelper.sendTxt(SerialPortDataMake.operateData("00"))
         mSerialPortHelper.setISerialPortDataListener(object : ISerialPortDataListener {
             override fun onDataReceived(bytes: ByteArray?) {
                 var receivedData = BinaryChange.byteToHexString(bytes!!)
-                LogUtil.e("TAGFRAGMENT", receivedData)
+                LogUtil.e("TAGFragment", receivedData)
                 CoroutineScope(Dispatchers.Main).launch {
                     //参数
                     if (receivedData.length == 24) {
@@ -80,12 +83,12 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
             }
 
             override fun onDataSend(bytes: ByteArray?) {
-                Log.e("TAG", "onDataSend: " + bytes?.let { BinaryChange.byteToHexString(it) })
+                Log.e("TAGFragment", "onDataSend: " + bytes?.let { BinaryChange.byteToHexString(it) })
             }
         })
 
         binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
-            if (checkedId==R.id.btnScreen||checkedId==R.id.btnCount||checkedId==R.id.btnReset){
+            if (checkedId==R.id.btnScreen){
                 screenState = true
                 binding.lineChartBX.mCanScale = false
             }else{
@@ -105,42 +108,41 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.btnStartCalibration -> {
-                binding.linCalibration.visibility = View.VISIBLE
-                SerialPortConstant.getSerialPortHelper().sendTxt(SerialPortDataMake.operateData("00"))
-            }
             R.id.btnStart->{
-                if (upStartDtate){
+                LineDataRead.reset(binding.lineChartBX, binding.lineChartBZ, binding.lineChart)
+                if (upStartDtate=="stop"){
                     LineDataRead.readRefreshData(binding.lineChartBX, binding.lineChartBZ, binding.lineChart)
                 }
-                upStartDtate = false
+                upStartDtate = "start"
                 btnSuspend.isChecked = true
                 binding.btnStart.visibility = View.GONE
                 binding.btnSuspend.visibility = View.VISIBLE
-                SerialPortConstant.getSerialPortHelper().sendTxt(SerialPortDataMake.operateData("01"))
+                mSerialPortHelper.sendTxt(SerialPortDataMake.operateData("01"))
             }
             R.id.btnStop -> {
-                upStartDtate = true
-                SerialPortConstant.getSerialPortHelper().sendTxt( SerialPortDataMake.operateData("00"))
+                upStartDtate = "stop"
+                mSerialPortHelper.sendTxt( SerialPortDataMake.operateData("00"))
             }
             R.id.btnSuspend->{
+                upStartDtate = "stop"
                 binding.btnStart.isChecked = true
                 binding.btnStart.visibility = View.VISIBLE
                 binding.btnSuspend.visibility = View.GONE
-                SerialPortConstant.getSerialPortHelper().sendTxt( SerialPortDataMake.operateData("02"))
-//                timer.cancel()
+                mSerialPortHelper.sendTxt( SerialPortDataMake.operateData("02"))
             }
             R.id.btnRefresh->{
-                SerialPortConstant.getSerialPortHelper().sendTxt( SerialPortDataMake.operateData("02"))
+                mSerialPortHelper.sendTxt( SerialPortDataMake.operateData("00"))
+                mSerialPortHelper.sendTxt( SerialPortDataMake.operateData("03"))
                 LineDataRead.readRefreshData(binding.lineChartBX, binding.lineChartBZ, binding.lineChart)
-                SerialPortConstant.getSerialPortHelper().sendTxt( SerialPortDataMake.operateData("03"))
-//                SerialPortConstant.getSerialPortHelper().sendTxt( SerialPortDataMake.operateData("01"))
             }
             R.id.btnScreen->{
-                SerialPortConstant.getSerialPortHelper().sendTxt( SerialPortDataMake.operateData("02"))
-                Thread.sleep(150)
-                binding.btnScreen.isChecked = true
-
+                if(upStartDtate == "start"){
+                    "请先暂停".showToast(requireContext())
+                }else{
+                    mSerialPortHelper.sendTxt( SerialPortDataMake.operateData("02"))
+                    Thread.sleep(150)
+                    binding.btnScreen.isChecked = true
+                }
             }
             R.id.btnCount->{
                 if (startIndex==0|| endIndex==0){
@@ -210,7 +212,6 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
         //参数
         if (receivedData.startsWith("B100")) {
             if (BinaryChange.proofData(receivedData.substring(0, 18)) == receivedData.subSequence(18, 20)) {
-                binding.btnStartCalibration.visibility = View.GONE
                 binding.linCalibration.visibility = View.VISIBLE
                 when (receivedData.subSequence(4, 6)) {
                     "00" -> binding.ivLeft.vtvConnectionState.text = "未激活"

@@ -8,20 +8,11 @@
         android:background="@color/theme_back_color"
         tools:ignore="MissingDefaultResource">
 
-    <com.example.lkacmf.view.BaseButton
-            android:id="@+id/btnStartCalibration"
-            android:layout_width="150dp"
-            android:layout_height="45dp"
-            android:layout_centerInParent="true"
-            android:text="开始校准"
-            app:bg_corner="10dp" />
-
     <LinearLayout
             android:id="@+id/linCalibration"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:visibility="gone">
+            android:orientation="horizontal">
 
         <include
                 android:id="@+id/ivLeft"

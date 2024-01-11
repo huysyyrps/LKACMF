@@ -76,7 +76,6 @@
             <TextView
                     android:id="@+id/tvThickness"
                     style="@style/EditText"
-                    android:inputType="number|numberDecimal"
                     android:layout_width="match_parent" />
 
             <com.example.lkacmf.view.BaseTextView
@@ -85,7 +84,6 @@
             <TextView
                     android:id="@+id/tvWidth"
                     style="@style/EditText"
-                    android:inputType="number|numberDecimal"
                     android:layout_width="match_parent" />
 
             <com.example.lkacmf.view.BaseTextView
@@ -94,7 +92,14 @@
             <TextView
                     android:id="@+id/tvHeat"
                     style="@style/EditText"
-                    android:inputType="number|numberDecimal"
+                    android:layout_width="match_parent" />
+
+            <com.example.lkacmf.view.BaseTextView
+                    style="@style/BaseTextView"
+                    app:header_title="图层厚度" />
+            <TextView
+                    android:id="@+id/tvLayerThinkness"
+                    style="@style/EditText"
                     android:layout_width="match_parent" />
 
             <com.example.lkacmf.view.BaseButton

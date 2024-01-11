@@ -37,6 +37,9 @@ import okhttp3.RequestBody
 import java.io.File
 import java.lang.Float
 
+/**
+ * 添加、获取配置列表
+ */
 class ConfigFragment : Fragment(), View.OnClickListener, AcmfCodeContract.View {
     var activationStaing = false//放置多次弹窗
     private var _binding: FragmentConfigBinding? = null
@@ -71,7 +74,7 @@ class ConfigFragment : Fragment(), View.OnClickListener, AcmfCodeContract.View {
      */
     fun getConfigurationList() {
         /**将文件夹下所有文件名存入数组*/
-        if (filePath.list() == null) {
+        if (filePath.list() == null||filePath.list().isEmpty()) {
             binding.linData.visibility = View.GONE
             binding.linNoData.visibility = View.VISIBLE
             DialogUtil.configurationDialog(activity,object : DialogSureCallBack{
@@ -171,6 +174,7 @@ class ConfigFragment : Fragment(), View.OnClickListener, AcmfCodeContract.View {
         binding.tvThickness.text = textList[3]
         binding.tvWidth.text = textList[4]
         binding.tvHeat.text = textList[5]
+        binding.tvLayerThinkness.text = textList[6]
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

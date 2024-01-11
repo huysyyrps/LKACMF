@@ -78,6 +78,15 @@
                     android:inputType="number|numberDecimal"
                     android:layout_width="match_parent" />
 
+            <com.example.lkacmf.view.BaseTextView
+                    style="@style/BaseTextView"
+                    app:header_title="图层厚度" />
+            <EditText
+                    android:id="@+id/etLayerThinkness"
+                    style="@style/EditText"
+                    android:inputType="number|numberDecimal"
+                    android:layout_width="match_parent" />
+
         </LinearLayout>
         <LinearLayout
                 android:layout_width="match_parent"

@@ -19,7 +19,7 @@ object Constant {
 
     const val SAVE_IMAGE_PATH = "LKACMFIMAGE"
     const val SAVE_FORM_PATH = "LKACMFFORM"
-    const val SAVE_CONFIGURATION_PATH = "LKACMFCONFIGURATION"
+    const val SAVE_CONFIGURATION_PATH = "LKAcmf"
     const val COMPPHONE = "0537-2638599"//闸门
 
     val FILEPATH = File(MyApplication.context.externalCacheDir.toString() + "/" + SAVE_CONFIGURATION_PATH + "/")
