@@ -17,13 +17,14 @@ import com.example.lkacmf.serialport.SerialPortConstant
 import com.example.lkacmf.serialport.SerialPortDataMake
 import com.example.lkacmf.util.BinaryChange
 import com.example.lkacmf.util.LogUtil
+import com.example.lkacmf.util.dialog.DialogSureCallBack
+import com.example.lkacmf.util.dialog.DialogUtil
 import com.example.lkacmf.util.linechart.LineChartListener
 import com.example.lkacmf.util.linechart.LineChartListener.endIndex
 import com.example.lkacmf.util.linechart.LineChartListener.startIndex
 import com.example.lkacmf.util.linechart.LineChartSetting
 import com.example.lkacmf.util.linechart.LineDataRead
 import com.example.lkacmf.util.showToast
-import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,10 +38,15 @@ import kotlin.math.pow
 class CalibrationFragment : Fragment(), View.OnClickListener {
     var _binding: FragmentCalibrationBinding? = null
     val binding get() = _binding!!
+
     //判断折线图是否可以被框选
     var screenState = false
+
     //点击开始按钮之前停止按钮是否被选中
     var upStartDtate = "stop"
+
+    //是否标记
+    var punctationState = false
     val mSerialPortHelper = SerialPortConstant.getSerialPortHelper()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,7 +69,11 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
         binding.btnScreen.setOnClickListener(this)
         binding.btnCount.setOnClickListener(this)
         binding.btnReset.setOnClickListener(this)
+        binding.ivLeft.vtvSetting.setOnClickListener(this)
         binding.btnStopCalibration.setOnClickListener(this)
+        binding.btnPunctation.setOnClickListener(this)
+
+        this.childFragmentManager
 
         mSerialPortHelper.sendTxt(SerialPortDataMake.operateData("00"))
         mSerialPortHelper.setISerialPortDataListener(object : ISerialPortDataListener {
@@ -114,7 +124,6 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
                     LineDataRead.readRefreshData(binding.lineChartBX, binding.lineChartBZ, binding.lineChart)
                 }
                 upStartDtate = "start"
-                btnSuspend.isChecked = true
                 binding.btnStart.visibility = View.GONE
                 binding.btnSuspend.visibility = View.VISIBLE
                 mSerialPortHelper.sendTxt(SerialPortDataMake.operateData("01"))
@@ -124,7 +133,7 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
                 mSerialPortHelper.sendTxt( SerialPortDataMake.operateData("00"))
             }
             R.id.btnSuspend->{
-                upStartDtate = "stop"
+                upStartDtate = "suspend"
                 binding.btnStart.isChecked = true
                 binding.btnStart.visibility = View.VISIBLE
                 binding.btnSuspend.visibility = View.GONE
@@ -138,6 +147,7 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
             R.id.btnScreen->{
                 if(upStartDtate == "start"){
                     "请先暂停".showToast(requireContext())
+                    binding.btnSuspend.isChecked = true
                 }else{
                     mSerialPortHelper.sendTxt( SerialPortDataMake.operateData("02"))
                     Thread.sleep(150)
@@ -149,7 +159,6 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
                     "请框选区域".showToast(requireContext())
                     return
                 }
-                LogUtil.e("TAG","$startIndex ---$endIndex")
                 var countList = if (startIndex< endIndex){
                     DataManagement.landBXList.subList(startIndex, endIndex)
                 }else{
@@ -187,7 +196,7 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
                 var dx = 0.8762* sbx.pow(3)-3.634*sbx.pow(2)+6.174*sbx+0.04038
                 val formattedDx = String.format("%.2f", dx)
                 binding.tvDepth.text = formattedDx
-                binding.tvDepthRatio.text = String.format("%.2f",dx/3)
+                binding.tvDepthRatio.text = String.format("%.2f", dx / 3)
 //                var length = if (maxTopValue>maxBottonValue){
 //                    1.02*(maxTopValue-minValue)
 //                }else{
@@ -197,12 +206,27 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
 //                binding.tvLength.text = "$formattedLength"
 //                LogUtil.e("TAG","$formattedDx----$formattedLength")
             }
-            R.id.btnReset->{
+            R.id.btnReset -> {
                 LineDataRead.reset(binding.lineChartBX, binding.lineChartBZ, binding.lineChart)
             }
-            R.id.btnStopCalibration->{
+            R.id.btnStopCalibration -> {
                 MainActivity.actionStart(requireContext())
+                requireActivity().finish()
             }
+            R.id.btnPunctation -> {
+                punctationState = true
+            }
+            R.id.vtvSetting->{
+                DialogUtil.settingDialog(requireActivity(), object: DialogSureCallBack {
+                    @RequiresApi(Build.VERSION_CODES.O)
+                    override fun sureCallBack(data: String) {
+                        mSerialPortHelper.sendTxt(SerialPortDataMake.settingData())
+                    }
+
+                    override fun cancelCallBack(data: String) {
+                    }
+                })
+           }
         }
     }
 
@@ -266,10 +290,11 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
         }
             //数据
         if (receivedData.startsWith("B101") && receivedData.length == 40) {
-                var data = receivedData.substring(10, 34)
-                Thread.sleep(5)
-                LineDataRead.readMeterData(data, binding.lineChartBX, binding.lineChartBZ, binding.lineChart, false)
-            }
+            var data = receivedData.substring(10, 34)
+            Thread.sleep(5)
+            LineDataRead.readMeterData(data, binding.lineChartBX, binding.lineChartBZ, binding.lineChart, punctationState)
+            punctationState = false
+        }
 //        }
     }
 }

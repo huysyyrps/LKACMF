@@ -13,7 +13,7 @@
 
         <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:orientation="horizontal"
                 android:background="@color/black">
             <ImageView
@@ -24,34 +24,34 @@
                     android:layout_marginLeft="5dp"
                     android:src="@drawable/ic_logo_header"
                     tools:ignore="ContentDescription,RtlHardcoded" />
-            <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tbLayout"
+
+            <RadioGroup
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:background="@color/black"
-                    app:tabIndicatorColor="@color/theme_back_color"
-                    app:tabIndicatorHeight="0dp"
-                    app:tabMinWidth="120dp"
-                    app:tabGravity="start"
-                    app:tabSelectedTextColor="@color/color_bg_selected1"
-                    app:tabTextColor="@color/theme_color"
-                    android:layout_marginLeft="10dp"
-                    app:tabBackground="@drawable/tabitem">
-                <com.google.android.material.tabs.TabItem
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="10dp">
+                <com.example.lkacmf.view.BaseRadionButton
+                        android:id="@+id/btnAnalysts"
+                        style="@style/BaseRadioButton"
+                        android:layout_width="100dp"
+                        android:gravity="center"
+                        android:background="@drawable/verticle_textview_select"
                         android:text="@string/main" />
-
-                <com.google.android.material.tabs.TabItem
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:text="@string/analysts" />
-
-                <com.google.android.material.tabs.TabItem
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                <com.example.lkacmf.view.BaseRadionButton
+                        android:id="@+id/btnUserInfo"
+                        style="@style/BaseRadioButton"
+                        android:layout_width="100dp"
+                        android:gravity="center"
+                        android:background="@drawable/verticle_textview_select"
+                        android:text="@string/analysts"/>
+                <com.example.lkacmf.view.BaseRadionButton
+                        android:id="@+id/btnSuspend"
+                        style="@style/BaseRadioButton"
+                        android:layout_width="100dp"
+                        android:gravity="center"
+                        android:background="@drawable/verticle_textview_select"
                         android:text="@string/user_info" />
-            </com.google.android.material.tabs.TabLayout>
+            </RadioGroup>
 
             <LinearLayout
                     android:layout_width="wrap_content"
@@ -77,14 +77,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
-           <include
-                   android:id="@+id/mainLeft"
-                   layout="@layout/acticity_left"/>
-            <View style="@style/Vine" />
-            <FrameLayout
-                    android:id="@+id/frameLayout"
+            <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewpager"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:background="@color/theme_back_color"/>
         </LinearLayout>
     </LinearLayout>
 

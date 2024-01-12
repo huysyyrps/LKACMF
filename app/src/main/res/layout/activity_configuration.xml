@@ -37,12 +37,12 @@
                 android:text="@string/add"
                 app:bg_corner="8dp"
                 android:textColor="@color/white"
-                android:visibility="gone"/>
+                android:visibility="gone" />
     </LinearLayout>
+
     <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
+            android:layout_height="match_parent"
+            android:background="@color/theme_back_color"/>
 </LinearLayout>

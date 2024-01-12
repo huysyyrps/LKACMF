@@ -67,11 +67,13 @@ class ConfigFragment : Fragment(), View.OnClickListener, AcmfCodeContract.View {
         activity = requireActivity()
         acmfCodePresenter = AcmfCodePresenter(requireContext(), view = this)
         binding.btnSelect.setOnClickListener(this)
+        SerialPortConstant.getSerialPortHelper().sendTxt(SerialPortDataMake.operateData("00"))
     }
 
     /**
      * 获取配置列表
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     fun getConfigurationList() {
         /**将文件夹下所有文件名存入数组*/
         if (filePath.list() == null||filePath.list().isEmpty()) {

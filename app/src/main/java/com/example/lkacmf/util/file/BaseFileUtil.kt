@@ -1,6 +1,8 @@
 package com.example.lkacmf.util.file
 
 import android.app.Activity
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.example.lkacmf.activity.ConfigurationActivity
 import com.example.lkacmf.fragment.ConfigFragment
 import com.example.lkacmf.util.dialog.DialogSureCallBack
@@ -9,6 +11,7 @@ import com.example.lkacmf.util.sp.BaseSharedPreferences
 import java.io.File
 
 object BaseFileUtil {
+    @RequiresApi(Build.VERSION_CODES.O)
     fun haveName(filePath: File, fileToCheckName: String, fragment: ConfigFragment, data: String, activity: ConfigurationActivity) {
         //如果不存在  就mkdirs()创建此文件夹
         if (!filePath.exists()) {

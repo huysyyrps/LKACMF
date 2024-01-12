@@ -133,8 +133,8 @@ object DialogUtil {
         dialog.btnConfigSure.setOnClickListener {
             if (configSetting(dialog, activity).isNotEmpty()){
                 callBack.sureCallBack(configSetting(dialog, activity))
-                dialog.dismiss()
             }
+            dialog.dismiss()
         }
         return dialog
     }

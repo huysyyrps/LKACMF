@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -13,12 +14,14 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.CompositePageTransformer
+import androidx.viewpager2.widget.MarginPageTransformer
+import androidx.viewpager2.widget.ViewPager2
 import com.example.lkacmf.R
 import com.example.lkacmf.databinding.ActivityMainBinding
 import com.example.lkacmf.entity.VersionInfo
-import com.example.lkacmf.fragment.AnalystsFragment
-import com.example.lkacmf.fragment.HomeFragment
-import com.example.lkacmf.fragment.UserInfoFragment
+import com.example.lkacmf.fragment.*
 import com.example.lkacmf.module.VersionInfoContract
 import com.example.lkacmf.presenter.VersionInfoPresenter
 import com.example.lkacmf.serialport.SerialPortConstant
@@ -45,10 +48,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, VersionInfoContract.V
     public lateinit var binding: ActivityMainBinding
     private var version: String = "1.0.0"
     private lateinit var versionInfoPresenter: VersionInfoPresenter
-    private lateinit var mFm: FragmentManager
-    private val mFragmentList = ArrayList<Fragment>()
-    private val mFragmentTagList = arrayOf("OneFragment", "TwoFragment", "ThreeFragment")
-    private lateinit var mCurrentFragmen: Fragment  // 记录当前显示的Fragment
+    private val fragmentList = ArrayList<Fragment>()
 
     companion object {
         fun actionStart(context: Context) {
@@ -63,18 +63,9 @@ class MainActivity : BaseActivity(), View.OnClickListener, VersionInfoContract.V
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view: View = binding.root
         setContentView(view)
+        initViewPage()
+
         versionInfoPresenter = VersionInfoPresenter(this, view = this)
-        mFragmentList.add(0, HomeFragment())
-        mFragmentList.add(1, AnalystsFragment())
-        mFragmentList.add(2, UserInfoFragment())
-        mCurrentFragmen = mFragmentList[0]
-        // 初始化首次进入时的Fragment
-        mFm = supportFragmentManager;
-        val transaction: FragmentTransaction = mFm.beginTransaction()
-        transaction.add(R.id.frameLayout, mCurrentFragmen, mFragmentTagList[0])
-        transaction.commitAllowingStateLoss()
-        //tabLayout选择监听
-        tabLayoutSelect()
 
         binding.imageView.setOnClickListener(this)
         binding.linImageList.setOnClickListener(this)
@@ -92,30 +83,59 @@ class MainActivity : BaseActivity(), View.OnClickListener, VersionInfoContract.V
         DialogUtil.requestPermission(this,requestList)
     }
 
-    private fun tabLayoutSelect() {
-        binding.tbLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            @RequiresApi(Build.VERSION_CODES.O)
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                when (tab.position) {
-                    0->{
-                        switchFragment(mFragmentList[0], mFragmentTagList[0])
-                        return
-                    }
-                    1->{
-                        switchFragment(mFragmentList[1], mFragmentTagList[1])
-                        return
-                    }
-                    2->{
-                        switchFragment(mFragmentList[2], mFragmentTagList[2])
-                        return
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun initViewPage() {
+        fragmentList.add(CalibrationFragment())
+        fragmentList.add(AnalystsFragment())
+        fragmentList.add(UserInfoFragment())
+//        //设置adapter
+        binding.viewpager.adapter = fragmentAdapter
+        //设置viewpage的滑动方向
+        binding.viewpager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        //禁止滑动
+        // viewpager.isUserInputEnabled = false
+        //设置显示的页面，0：是第一页
+        //viewpager.currentItem = 1
+        //设置缓存页
+        binding.viewpager.offscreenPageLimit = 1
+        binding.viewpager.isUserInputEnabled = false
+        //同时设置多个动画
+        val compositePageTransformer = CompositePageTransformer()
+        compositePageTransformer.addTransformer(MarginPageTransformer(100))
+        compositePageTransformer.addTransformer(TransFormer())
+        binding.viewpager.setPageTransformer(compositePageTransformer)
+        //设置选中事件
+        binding.viewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                when (position) {
+                    0 -> {
+                        (fragmentList[position] as CalibrationFragment).binding.btnScreen.visibility = View.GONE
+                        (fragmentList[position] as CalibrationFragment).binding.btnCount.visibility = View.GONE
+                        (fragmentList[position] as CalibrationFragment).binding.linStop.visibility = View.GONE
                     }
                 }
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab) {}
-            override fun onTabReselected(tab: TabLayout.Tab) {}
         })
     }
+
+    /**
+     * viewPager adapter
+     */
+    private val fragmentAdapter: FragmentStateAdapter by lazy {
+        object : FragmentStateAdapter(this) {
+            override fun getItemCount(): Int {
+                return fragmentList.size
+            }
+
+            override fun createFragment(position: Int): Fragment {
+                return fragmentList[position]
+            }
+        }
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onClick(v: View?) {
@@ -173,23 +193,6 @@ class MainActivity : BaseActivity(), View.OnClickListener, VersionInfoContract.V
             R.id.btnFinish -> {
                 finish()
             }
-        }
-    }
-
-    // 转换Fragment
-    fun switchFragment(to: Fragment, tag: String?) {
-        if (mCurrentFragmen !== to) {
-            val transaction = mFm.beginTransaction()
-            if (!to.isAdded) {
-                // 没有添加过:
-                // 隐藏当前的，添加新的，显示新的
-                transaction.hide(mCurrentFragmen).add(R.id.frameLayout, to, tag).show(to)
-            } else {
-                // 隐藏当前的，显示新的
-                transaction.hide(mCurrentFragmen).show(to)
-            }
-            mCurrentFragmen = to
-            transaction.commitAllowingStateLoss()
         }
     }
 
@@ -279,5 +282,15 @@ class MainActivity : BaseActivity(), View.OnClickListener, VersionInfoContract.V
 
     override fun setVersionInfoMessage(message: String?) {
         message?.let { it.showToast(this) }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        return super.onKeyDown(keyCode, event)
+        when(keyCode){
+            KeyEvent.KEYCODE_BACK->{
+                SerialPortConstant.getSerialPortHelper().sendTxt(SerialPortDataMake.operateData("00"))
+            }
+        }
     }
 }

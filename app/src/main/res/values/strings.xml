@@ -16,7 +16,7 @@
 
     <string name="start">开始</string>
     <string name="stop">停止</string>
-    <string name="punctation">标点</string>
+    <string name="punctation">标记</string>
     <string name="direction">路径</string>
     <string name="thinkness">图层</string>
     <string name="select">探头</string>

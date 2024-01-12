@@ -23,66 +23,82 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical">
-
-            <RadioGroup
-                    android:id="@+id/radioGroup"
+            <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginRight="2dp"
-                    android:layout_marginBottom="1dp"
-                    android:background="@color/theme_back_color1"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioGroup
+                        android:id="@+id/radioGroup"
+                        android:layout_width="0dp"
+                        android:layout_weight="4"
+                        android:layout_height="50dp"
+                        android:layout_marginBottom="1dp"
+                        android:background="@color/theme_back_color1"
+                        android:orientation="horizontal">
 
 
-                <com.example.lkacmf.view.BaseRadionButton
-                        android:id="@+id/btnStop"
-                        style="@style/BaseRadioButton"
-                        android:background="@drawable/verticle_textview_select"
-                        android:text="@string/stop"
-                        app:drawableTop="@drawable/ic_stop" />
+                    <com.example.lkacmf.view.BaseRadionButton
+                            android:id="@+id/btnStop"
+                            style="@style/BaseRadioButton"
+                            android:background="@drawable/verticle_textview_select"
+                            android:text="@string/stop"
+                            app:drawableTop="@drawable/ic_stop" />
 
-                <com.example.lkacmf.view.BaseRadionButton
-                        android:id="@+id/btnStart"
-                        style="@style/BaseRadioButton"
-                        android:background="@drawable/verticle_textview_select"
-                        android:text="@string/start"
-                        app:drawableTop="@drawable/ic_start" />
+                    <com.example.lkacmf.view.BaseRadionButton
+                            android:id="@+id/btnStart"
+                            style="@style/BaseRadioButton"
+                            android:background="@drawable/verticle_textview_select"
+                            android:text="@string/start"
+                            app:drawableTop="@drawable/ic_start" />
 
-                <com.example.lkacmf.view.BaseRadionButton
-                        android:id="@+id/btnSuspend"
-                        style="@style/BaseRadioButton"
-                        android:background="@drawable/verticle_textview_select"
-                        android:text="@string/suspend"
-                        android:visibility="gone"
-                        app:drawableTop="@drawable/ic_suspend" />
+                    <com.example.lkacmf.view.BaseRadionButton
+                            android:id="@+id/btnSuspend"
+                            style="@style/BaseRadioButton"
+                            android:background="@drawable/verticle_textview_select"
+                            android:text="@string/suspend"
+                            android:visibility="gone"
+                            app:drawableTop="@drawable/ic_suspend" />
 
-                <com.example.lkacmf.view.BaseRadionButton
-                        android:id="@+id/btnRefresh"
-                        style="@style/BaseRadioButton"
-                        android:background="@drawable/verticle_textview_select"
-                        android:text="@string/refresh"
-                        app:drawableTop="@drawable/ic_refus" />
+                    <com.example.lkacmf.view.BaseRadionButton
+                            android:id="@+id/btnRefresh"
+                            style="@style/BaseRadioButton"
+                            android:background="@drawable/verticle_textview_select"
+                            android:text="@string/refresh"
+                            app:drawableTop="@drawable/ic_refus" />
+                    <com.example.lkacmf.view.BaseRadionButton
+                            android:id="@+id/btnReset"
+                            style="@style/BaseRadioButton"
+                            android:background="@drawable/verticle_textview_select"
+                            android:text="@string/reset"
+                            app:drawableTop="@drawable/ic_reset" />
 
-                <com.example.lkacmf.view.BaseRadionButton
-                        android:id="@+id/btnScreen"
-                        style="@style/BaseRadioButton"
-                        android:background="@drawable/verticle_textview_select"
-                        android:text="@string/screen"
-                        app:drawableTop="@drawable/ic_screen" />
+                    <com.example.lkacmf.view.BaseRadionButton
+                            android:id="@+id/btnScreen"
+                            style="@style/BaseRadioButton"
+                            android:background="@drawable/verticle_textview_select"
+                            android:text="@string/screen"
+                            app:drawableTop="@drawable/ic_screen" />
 
+                    <com.example.lkacmf.view.BaseRadionButton
+                            android:id="@+id/btnCount"
+                            style="@style/BaseRadioButton"
+                            android:background="@drawable/verticle_textview_select"
+                            android:text="@string/count"
+                            app:drawableTop="@drawable/ic_screen" />
+                </RadioGroup>
                 <com.example.lkacmf.view.BaseRadionButton
-                        android:id="@+id/btnCount"
+                        android:id="@+id/btnDirection"
                         style="@style/BaseRadioButton"
-                        android:background="@drawable/verticle_textview_select"
-                        android:text="@string/count"
-                        app:drawableTop="@drawable/ic_screen" />
+                        android:background="@drawable/verticle_textview"
+                        android:text="@string/direction"
+                        app:drawableTop="@drawable/ic_direction" />
                 <com.example.lkacmf.view.BaseRadionButton
-                        android:id="@+id/btnReset"
+                        android:id="@+id/btnPunctation"
                         style="@style/BaseRadioButton"
-                        android:background="@drawable/verticle_textview_select"
-                        android:text="@string/reset"
-                        app:drawableTop="@drawable/ic_reset" />
-            </RadioGroup>
+                        android:background="@drawable/verticle_textview"
+                        android:text="@string/punctation"
+                        app:drawableTop="@drawable/ic_punctation" />
+            </LinearLayout>
 
             <LinearLayout
                     android:layout_width="match_parent"

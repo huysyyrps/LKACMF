@@ -3,9 +3,9 @@ package com.example.lkacmf.activity
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.CompositePageTransformer
@@ -42,16 +42,17 @@ import kotlin.String
 import kotlin.getValue
 import kotlin.lazy
 import kotlin.let
-
-class ConfigurationActivity : AppCompatActivity(), View.OnClickListener, AcmfCodeContract.View {
+@RequiresApi(Build.VERSION_CODES.O)
+class ConfigurationActivity : BaseActivity(), View.OnClickListener, AcmfCodeContract.View {
     val timer = Timer()
     var dialog: MaterialDialog? = null
     var activationStaing = false//放置多次弹窗
-    val childFragments = arrayListOf<Fragment>()
+    val fragmentList = arrayListOf<Fragment>()
     lateinit var acmfCodePresenter: AcmfCodePresenter
     lateinit var binding: ActivityConfigurationBinding
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    val mSerialPortHelper = SerialPortConstant.getSerialPortHelper()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityConfigurationBinding.inflate(layoutInflater)
@@ -61,7 +62,6 @@ class ConfigurationActivity : AppCompatActivity(), View.OnClickListener, AcmfCod
         acmfCodePresenter = AcmfCodePresenter(this, view = this)
         binding.btnAddConfig.setOnClickListener(this)
 
-        var mSerialPortHelper = SerialPortConstant.getSerialPortHelper()
         mSerialPortHelper.setISerialPortDataListener(object : ISerialPortDataListener {
             override fun onDataReceived(bytes: ByteArray?) {
                 var receivedData = BinaryChange.byteToHexString(bytes!!)
@@ -87,15 +87,10 @@ class ConfigurationActivity : AppCompatActivity(), View.OnClickListener, AcmfCod
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onResume() {
-        super.onResume()
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun initViewPage() {
-        childFragments.add(ConfigFragment())
-        childFragments.add(RecommendFragment())
-        childFragments.add(CalibrationFragment())
+        fragmentList.add(ConfigFragment())
+        fragmentList.add(RecommendFragment())
+        fragmentList.add(CalibrationFragment())
 //        //设置adapter
         binding.viewpager.adapter = fragmentAdapter
         //设置viewpage的滑动方向
@@ -128,6 +123,8 @@ class ConfigurationActivity : AppCompatActivity(), View.OnClickListener, AcmfCod
                     }
                     2 -> {
                         binding.tvTitle.text = resources.getString(R.string.calibration)
+                        (fragmentList[position] as CalibrationFragment).binding.btnPunctation.visibility = View.GONE
+                        (fragmentList[position] as CalibrationFragment).binding.btnDirection.visibility = View.GONE
                         binding.btnAddConfig.visibility = View.GONE
                     }
                 }
@@ -149,17 +146,18 @@ class ConfigurationActivity : AppCompatActivity(), View.OnClickListener, AcmfCod
     private val fragmentAdapter: FragmentStateAdapter by lazy {
         object : FragmentStateAdapter(this) {
             override fun getItemCount(): Int {
-                return childFragments.size
+                return fragmentList.size
             }
 
             override fun createFragment(position: Int): Fragment {
-                return childFragments[position]
+                return fragmentList[position]
             }
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getBackData(receivedData: String) {
+        //授权激活状态
         if (receivedData.startsWith("B000") && !activationStaing) {
             SerialPortConstant.timer.cancel()
             if (BinaryChange.proofData(receivedData.substring(0, 42)) == receivedData.subSequence(42, 44)) {
@@ -208,11 +206,12 @@ class ConfigurationActivity : AppCompatActivity(), View.OnClickListener, AcmfCod
                     "03" -> {
                         "设备正常".showToast(this)
                         SerialPortConstant.timer.cancel()
-                        (childFragments[0] as ConfigFragment).getConfigurationList()
+                        (fragmentList[0] as ConfigFragment).getConfigurationList()
                     }
                 }
             }
         }
+        //设置
         if (receivedData.startsWith("B102")) {
             if (BinaryChange.proofData(receivedData.substring(0, 12)) == receivedData.subSequence(12, 14)) {
                 BaseSharedPreferences.put("userEncode", receivedData.subSequence(4, 6))
@@ -220,6 +219,7 @@ class ConfigurationActivity : AppCompatActivity(), View.OnClickListener, AcmfCod
                 BaseSharedPreferences.put("probeRate", receivedData.subSequence(8, 10))
                 BaseSharedPreferences.put("currentWave", receivedData.subSequence(10, 12))
             }
+
         }
     }
 
@@ -231,6 +231,7 @@ class ConfigurationActivity : AppCompatActivity(), View.OnClickListener, AcmfCod
                         //确认
                         val dataList = data.split("/")
                         BaseFileUtil.saveConfig(dataList)
+                        setViewPageItem(1)
                     }
 
                     override fun cancelCallBack(data: String) {
@@ -274,5 +275,11 @@ class ConfigurationActivity : AppCompatActivity(), View.OnClickListener, AcmfCod
     override fun setAcmfCodeMessage(message: String?) {
         message?.showToast(this)
         activationStaing = false
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mSerialPortHelper.sendTxt(SerialPortDataMake.operateData("00"))
+        LogUtil.e("TAG","111111111")
     }
 }
