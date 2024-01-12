@@ -73,6 +73,9 @@ class MainActivity : BaseActivity(), View.OnClickListener, VersionInfoContract.V
         binding.linVersionCheck.setOnClickListener(this)
         binding.linContactComp.setOnClickListener(this)
         binding.btnFinish.setOnClickListener(this)
+        binding.btnMain.setOnClickListener(this)
+        binding.btnAnalysts.setOnClickListener(this)
+        binding.btnUserInfo.setOnClickListener(this)
 
         val requestList = ArrayList<String>()
         requestList.add(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -192,6 +195,15 @@ class MainActivity : BaseActivity(), View.OnClickListener, VersionInfoContract.V
             }
             R.id.btnFinish -> {
                 finish()
+            }
+            R.id.btnMain->{
+                binding.viewpager.currentItem = 0
+            }
+            R.id.btnAnalysts->{
+                binding.viewpager.currentItem = 1
+            }
+            R.id.btnUserInfo->{
+                binding.viewpager.currentItem = 2
             }
         }
     }

@@ -31,6 +31,7 @@ import com.example.lkacmf.serialport.SerialPortDataMake
 import com.example.lkacmf.util.Constant
 import com.example.lkacmf.util.LogUtil
 import com.example.lkacmf.util.dialog.DialogUtil
+import com.example.lkacmf.util.linechart.LineChartListener
 import com.example.lkacmf.util.linechart.LineChartSetting
 import com.example.lkacmf.util.linechart.LineDataRead
 import com.example.lkacmf.util.mediaprojection.CaptureImage
@@ -43,14 +44,17 @@ import com.github.mikephil.charting.listener.OnChartGestureListener
 import kotlin.math.pow
 
 //, View.OnTouchListener
+@RequiresApi(Build.VERSION_CODES.O)
 class AnalystsFragment : Fragment(), View.OnClickListener {
-    private var _binding: FragmentAnalystsBinding? = null
-    private val binding get() = _binding!!
+    var _binding: FragmentAnalystsBinding? = null
+    val binding get() = _binding!!
     var permissionTag = false
     private var startIndex = 0
     private var endIndex = 0
-    private var rect:Rect = DataManagement.frameRect
     private var bitmapList:ArrayList<Bitmap> = ArrayList()
+
+    //判断折线图是否可以被框选
+    var screenState = false
 
     private lateinit var mediaManager: MediaProjectionManager
     private var mMediaProjection: MediaProjection? = null
@@ -66,111 +70,43 @@ class AnalystsFragment : Fragment(), View.OnClickListener {
     override fun onStart() {
         super.onStart()
         mediaManager = requireActivity().getSystemService(FragmentActivity.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
-        LineChartSetting.SettingLineChart(requireActivity(), binding.lineChartAnaBX, showX = true, scale = false)
-        LineChartSetting.SettingLineChart(requireActivity(), binding.lineChartAnaBZ, showX = true, scale = false)
-        LineChartSetting.SettingLineChart(requireActivity(), binding.lineChartAna, showX = true, scale = false)
-        LineChartSetting.SettingLineChart(requireActivity(), binding.lineChartGone, showX = true, scale = false)
-        LineDataRead.backPlay(binding.lineChartAnaBX, binding.lineChartAnaBZ, binding.lineChartAna)
         binding.btnBackPlay.setOnClickListener(this)
         binding.btnReset.setOnClickListener(this)
         binding.btnImage.setOnClickListener(this)
         binding.btnReport.setOnClickListener(this)
         binding.btnCount.setOnClickListener(this)
-        touchListener(binding.lineChartAnaBX)
-        touchListener(binding.lineChartAnaBZ)
-    }
 
-    fun touchListener(view: BaseLineChart) {
-        view.onChartGestureListener = object : OnChartGestureListener {
-            override fun onChartGestureStart(event: MotionEvent, lastPerformedGesture: ChartTouchListener.ChartGesture) {
-                // 按下
-                if (event.pointerCount == 1) {
-                    LogUtil.e("TAG", "按下")
-                    rect.left = event?.x.toInt()
-                    rect.top = event?.y.toInt()
-                    //返回当前数据下标
-                    val highlight = view.getHighlightByTouchPoint(event.x, event.y)
-                    val set = view.data.getDataSetByIndex(highlight.dataSetIndex)
-                    val e: Entry = view.data.getEntryForHighlight(highlight)
-                    startIndex = set.getEntryIndex(e)
-//                    binding.lineChartAnaBX.invalidate()
-                }
-            }
-
-            override fun onChartGestureDoubleStart(event: MotionEvent) {
-                if (event.pointerCount >= 2) {
-                    LogUtil.e("TAG", "按下TWO")
-                    rect.setEmpty()
-                    view.invalidate()
-                }
-            }
-
-            override fun onChartGestureEnd(event: MotionEvent, lastPerformedGesture: ChartTouchListener.ChartGesture) {
-                // 抬起,取消
-                if (event.pointerCount == 1) {
-                    LogUtil.e("TAG", "抬起")
-                    if ((rect.left != 0 && rect.top != 0) && (rect.right != 0 && rect.bottom != 0)) {
-                        val highlight = view.getHighlightByTouchPoint(event.x, event.y)
-                        val set = view.data.getDataSetByIndex(highlight.dataSetIndex)
-                        val e: Entry = view.data.getEntryForHighlight(highlight)
-                        endIndex = set.getEntryIndex(e)
-                        rect.setEmpty()
-                        view.invalidate()
-                        LineDataRead.framePlay(startIndex, endIndex, binding.lineChartAnaBX, binding.lineChartAnaBZ, binding.lineChartAna)
-                    }
-                    rect.setEmpty()
-                }
-            }
-
-            override fun onChartLongPressed(me: MotionEvent) {
-                // 长按
-                LogUtil.e("TAG", "长按")
-            }
-
-            override fun onChartDoubleTapped(me: MotionEvent) {
-                // 双击
-                LogUtil.e("TAG", "双击")
-            }
-
-            override fun onChartSingleTapped(me: MotionEvent) {
-                // 单击
-                LogUtil.e("TAG", "单击")
-            }
-
-            override fun onChartFling(me1: MotionEvent, me2: MotionEvent, velocityX: Float, velocityY: Float) {
-                // 甩动
-                LogUtil.e("TAG", "甩动")
-            }
-
-            override fun onChartScale(event: MotionEvent, scaleX: Float, scaleY: Float) {
-                // 缩放
-            }
-
-            override fun onChartTranslate(me: MotionEvent, dX: Float, dY: Float) {
-                // 移动
-                LogUtil.e("TAG", "移动")
-            }
-
-            override fun onChartMove(event: MotionEvent) {
-                if (event.pointerCount == 1) {
-                    rect.right = event.x.toInt()
-                    rect.bottom = event.y.toInt()
-                    view.invalidate()
-                }
+        binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
+            if (checkedId==R.id.btnScreen){
+                screenState = true
+                binding.lineChartBX.mCanScale = false
+            }else{
+                screenState = false
+                binding.lineChartBX.mCanScale = true
             }
         }
+        LineChartSetting.SettingLineChart(requireActivity(), binding.lineChartBX, showX = true, scale = true)
+        LineChartSetting.SettingLineChart(requireActivity(), binding.lineChartBZ, showX = true, scale = true)
+        LineChartSetting.SettingLineChart(requireActivity(), binding.lineChart, showX = true, scale = true)
+        LineChartListener.lineChartSetListenerAna(binding.lineChartBX, binding.lineChartBX, binding.lineChartBZ, binding.lineChart, this)
+        LineChartListener.lineChartSetListenerAna(binding.lineChartBZ, binding.lineChartBX, binding.lineChartBZ, binding.lineChart, this)
+        LineChartListener.lineChartSetListenerAna(binding.lineChart, binding.lineChartBX, binding.lineChartBZ, binding.lineChart, this)
     }
+
+    override fun onResume() {
+        super.onResume()
+        LineDataRead.backPlay(binding.lineChartBX, binding.lineChartBZ, binding.lineChart)
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnBackPlay -> {
-//                var mSerialPortHelper = SerialPortConstant.getMSerialPortHelper(requireActivity())
-                SerialPortDataMake.operateData("00")
-                LineDataRead.backPlay(binding.lineChartAnaBX, binding.lineChartAnaBZ, binding.lineChartAna)
+                LineDataRead.backPlay(binding.lineChartBX, binding.lineChartBZ, binding.lineChart)
             }
             R.id.btnReset -> {
-                LineDataRead.backPlay(binding.lineChartAnaBX, binding.lineChartAnaBZ, binding.lineChartAna)
+                LineDataRead.reset(binding.lineChartBX, binding.lineChartBZ, binding.lineChart)
             }
             R.id.btnImage -> {
                 val requestList = ArrayList<String>()
@@ -246,7 +182,7 @@ class AnalystsFragment : Fragment(), View.OnClickListener {
                 )
             }
             R.id.btnCount -> {
-                var countList = DataManagement.landBXList.subList(startIndex, endIndex)
+                var countList = landBXList.subList(startIndex, endIndex)
                 //获取数组最大值下标
                 var maxTopValue = countList[0].y
                 var maxBottonValue = countList[0].y

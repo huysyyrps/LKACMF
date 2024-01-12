@@ -31,21 +31,21 @@
                     android:orientation="horizontal"
                     android:layout_marginLeft="10dp">
                 <com.example.lkacmf.view.BaseRadionButton
-                        android:id="@+id/btnAnalysts"
+                        android:id="@+id/btnMain"
                         style="@style/BaseRadioButton"
                         android:layout_width="100dp"
                         android:gravity="center"
                         android:background="@drawable/verticle_textview_select"
                         android:text="@string/main" />
                 <com.example.lkacmf.view.BaseRadionButton
-                        android:id="@+id/btnUserInfo"
+                        android:id="@+id/btnAnalysts"
                         style="@style/BaseRadioButton"
                         android:layout_width="100dp"
                         android:gravity="center"
                         android:background="@drawable/verticle_textview_select"
                         android:text="@string/analysts"/>
                 <com.example.lkacmf.view.BaseRadionButton
-                        android:id="@+id/btnSuspend"
+                        android:id="@+id/btnUserInfo"
                         style="@style/BaseRadioButton"
                         android:layout_width="100dp"
                         android:gravity="center"

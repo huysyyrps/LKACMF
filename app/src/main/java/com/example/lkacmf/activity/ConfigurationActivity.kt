@@ -280,6 +280,5 @@ class ConfigurationActivity : BaseActivity(), View.OnClickListener, AcmfCodeCont
     override fun onDestroy() {
         super.onDestroy()
         mSerialPortHelper.sendTxt(SerialPortDataMake.operateData("00"))
-        LogUtil.e("TAG","111111111")
     }
 }

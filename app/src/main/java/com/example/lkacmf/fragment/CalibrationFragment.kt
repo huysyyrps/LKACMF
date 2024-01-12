@@ -17,6 +17,7 @@ import com.example.lkacmf.serialport.SerialPortConstant
 import com.example.lkacmf.serialport.SerialPortDataMake
 import com.example.lkacmf.util.BinaryChange
 import com.example.lkacmf.util.LogUtil
+import com.example.lkacmf.util.PopupPositionCallBack
 import com.example.lkacmf.util.dialog.DialogSureCallBack
 import com.example.lkacmf.util.dialog.DialogUtil
 import com.example.lkacmf.util.linechart.LineChartListener
@@ -24,6 +25,8 @@ import com.example.lkacmf.util.linechart.LineChartListener.endIndex
 import com.example.lkacmf.util.linechart.LineChartListener.startIndex
 import com.example.lkacmf.util.linechart.LineChartSetting
 import com.example.lkacmf.util.linechart.LineDataRead
+import com.example.lkacmf.util.popup.CustomBubbleAttachPopup
+import com.example.lkacmf.util.popup.PopupListData
 import com.example.lkacmf.util.showToast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -72,6 +75,7 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
         binding.ivLeft.vtvSetting.setOnClickListener(this)
         binding.btnStopCalibration.setOnClickListener(this)
         binding.btnPunctation.setOnClickListener(this)
+        binding.btnDirection.setOnClickListener(this)
 
         this.childFragmentManager
 
@@ -79,7 +83,7 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
         mSerialPortHelper.setISerialPortDataListener(object : ISerialPortDataListener {
             override fun onDataReceived(bytes: ByteArray?) {
                 var receivedData = BinaryChange.byteToHexString(bytes!!)
-                LogUtil.e("TAGFragment", receivedData)
+                LogUtil.e("TAGCalibrationFragment", receivedData)
                 CoroutineScope(Dispatchers.Main).launch {
                     //参数
                     if (receivedData.length == 24) {
@@ -93,7 +97,7 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
             }
 
             override fun onDataSend(bytes: ByteArray?) {
-                Log.e("TAGFragment", "onDataSend: " + bytes?.let { BinaryChange.byteToHexString(it) })
+                Log.e("TAGCalibrationFragment", "onDataSend: " + bytes?.let { BinaryChange.byteToHexString(it) })
             }
         })
 
@@ -227,6 +231,31 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
                     }
                 })
            }
+            //路径
+            R.id.btnDirection -> {
+                com.lxj.xpopup.XPopup.Builder(requireContext())
+                    .hasShadowBg(false)
+                    .isTouchThrough(true)
+                    .isDestroyOnDismiss(true) //对于只使用一次的弹窗，推荐设置这个
+                    .atView(binding.btnDirection)
+                    .isCenterHorizontal(true)
+                    .hasShadowBg(false) // 去掉半透明背景
+                    .isClickThrough(true)
+                    .asCustom(CustomBubbleAttachPopup(requireContext(),"popup", object : PopupPositionCallBack {
+                        override fun backPosition(index: Int) {
+//                            PopupListData.setPopupListData()[index].title.showToast(requireContext())
+                            upStartDtate = "suspend"
+                            binding.btnStart.isChecked = true
+                            binding.btnStart.visibility = View.VISIBLE
+                            binding.btnSuspend.visibility = View.GONE
+                            mSerialPortHelper.sendTxt( SerialPortDataMake.operateData("02"))
+                            mSerialPortHelper.sendTxt( SerialPortDataMake.operateData("03"))
+                            LineDataRead.readRefreshData(binding.lineChartBX, binding.lineChartBZ, binding.lineChart)
+                        }
+
+                    }))
+                    .show()
+            }
         }
     }
 
