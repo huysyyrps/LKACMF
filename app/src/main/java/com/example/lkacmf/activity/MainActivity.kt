@@ -76,6 +76,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, VersionInfoContract.V
         binding.btnMain.setOnClickListener(this)
         binding.btnAnalysts.setOnClickListener(this)
         binding.btnUserInfo.setOnClickListener(this)
+        binding.btnMain.isChecked = true
 
         val requestList = ArrayList<String>()
         requestList.add(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -88,6 +89,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, VersionInfoContract.V
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initViewPage() {
+        binding.viewpager.offscreenPageLimit = 1
         fragmentList.add(CalibrationFragment())
         fragmentList.add(AnalystsFragment())
         fragmentList.add(UserInfoFragment())
@@ -100,13 +102,14 @@ class MainActivity : BaseActivity(), View.OnClickListener, VersionInfoContract.V
         //设置显示的页面，0：是第一页
         //viewpager.currentItem = 1
         //设置缓存页
-        binding.viewpager.offscreenPageLimit = 1
+//        binding.viewpager.offscreenPageLimit = 1
+        //启用或禁用用户启动的滚动
         binding.viewpager.isUserInputEnabled = false
         //同时设置多个动画
-        val compositePageTransformer = CompositePageTransformer()
-        compositePageTransformer.addTransformer(MarginPageTransformer(100))
-        compositePageTransformer.addTransformer(TransFormer())
-        binding.viewpager.setPageTransformer(compositePageTransformer)
+//        val compositePageTransformer = CompositePageTransformer()
+//        compositePageTransformer.addTransformer(MarginPageTransformer(100))
+//        compositePageTransformer.addTransformer(TransFormer())
+//        binding.viewpager.setPageTransformer(compositePageTransformer)
         //设置选中事件
         binding.viewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
 
@@ -197,13 +200,16 @@ class MainActivity : BaseActivity(), View.OnClickListener, VersionInfoContract.V
                 finish()
             }
             R.id.btnMain->{
-                binding.viewpager.currentItem = 0
+//                binding.viewpager.currentItem = 0
+                binding.viewpager.setCurrentItem(0,false)
             }
             R.id.btnAnalysts->{
-                binding.viewpager.currentItem = 1
+//                binding.viewpager.currentItem = 1
+                binding.viewpager.setCurrentItem(1,false)
             }
             R.id.btnUserInfo->{
-                binding.viewpager.currentItem = 2
+//                binding.viewpager.currentItem = 2
+                binding.viewpager.setCurrentItem(2,false)
             }
         }
     }
@@ -297,12 +303,8 @@ class MainActivity : BaseActivity(), View.OnClickListener, VersionInfoContract.V
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        return super.onKeyDown(keyCode, event)
-        when(keyCode){
-            KeyEvent.KEYCODE_BACK->{
-                SerialPortConstant.getSerialPortHelper().sendTxt(SerialPortDataMake.operateData("00"))
-            }
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        SerialPortConstant.getSerialPortHelper().sendTxt(SerialPortDataMake.operateData("00"))
     }
 }

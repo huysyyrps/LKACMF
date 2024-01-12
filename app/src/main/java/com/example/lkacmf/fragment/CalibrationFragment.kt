@@ -28,6 +28,7 @@ import com.example.lkacmf.util.linechart.LineDataRead
 import com.example.lkacmf.util.popup.CustomBubbleAttachPopup
 import com.example.lkacmf.util.popup.PopupListData
 import com.example.lkacmf.util.showToast
+import com.example.lkacmf.util.sp.BaseSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -201,6 +202,7 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
                 val formattedDx = String.format("%.2f", dx)
                 binding.tvDepth.text = formattedDx
                 binding.tvDepthRatio.text = String.format("%.2f", dx / 3)
+                BaseSharedPreferences.put("depthRatio",String.format("%.2f", dx / 3))
 //                var length = if (maxTopValue>maxBottonValue){
 //                    1.02*(maxTopValue-minValue)
 //                }else{

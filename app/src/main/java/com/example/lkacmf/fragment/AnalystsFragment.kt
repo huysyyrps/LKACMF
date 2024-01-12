@@ -39,8 +39,10 @@ import com.example.lkacmf.view.BaseLineChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.listener.ChartTouchListener
-import com.github.mikephil.charting.listener.OnChartGestureListener
+import com.example.lkacmf.util.linechart.LineChartListener.endIndex
+import com.example.lkacmf.util.linechart.LineChartListener.startIndex
+import com.example.lkacmf.util.showToast
+import com.example.lkacmf.util.sp.BaseSharedPreferences
 import kotlin.math.pow
 
 //, View.OnTouchListener
@@ -49,9 +51,8 @@ class AnalystsFragment : Fragment(), View.OnClickListener {
     var _binding: FragmentAnalystsBinding? = null
     val binding get() = _binding!!
     var permissionTag = false
-    private var startIndex = 0
-    private var endIndex = 0
     private var bitmapList:ArrayList<Bitmap> = ArrayList()
+
 
     //判断折线图是否可以被框选
     var screenState = false
@@ -182,7 +183,15 @@ class AnalystsFragment : Fragment(), View.OnClickListener {
                 )
             }
             R.id.btnCount -> {
-                var countList = landBXList.subList(startIndex, endIndex)
+                if (startIndex==0|| endIndex==0){
+                    "请框选区域".showToast(requireContext())
+                    return
+                }
+                var countList = if (startIndex< endIndex){
+                    DataManagement.landBXList.subList(startIndex, endIndex)
+                }else{
+                    DataManagement.landBXList.subList(endIndex, startIndex)
+                }
                 //获取数组最大值下标
                 var maxTopValue = countList[0].y
                 var maxBottonValue = countList[0].y
@@ -212,6 +221,8 @@ class AnalystsFragment : Fragment(), View.OnClickListener {
                 var bx0 = (maxTopValue+maxBottonValue)/2
                 var sbx = 1-minValue/bx0
                 var dx = 0.8762* sbx.pow(3)-3.634*sbx.pow(2)+6.174*sbx+0.04038
+                if(BaseSharedPreferences.get("depthRatio", "").isNotEmpty())
+                    dx /= (BaseSharedPreferences.get("depthRatio", "").toFloat())
                 val formattedDx = String.format("%.2f", dx)
                 binding.tvDepth.text = "$formattedDx"
                 var length = if (maxTopValue>maxBottonValue){
