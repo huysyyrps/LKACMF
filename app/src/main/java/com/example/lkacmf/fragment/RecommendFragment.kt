@@ -18,6 +18,7 @@ import java.io.File
 /**
  * 推荐配置
  */
+@RequiresApi(Build.VERSION_CODES.O)
 class RecommendFragment : Fragment(), View.OnClickListener {
     private var _binding: FragmentRecommendBinding? = null
     private val binding get() = _binding!!

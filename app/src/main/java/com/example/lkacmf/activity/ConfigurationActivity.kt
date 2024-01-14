@@ -12,6 +12,7 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.afollestad.materialdialogs.MaterialDialog
+import com.example.lkacmf.MyApplication
 import com.example.lkacmf.R
 import com.example.lkacmf.databinding.ActivityConfigurationBinding
 import com.example.lkacmf.entity.AcmfCode
@@ -31,14 +32,19 @@ import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import me.f1reking.serialportlib.SerialPortHelper
+import me.f1reking.serialportlib.listener.IOpenSerialPortListener
 import me.f1reking.serialportlib.listener.ISerialPortDataListener
+import me.f1reking.serialportlib.listener.Status
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
+import java.io.File
 import java.lang.Float
 import java.util.*
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
+import kotlin.concurrent.scheduleAtFixedRate
 import kotlin.getValue
 import kotlin.lazy
 import kotlin.let
@@ -51,7 +57,7 @@ class ConfigurationActivity : BaseActivity(), View.OnClickListener, AcmfCodeCont
     lateinit var acmfCodePresenter: AcmfCodePresenter
     lateinit var binding: ActivityConfigurationBinding
 
-    val mSerialPortHelper = SerialPortConstant.getSerialPortHelper()
+    val mSerialPortHelper : SerialPortHelper by lazy {SerialPortConstant.getSerialPortHelper()}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,14 +68,44 @@ class ConfigurationActivity : BaseActivity(), View.OnClickListener, AcmfCodeCont
         acmfCodePresenter = AcmfCodePresenter(this, view = this)
         binding.btnAddConfig.setOnClickListener(this)
 
+        mSerialPortHelper.setIOpenSerialPortListener(object : IOpenSerialPortListener {
+            override fun onSuccess(device: File) {
+                LogUtil.e("SerialPortConstant", device.path + " :串口打开成功")
+//                SerialPortConstant.timer.scheduleAtFixedRate(0, 1000) {
+//                    mSerialPortHelper.sendTxt(SerialPortDataMake.haveActivationData())
+//                }
+            }
+
+            override fun onFail(device: File, status: Status?) {
+                when (status) {
+                    Status.NO_READ_WRITE_PERMISSION ->
+                        "${device.path}${MyApplication.context.resources.getString(R.string.no_rw_permission)}".showToast(MyApplication.context)
+                    Status.OPEN_FAIL ->
+                        "${device.path}${MyApplication.context.resources.getString(R.string.seriaport_open_fail)}".showToast(MyApplication.context)
+                    else -> {
+                        "${device.path}${MyApplication.context.resources.getString(R.string.seriaport_open_fail)}".showToast(MyApplication.context)
+                    }
+
+                }
+            }
+        })
+
+        mSerialPortHelper.open()
+
+        if(mSerialPortHelper.isOpen){
+            timer.scheduleAtFixedRate(0, 1000) {
+                mSerialPortHelper.sendTxt(SerialPortDataMake.haveActivationData())
+            }
+        }
+
         mSerialPortHelper.setISerialPortDataListener(object : ISerialPortDataListener {
             override fun onDataReceived(bytes: ByteArray?) {
                 var receivedData = BinaryChange.byteToHexString(bytes!!)
-                LogUtil.e("TAGActivity", receivedData)
+                LogUtil.e("TAGConfigurationActivity", receivedData)
                 CoroutineScope(Dispatchers.Main).launch {
                     //设备状态
                     if (receivedData.length == 48) {
-                        SerialPortConstant.timer.cancel()
+                        timer.cancel()
                         getBackData(receivedData)
                     }
                     //设置
@@ -80,10 +116,10 @@ class ConfigurationActivity : BaseActivity(), View.OnClickListener, AcmfCodeCont
             }
 
             override fun onDataSend(bytes: ByteArray?) {
-                Log.e("TAGActivity", "onDataSend: " + bytes?.let { BinaryChange.byteToHexString(it) })
+                Log.e("ConfigurationActivity", "onDataSend: " + bytes?.let { BinaryChange.byteToHexString(it) })
             }
         })
-//        SerialPortConstant.serialPortDataListener<ConfigurationActivity>(this)
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -100,7 +136,7 @@ class ConfigurationActivity : BaseActivity(), View.OnClickListener, AcmfCodeCont
         //设置显示的页面，0：是第一页
         //viewpager.currentItem = 1
         //设置缓存页
-        binding.viewpager.offscreenPageLimit = 1
+//        binding.viewpager.offscreenPageLimit = 1
         binding.viewpager.isUserInputEnabled = false
         //同时设置多个动画
         val compositePageTransformer = CompositePageTransformer()
@@ -159,7 +195,7 @@ class ConfigurationActivity : BaseActivity(), View.OnClickListener, AcmfCodeCont
     fun getBackData(receivedData: String) {
         //授权激活状态
         if (receivedData.startsWith("B000") && !activationStaing) {
-            SerialPortConstant.timer.cancel()
+//            timer.cancel()
             if (BinaryChange.proofData(receivedData.substring(0, 42)) == receivedData.subSequence(42, 44)) {
                 var state = receivedData.substring(4, 6)
                 var activationCode = BinaryChange.hexToCap(ActivationCode.makeCode(receivedData.substring(6, 30)))
@@ -171,7 +207,7 @@ class ConfigurationActivity : BaseActivity(), View.OnClickListener, AcmfCodeCont
                         "未激活".showToast(this)
                         DialogUtil.noActivitionDialog(this, object : DialogSureCallBack {
                             override fun sureCallBack(data: String) {
-                                SerialPortConstant.getSerialPortHelper().sendTxt(SerialPortDataMake.activationData(activationCode))
+                               mSerialPortHelper.sendTxt(SerialPortDataMake.activationData(activationCode))
                                 activationStaing = false
                             }
 
@@ -204,8 +240,7 @@ class ConfigurationActivity : BaseActivity(), View.OnClickListener, AcmfCodeCont
                         })
                     }
                     "03" -> {
-                        "设备正常".showToast(this)
-                        SerialPortConstant.timer.cancel()
+                        timer.cancel()
                         (fragmentList[0] as ConfigFragment).getConfigurationList()
                     }
                 }
@@ -267,7 +302,7 @@ class ConfigurationActivity : BaseActivity(), View.OnClickListener, AcmfCodeCont
             val hexThicken = BinaryChange.addZeroForNum(thicken, 8)
             if (hexThicken == acmfCode.activationCode.substring(52, 60)) {
 //                SerialPortConstant.sendData(SerialPortDataMake.empowerData(acmfCode.activationCode.substring(40, 60)))
-                SerialPortConstant.getSerialPortHelper().sendTxt(SerialPortDataMake.empowerData(acmfCode.activationCode.substring(40, 60)))
+                mSerialPortHelper.sendTxt(SerialPortDataMake.empowerData(acmfCode.activationCode.substring(40, 60)))
             }
         }
     }

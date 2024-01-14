@@ -78,8 +78,6 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
         binding.btnPunctation.setOnClickListener(this)
         binding.btnDirection.setOnClickListener(this)
 
-        this.childFragmentManager
-
         mSerialPortHelper.sendTxt(SerialPortDataMake.operateData("00"))
         mSerialPortHelper.setISerialPortDataListener(object : ISerialPortDataListener {
             override fun onDataReceived(bytes: ByteArray?) {
@@ -117,7 +115,6 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
         LineChartListener.lineChartSetListener(binding.lineChartBX, binding.lineChartBX, binding.lineChartBZ, binding.lineChart, this)
         LineChartListener.lineChartSetListener(binding.lineChartBZ, binding.lineChartBX, binding.lineChartBZ, binding.lineChart, this)
         LineChartListener.lineChartSetListener(binding.lineChart, binding.lineChartBX, binding.lineChartBZ, binding.lineChart, this)
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -316,7 +313,7 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
                     "05" -> binding.ivLeft.vtvProbeType.text = "Z柔性探头"
                 }
                 binding.ivLeft.vtvProbeNum.text = BinaryChange.hexToInt(receivedData.subSequence(16, 18) as String).toString()
-                SerialPortConstant.getSerialPortHelper().sendTxt(SerialPortDataMake.operateData(receivedData.subSequence(8, 10).toString()))
+                mSerialPortHelper.sendTxt(SerialPortDataMake.operateData(receivedData.subSequence(8, 10).toString()))
             }
         }
             //数据

@@ -54,7 +54,9 @@ object XwpfTUtil {
 //            val targetDocPath = activity.externalCacheDir.toString()+ "/"+Constant.SAVE_FORM_PATH+"/"
             //Environment.getExternalStorageDirectory()
             //Environment.getExternalStorageDirectory().absolutePath + "/"+Constant.SAVE_FORM_PATH+"/"
-            var targetDocPath = Environment.getExternalStorageDirectory().path + "/"+Constant.SAVE_FORM_PATH+"/"
+            //this.externalCacheDir.toString()+ "/"
+//            var targetDocPath = Environment.getExternalStorageDirectory().path + "/"+Constant.SAVE_FORM_PATH+"/"
+            var targetDocPath = activity.externalCacheDir.toString()+ "/"+Constant.SAVE_FORM_PATH+"/"
             val file = File(targetDocPath)
             //如果不存在  就mkdirs()创建此文件夹
             if (!file.exists()) {

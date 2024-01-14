@@ -17,8 +17,8 @@ object Constant {
 
     const val TIMEOUT = 3000L
 
-    const val SAVE_IMAGE_PATH = "LKACMFIMAGE"
-    const val SAVE_FORM_PATH = "LKACMFFORM"
+    const val SAVE_IMAGE_PATH = "LKImage"
+    const val SAVE_FORM_PATH = "LKForm"
     const val SAVE_CONFIGURATION_PATH = "LKAcmf"
     const val COMPPHONE = "0537-2638599"//闸门
 
