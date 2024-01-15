@@ -61,7 +61,7 @@
     <string name="write_thinkness">请输入图层厚度</string>
 
     <string name="image_list">图片列表</string>
-    <string name="configuration">配置选项</string>
+    <string name="configuration">配置</string>
     <string name="recommend">推荐选项</string>
     <string name="add_configuration">暂无配置选项，请点击添加</string>
     <string name="version_check">版本检测</string>

@@ -3,6 +3,7 @@ package com.example.lkacmf.util.file
 import android.app.Activity
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.example.lkacmf.activity.ChangeConfigurationActivity
 import com.example.lkacmf.activity.ConfigurationActivity
 import com.example.lkacmf.fragment.ConfigFragment
 import com.example.lkacmf.util.dialog.DialogSureCallBack
@@ -36,6 +37,31 @@ object BaseFileUtil {
             saveConfig(dataList)
         }
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun haveNameActivity(filePath: File, fileToCheckName: String, activity: ChangeConfigurationActivity, data: String) {
+        //如果不存在  就mkdirs()创建此文件夹
+        if (!filePath.exists()) {
+            filePath.mkdirs()
+        }
+        if (filePath.exists()) {
+            // 获取文件夹内容
+            val filesInFolder = filePath.listFiles() ?: emptyArray<File>()
+            for (file in filesInFolder) {
+                if (file.name == fileToCheckName && !file.isDirectory) {
+                    "存在同名文件".showToast(activity)
+                    return
+                }
+            }
+            val filePath = "${filePath}/$fileToCheckName"
+            File(filePath).writeText(data)
+            "保存成功".showToast(activity)
+            activity.dialog?.dismiss()
+            var dataList = data.split("/")
+            saveConfig(dataList)
+        }
+    }
+
     fun saveConfig(dataList: List<String>) {
         BaseSharedPreferences.put("nsWorkpieceType",dataList[0])
         BaseSharedPreferences.put("nsWorkpieceFrom",dataList[1])

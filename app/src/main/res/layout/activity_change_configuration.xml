@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@color/theme_back_color"
+        tools:context=".activity.MainActivity">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/black"
+            android:orientation="horizontal">
+
+        <ImageView
+                android:id="@+id/ivImagelistBack"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_back" />
+
+        <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/configuration"
+                android:textColor="@color/white" />
+        <com.example.lkacmf.view.BaseButton
+                android:id="@+id/btnAddConfig"
+                android:layout_width="80dp"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/add"
+                app:bg_corner="8dp"
+                android:textColor="@color/white"
+                android:visibility="gone" />
+    </LinearLayout>
+    <LinearLayout
+            android:id="@+id/linData"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="41dp"
+            android:orientation="horizontal">
+
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+                android:id="@+id/smartRefreshLayout"
+                android:layout_width="250dp"
+                android:layout_height="match_parent"
+                android:background="@color/back_color">
+
+            <com.scwang.smart.refresh.header.ClassicsHeader
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/theme_back_color" />
+
+            <com.scwang.smart.refresh.footer.ClassicsFooter
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_marginLeft="80dp"
+                android:layout_marginRight="80dp"
+                android:orientation="vertical">
+
+            <com.example.lkacmf.view.BaseTextView
+                    style="@style/BaseTextView"
+                    app:header_title="工件类别 " />
+            <TextView
+                    android:id="@+id/tvWorkpieceType"
+                    style="@style/EditText"
+                    android:layout_width="match_parent" />
+
+            <com.example.lkacmf.view.BaseTextView
+                    style="@style/BaseTextView"
+                    app:header_title="工件形式" />
+            <TextView
+                    android:id="@+id/tvWorkpieceFrom"
+                    style="@style/EditText"
+                    android:layout_width="match_parent" />
+
+            <com.example.lkacmf.view.BaseTextView
+                    style="@style/BaseTextView"
+                    app:header_title="工件材质" />
+            <TextView
+                    android:id="@+id/tvWorkpieceQuality"
+                    style="@style/EditText"
+                    android:layout_width="match_parent" />
+
+            <com.example.lkacmf.view.BaseTextView
+                    style="@style/BaseTextView"
+                    app:header_title="工件厚度" />
+            <TextView
+                    android:id="@+id/tvThickness"
+                    style="@style/EditText"
+                    android:layout_width="match_parent" />
+
+            <com.example.lkacmf.view.BaseTextView
+                    style="@style/BaseTextView"
+                    app:header_title="焊缝宽度" />
+            <TextView
+                    android:id="@+id/tvWidth"
+                    style="@style/EditText"
+                    android:layout_width="match_parent" />
+
+            <com.example.lkacmf.view.BaseTextView
+                    style="@style/BaseTextView"
+                    app:header_title="工作温度" />
+            <TextView
+                    android:id="@+id/tvHeat"
+                    style="@style/EditText"
+                    android:layout_width="match_parent" />
+
+            <com.example.lkacmf.view.BaseTextView
+                    style="@style/BaseTextView"
+                    app:header_title="图层厚度" />
+            <TextView
+                    android:id="@+id/tvLayerThinkness"
+                    style="@style/EditText"
+                    android:layout_width="match_parent" />
+
+            <com.example.lkacmf.view.BaseButton
+                    android:id="@+id/btnSelect"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    app:bg_corner="10dp"
+                    android:text="选择"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+            android:id="@+id/linNoData"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <ImageView
+                android:id="@+id/ivRef"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_nodata" />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ivRef"
+                android:layout_centerHorizontal="true"
+                android:text="@string/no_data" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

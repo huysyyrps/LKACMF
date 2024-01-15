@@ -29,6 +29,9 @@
             android:supportsRtl="true"
             android:theme="@style/NoAction"
             android:usesCleartextTraffic="true">
+        <activity
+                android:name=".activity.ChangeConfigurationActivity"
+                android:exported="false" />
 
         <provider
                 android:name="androidx.core.content.FileProvider"

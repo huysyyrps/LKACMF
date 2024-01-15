@@ -98,6 +98,12 @@
                         android:background="@drawable/verticle_textview"
                         android:text="@string/punctation"
                         app:drawableTop="@drawable/ic_punctation" />
+                <com.example.lkacmf.view.BaseRadionButton
+                        android:id="@+id/btnConfiguration"
+                        style="@style/BaseRadioButton"
+                        android:background="@drawable/verticle_textview"
+                        android:text="@string/configuration"
+                        app:drawableTop="@drawable/ic_punctation" />
             </LinearLayout>
 
             <LinearLayout

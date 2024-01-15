@@ -221,8 +221,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         if (mAxisLeft.isDrawGridLinesBehindDataEnabled())
             mAxisRendererLeft.renderGridLines(canvas);
 
-        if (mAxisRight.isDrawGridLinesBehindDataEnabled())
-            mAxisRendererRight.renderGridLines(canvas);
+//        if (mAxisRight.isDrawGridLinesBehindDataEnabled())
+//            mAxisRendererRight.renderGridLines(canvas);
 
         if (mXAxis.isEnabled() && mXAxis.isDrawLimitLinesBehindDataEnabled())
             mXAxisRenderer.renderLimitLines(canvas);

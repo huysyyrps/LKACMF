@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.lkacmf.R
+import com.example.lkacmf.activity.ChangeConfigurationActivity
 import com.example.lkacmf.activity.MainActivity
 import com.example.lkacmf.databinding.FragmentCalibrationBinding
 import com.example.lkacmf.serialport.DataManagement
@@ -77,6 +78,7 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
         binding.btnStopCalibration.setOnClickListener(this)
         binding.btnPunctation.setOnClickListener(this)
         binding.btnDirection.setOnClickListener(this)
+        binding.btnConfiguration.setOnClickListener(this)
 
         mSerialPortHelper.sendTxt(SerialPortDataMake.operateData("00"))
         mSerialPortHelper.setISerialPortDataListener(object : ISerialPortDataListener {
@@ -253,7 +255,10 @@ class CalibrationFragment : Fragment(), View.OnClickListener {
                         }
 
                     }))
-                    .show()
+            }
+            //更换配置
+            R.id.btnConfiguration->{
+                ChangeConfigurationActivity.actionStart(requireActivity())
             }
         }
     }

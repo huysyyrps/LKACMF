@@ -161,6 +161,7 @@ class ConfigurationActivity : BaseActivity(), View.OnClickListener, AcmfCodeCont
                         binding.tvTitle.text = resources.getString(R.string.calibration)
                         (fragmentList[position] as CalibrationFragment).binding.btnPunctation.visibility = View.GONE
                         (fragmentList[position] as CalibrationFragment).binding.btnDirection.visibility = View.GONE
+                        (fragmentList[position] as CalibrationFragment).binding.btnConfiguration.visibility = View.GONE
                         binding.btnAddConfig.visibility = View.GONE
                     }
                 }

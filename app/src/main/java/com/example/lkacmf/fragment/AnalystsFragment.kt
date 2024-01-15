@@ -5,14 +5,12 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
@@ -26,23 +24,23 @@ import com.example.lkacmf.serialport.DataManagement.landBXList
 import com.example.lkacmf.serialport.DataManagement.landBZList
 import com.example.lkacmf.serialport.DataManagement.landList
 import com.example.lkacmf.serialport.DataManagement.punctationList
-import com.example.lkacmf.serialport.SerialPortConstant
-import com.example.lkacmf.serialport.SerialPortDataMake
 import com.example.lkacmf.util.Constant
 import com.example.lkacmf.util.LogUtil
 import com.example.lkacmf.util.dialog.DialogUtil
 import com.example.lkacmf.util.linechart.LineChartListener
+import com.example.lkacmf.util.linechart.LineChartListener.endIndex
+import com.example.lkacmf.util.linechart.LineChartListener.startIndex
 import com.example.lkacmf.util.linechart.LineChartSetting
 import com.example.lkacmf.util.linechart.LineDataRead
 import com.example.lkacmf.util.mediaprojection.CaptureImage
-import com.example.lkacmf.view.BaseLineChart
+import com.example.lkacmf.util.showToast
+import com.example.lkacmf.util.sp.BaseSharedPreferences
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.example.lkacmf.util.linechart.LineChartListener.endIndex
-import com.example.lkacmf.util.linechart.LineChartListener.startIndex
-import com.example.lkacmf.util.showToast
-import com.example.lkacmf.util.sp.BaseSharedPreferences
+import kotlinx.android.synthetic.main.fragment_analysts.*
+import kotlinx.android.synthetic.main.fragment_calibration.*
 import kotlin.math.pow
 
 //, View.OnTouchListener
@@ -139,6 +137,7 @@ class AnalystsFragment : Fragment(), View.OnClickListener {
                     viewBX.setDrawingCacheEnabled(true)
                     viewBX.buildDrawingCache()
                     var bitmapBX = Bitmap.createBitmap(viewBX.getDrawingCache())
+
                     var viewBZ = binding.framChartAnaBZ
                     viewBZ.setDrawingCacheEnabled(true)
                     viewBZ.buildDrawingCache()
@@ -238,15 +237,31 @@ class AnalystsFragment : Fragment(), View.OnClickListener {
     }
 
     private fun setlineChartAnaTData(landBXList: MutableList<Entry>,landBZList: MutableList<Entry>,landList: MutableList<Entry>) {
+        binding.lineChartGone.xAxis.position = XAxis.XAxisPosition.BOTTOM
+        binding.lineChartGone.axisRight.setDrawLabels(false)//右侧轴线不显示标签
+        binding.lineChartGone.description = null// 数据描述
+        binding.lineChartGone.legend.isEnabled = false// 不显示图例
+        val leftYAxis = binding.lineChartGone.axisLeft
+        val xAxis = binding.lineChartGone.xAxis
+        //标签数
+        leftYAxis.labelCount = 5
+        //标签数
+        xAxis.labelCount = 5
+
         binding.lineChartGone.clear()
+        binding.lineChartGone.fitScreen()
+        val bxMaxValue: Float = binding.lineChartBX.axisLeft.axisMaximum
+        val bxMinValue: Float = binding.lineChartBX.axisLeft.axisMinimum
         var lineSetBX = LineDataSet(landBXList, "")
         lineSetBX.setDrawValues(false)
         lineSetBX.setDrawCircles(false)
         lineSetBX.mode = LineDataSet.Mode.CUBIC_BEZIER
-        lineSetBX.color = MyApplication.context.resources.getColor(R.color.theme_color)
+        lineSetBX.color = MyApplication.context.resources.getColor(R.color.black)
         //将数据集添加到数据 ChartData 中
         val lineDataBX = LineData(lineSetBX)
         binding.lineChartGone.data = lineDataBX
+        binding.lineChartGone.axisLeft.axisMaximum = bxMaxValue
+        binding.lineChartGone.axisLeft.axisMinimum = bxMinValue
         binding.lineChartGone.notifyDataSetChanged()
         binding.lineChartGone.invalidate()
         var viewBX = binding.cardChartGone
@@ -256,14 +271,19 @@ class AnalystsFragment : Fragment(), View.OnClickListener {
         bitmapList.add(bitmapBX)
 
         binding.lineChartGone.clear()
+        binding.lineChartGone.fitScreen()
+        val bzMaxValue: Float = binding.lineChartBZ.axisLeft.axisMaximum
+        val bzMinValue: Float = binding.lineChartBZ.axisLeft.axisMinimum
         var lineSetBZ = LineDataSet(landBZList, "")
         lineSetBZ.setDrawValues(false)
         lineSetBZ.setDrawCircles(false)
         lineSetBZ.mode = LineDataSet.Mode.CUBIC_BEZIER
-        lineSetBZ.color = MyApplication.context.resources.getColor(R.color.theme_color)
+        lineSetBZ.color = MyApplication.context.resources.getColor(R.color.black)
         //将数据集添加到数据 ChartData 中
         val lineDataBZ = LineData(lineSetBZ)
         binding.lineChartGone.data = lineDataBZ
+        binding.lineChartGone.axisLeft.axisMaximum = bzMaxValue
+        binding.lineChartGone.axisLeft.axisMinimum = bzMinValue
         binding.lineChartGone.notifyDataSetChanged()
         binding.lineChartGone.invalidate()
         var viewBZ = binding.cardChartGone
@@ -273,14 +293,19 @@ class AnalystsFragment : Fragment(), View.OnClickListener {
         bitmapList.add(bitmapBZ)
 
         binding.lineChartGone.clear()
+        binding.lineChartGone.fitScreen()
+        val maxValue: Float = binding.lineChart.axisLeft.axisMaximum
+        val minValue: Float = binding.lineChart.axisLeft.axisMinimum
         var lineSet = LineDataSet(landList, "")
         lineSet.setDrawValues(false)
         lineSet.setDrawCircles(false)
         lineSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-        lineSet.color = MyApplication.context.resources.getColor(R.color.theme_color)
+        lineSet.color = MyApplication.context.resources.getColor(R.color.black)
         //将数据集添加到数据 ChartData 中
         val lineData = LineData(lineSet)
         binding.lineChartGone.data = lineData
+        binding.lineChartGone.axisLeft.axisMaximum = maxValue
+        binding.lineChartGone.axisLeft.axisMinimum = minValue
         binding.lineChartGone.notifyDataSetChanged()
         binding.lineChartGone.invalidate()
         var view = binding.cardChartGone
